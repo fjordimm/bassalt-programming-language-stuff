@@ -1,0 +1,36 @@
+
+const int SomeConst = 30;
+
+void Main()
+{
+	Stack<char, 30> a => ();
+
+	Stack<char, SomeConst> b => ();
+
+	int var1 = 30;
+	Stack<char, var1> c => (); // Illegal because var1 is not static
+
+	!int var2 = 30;
+	Stack<char, var2> d => (); // Illegal still because var2 is not static
+
+	^Stack<char, ?> e = new Stack<char, var1>();
+
+	^Stack<?, ?> f = new Stack<char, 30>();
+	f = new Stack<ulong, 45>();
+}
+
+// Implementation of a fixed-size stack
+class Stack<unit type T, sizet S>
+{
+	struct:
+	{
+		[S]T arr;
+		int top;
+	}
+
+	public constructor ()
+	{
+		arr => ();
+		top = -1;
+	}
+}

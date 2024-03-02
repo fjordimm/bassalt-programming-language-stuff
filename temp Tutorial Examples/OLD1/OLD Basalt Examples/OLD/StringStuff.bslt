@@ -1,0 +1,11 @@
+
+program Main {
+
+	string name = "Bobrick";
+
+	println "My name is " + name;
+	println "My name is {name}";
+
+	println "Here's some curly braces: \{\}";
+
+}

@@ -1,0 +1,60 @@
+
+// "hi" returns a &[2]Char
+
+void Main()
+{
+	[]Char a => "hey";
+	print a[0];
+
+	!^[]Char b = new []Char "hee";
+	b = new []Char "mamamia";
+	print b[0];
+	
+	!String bruh = String("hola");
+	bruh = String("weeeeeee");
+	print bruh.at(0);
+	
+	String chunga = ref bruh + "eee";
+
+	StringBuilder sb => ();
+	sb.append(ref bruh);
+	sb.append("eee");
+}
+
+const struct String
+{
+	ULong len;
+	^[]Char arr;
+
+	public get len;
+
+	public Char at(Integer ind)
+	{
+		return this.arr@[ind (ULong)];
+	}
+},
+{
+	public String(&[]Char arg)
+	{
+		this.len = arg@.len;
+
+		this.arr = new [this.len]Char ();
+		for Int i in (0, this.len)
+		{
+			this.arr@[i] = arg@[i];
+		}
+	}
+
+	public String operator+(&String a, &String b)
+	{
+		[a@.len + b@.len]Char ret => ();
+
+		for Int i in (0, a.len)
+		{ ret[i] = a.at(i); }
+
+		for Int i in (0, b.len)
+		{ ret[a.len + i] = b.at(i); }
+
+		return String(ret);
+	}
+}

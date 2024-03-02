@@ -1,0 +1,44 @@
+
+program Main {
+	Console.Print("hello\n");
+}
+
+abstract scheme Printable {
+
+	public void Print(string input) {
+		A_Print(ToConstCharArray(input));
+	}
+
+	public void Print(int input) {
+		A_Print(ToConstCharArray(Int.ToString(input)));
+	}
+
+	public void Print(double input) {
+		A_Print(ToConstCharArray(Double.ToString(input)));
+	}
+
+	private []{const char} ToConstCharArray(string str) {
+		return new []{const char} (
+			task []{char} {
+				[]{char} temp = new [str.size()]{char}();
+				for 0, temp.length { temp[index] = str.at(index); }
+				return temp;
+			}
+		);
+	}
+
+	abstract private void A_Print([]{const char});
+
+}
+
+scheme Console : IPrintable {
+
+	implement A_Print([]{const char} input) {
+		foreach input {
+			putchar each;
+		}
+	}
+
+}
+
+

@@ -1,0 +1,13 @@
+
+/*
+
+Notable Features:
+ - The concept of passability (unit and non-unit classes)
+ - The concept of faces
+ - Explicit immutability
+ - Explicit ceding
+ - 'while (true)' loops called 'loop'
+ - Labelled loops that can be broken out of by name
+
+*/
+

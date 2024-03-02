@@ -1,0 +1,22 @@
+
+class Cat(const string name, const color furColor, dub size);
+
+// is a shortcut for:
+
+class Cat {
+
+	occupy
+		const string name,
+		const color furColor,
+		dub size;
+
+	methods {
+		public get name, furColor, size;
+		public set size;
+	}
+
+	public Cat(string name, color furColor, dub size) {
+		construct name, furColor, size;
+	}
+
+}

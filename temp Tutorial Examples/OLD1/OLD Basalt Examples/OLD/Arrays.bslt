@@ -1,0 +1,53 @@
+
+program ArrayTime {
+
+	// default constructor, initializes all elements to 0
+	obj [7]{int} arr ();
+	[]{int} arr = new [7]{int}();
+
+	// initializes all elements to what specified
+	obj [7]{int} arr (0);
+	[]{int} arr = new [7]{int}(0);
+
+	// all the elements known
+	obj []{const int} arr (1, 2, 3);
+	[]{const int} arr = new []{const int} (1, 2, 3);
+
+	// an array of references to Persons
+	obj [7]{Person} arr ();
+	[]{Person} arr = new [7]{Person}();
+
+	// an array of singular Persons (so you must call the constructor for them all right away)
+	obj [7]Person arr (("John Doe"));
+	[]Person arr = new [7]Person("John Doe");
+
+	// that but all the thingies known
+	obj []Person arr (("John"), ("Schmon"), ("Long"));
+	[]Person arr = new []Person(("John"), ("Schmon"), ("Long"));
+
+	// an array of references to arrays
+	obj [5]{[]{int}} arr (); for (0, arr.length) { arr[index] = new [9]{int}() };
+	[]{[]{int}} arr = new [5]{[]{int}}; for (0, arr.length) { arr[index] = new [9]{int}() };
+
+	// an array of singular arrays
+	obj [9][5]{int} arr ();
+	[][]{int} arr = new [9][5]{int}();
+
+	// that but all the thingies known
+	obj [][]{int} arr ((1, 2, 3), (4, 5, 6), (7, 8, 9));
+	[][]{int} arr = new [][]{int}((1, 2, 3), (4, 5, 6), (7, 8, 9));
+
+	// a matrix in C# style
+	obj [5, 9]{int} arr ();
+	[,]{int} arr = new [5, 9]{int};
+
+	// that but all the thingies known
+	obj [,]{const int} arr ((1, 2, 3), (4, 5, 6), (7, 8, 9));
+	[,]{const int} arr = new [,]{const int}((1, 2, 3), (4, 5, 6), (7, 8, 9));
+
+	// referencing singular objects
+	obj []{const int} precomputedPrimeNumbers (1, 2, 3, 5, 7, 11, 13, 17);
+	[]{const int} aReferenceToIt = ref precomputedPrimeNumbers;
+	println aReferenceToIt[4];
+
+}

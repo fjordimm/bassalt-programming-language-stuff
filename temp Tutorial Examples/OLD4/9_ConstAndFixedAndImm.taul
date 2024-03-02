@@ -1,0 +1,186 @@
+//////////////////////////////
+
+/*
+
+Immutable types are one of the following:
+ - a primitive type
+ - a pointer to an immutable variable
+ - a class marked as 'imm' (which enforces all members to be immutable)
+ - a tuple or struct consisting of only immutable types
+
+*/
+
+//////////////////////////////
+
+///// The 'const' keyword /////
+
+/* Consts must be immutable and are always static. */
+
+// A normal place to put them would be on the top level or the top level of a namespace
+const double TwoPi = 6.28318530718;
+namespace Foo { const double ThreePi = 9.42477796077; }
+
+// Consts must be of an immutable type
+const string MyName => "Fiona";
+
+void Main()
+{
+	stdout << TwoPi;
+	TwoPi = 4.3; // Illegal.
+
+	// Consts can also be declared in a non-static scope (e.g. in a function)...
+	// ...but they are still static (so don't worry about them taking up space on the call stack), but can only be accessed in their scope.
+	const int TheAnswer = 42;
+}
+
+//////////////////////////////
+
+///// The 'fixed' keyword /////
+
+/* Fixed variables' values cannot be changed, but if they reference other parts of memory, those can be changed. */
+
+void Main()
+{
+	int~fixed someInt = 3;
+	someInt = 4; // Illegal
+
+	<float, float>~fixed someTuple = (0, 0);
+	someTuple = (3.2, 7.1); // Illegal
+	someTuple.0 = 9.7; // Illegal
+
+	<float~fixed, float> someOtherTuple = (0, 0);
+	someOtherTuple = (3.2, 7.1); // Illegal
+	someOtherTuple.0 = 9.7; // Illegal
+	someOtherTuple.1 = 8.4; // Legal
+
+	Point~fixed somePoint = Point{.x = 0, .y = 0};
+	somePoint = Point{.x = 3.2, .y = 7.1}; // Illegal
+	somePoint.x = 9.7; // Illegal
+
+	int a = 6;
+	int b = 7;
+	int&~fixed r = ref a;
+	r = ref b; // Illegal
+	r@ = 9; // Legal
+
+	string~fixed someString => "hi"; // Since a 'string' is non-portable and immutable, 'fixed' does nothing
+
+	Foo~fixed someFoo => ('P', 2.7);
+	someFoo.a = 'W'; // Illegal
+	someFoo.b = new float(1.9); // Illegal
+	someFoo.b@ = 1.9; // Legal
+}
+
+struct Point
+{
+	float x;
+	float y;
+}
+
+class Foo
+{
+	struct:
+	{
+		char a;
+		float^ b;
+	}
+
+	public get-set a;
+	public get-set b;
+
+	public constructor (char a, float b)
+	{
+		this.a = a;
+		this.b = new float(b);
+	}
+} 
+
+//////////////////////////////
+
+///// The 'imm' keyword /////
+
+/* Imm variables' values cannot be changed like fixed variables, but they also must be of an immutable type. */
+
+void Main()
+{
+	int~imm someInt = 3;
+	someInt = 4; // Illegal
+
+	<float, float>~imm someTuple = (0, 0);
+	someTuple = (3.2, 7.1); // Illegal
+	someTuple.0 = 9.7; // Illegal
+
+	<float~imm, float> someOtherTuple = (0, 0);
+	someOtherTuple = (3.2, 7.1); // Illegal
+	someOtherTuple.0 = 9.7; // Illegal
+	someOtherTuple.1 = 8.4; // Legal
+
+	Point~imm somePoint = Point{.x = 0, .y = 0};
+	somePoint = Point{.x = 3.2, .y = 7.1}; // Illegal
+	somePoint.x = 9.7; // Illegal
+
+	int a = 6;
+	int~fixed b = 7;
+	int~imm c = 8;
+	int&~imm r2 = iref a; // Legal
+	int&~imm r3 = iref b; // Legal
+	int&~imm r4 = iref c; // Legal
+
+	Foo~imm someFoo => ('P', 2.7);
+	someFoo.a = 'W'; // Illegal
+	someFoo.b = new float(1.9); // Illegal
+	someFoo.b@ = 1.9; // Illegal
+
+	Bar~imm someBar => ('P', 2.7); // Since a 'Bar' is non-portable and immutable, 'fixed' does nothing
+}
+
+struct Point
+{
+	float x;
+	float y;
+}
+
+class Foo
+{
+	struct:
+	{
+		char a;
+		float^ b;
+	}
+
+	public get-set a;
+	public get-set b;
+
+	public constructor (char a, float b)
+	{
+		this.a = a;
+		this.b = new float(b);
+	}
+
+	public face imm
+	{
+		get a;
+		get b;
+	}
+}
+
+imm class Bar
+{
+	// Since the class is marked as 'imm', all fields must be 'imm'
+	struct:
+	{
+		char~imm a;
+		float^~imm b;
+	}
+
+	public get a;
+	public get b;
+
+	public constructor (char a, float b)
+	{
+		this.a = a;
+		this.b = new float(b);
+	}
+}
+
+//////////////////////////////

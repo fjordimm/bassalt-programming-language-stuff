@@ -1,0 +1,7 @@
+
+void Main()
+{
+	[]Char var => "hello";
+	Str var => "hello"; // equal to above
+	^Str var => "hello";
+}

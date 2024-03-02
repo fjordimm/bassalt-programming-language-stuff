@@ -1,0 +1,99 @@
+
+//////////////////////////////
+
+
+
+///// Tuples /////
+
+void Main()
+{
+	<float, char> varA = (3.7, 'e');
+	println$(varA.0);
+	println$(varA.1);
+	varA.0 = 2.9;
+	varA.1 = 'r';
+	println$(varA); // Prints: (3.7, e)
+	varA = (7.5, 'p');
+
+	<float!, char> varB = (3.7, 'e'); // Illegal. Mutability cannot be specified for individual elements.
+
+	float varCa;
+	char varCb;
+	(varCa, varCb) = (7.5, 'p');
+	(varCa, varCb) = varA;
+
+	(float varDa, char varDb) = (3.7, 'e');
+	(varDa, varDb) = (7.5, 'p');
+	(varDa, varDb) = (varCa, varCb);
+	(varDa, varDb) = varA;
+
+	float varEa;
+	char varEb;
+	(varEa, char varFb) = (3.7, 'e');
+	(float varFa, varEb) = (3.7, 'e');
+	(varEa, varFb) = (7.5, 'p');
+	(varFa, varEb) = (7.5, 'p');
+	(varEa, varEb) = (7.5, 'p');
+	(varFa, varFb) = (7.5, 'p');
+
+	(float varG, void) = (3.7, 'e');
+	(varG, void) = (7.5, 'p');
+	(varG, void) = varA;
+	(void, char varH) = (3.7, 'e');
+	(void, varH) = (7.5, 'p');
+	(void, varH) = varA;
+}
+
+//////////////////////////////
+
+///// Struct & Tuple Memory Size /////
+
+/* Just to clarify, none of this affects the Taula programmer (unless you count the runtime value given by 'sizeof'). */
+
+/*
+ No guarantee can be made about the size of a struct or tuple because structs and tuples are compiled into C structs.
+
+ The order of elements you choose will not matter when compiled...
+ To minimize struct padding, the Taula compiler will put elements in decreasing order by size (there are special cases for 'nint', 'nlong', 'unint', 'unlong', 'nbigdouble').
+
+ To check the size in memory of a tuple or struct, use the 'sizeof' operator.
+*/
+
+//////////////////////////////
+
+///// The 'sizeof' Operator /////
+
+void Main()
+{
+	println$(sizeof(int)); // Prints: 4
+	int varA = 0;
+	println$(sizeof(varA)); // Prints: 4
+
+	sizet varB = sizeof(char);
+	int varC = (int)sizeof(char);
+
+	println$(sizeof(<float, char>)); // Possible output: 8
+	<float, char> varD = (3.7, 'e');
+	println$(sizeof(varD)); // Possible output: 8
+	println$(sizeof(varD.0)); // Prints: 4
+
+	println$(sizeof(Foo)); // Possible output: 8
+	Foo varE = Foo(a=3.7, b='e');
+	println$(sizeof(varE)); // Possible output: 8
+	println$(sizeof(varE.a)); // Possible output: 8
+}
+
+struct Foo
+{
+	float a;
+	char b;
+}
+
+//////////////////////////////
+
+// TODO: sizeof for ARRAYS
+// TODO: ingle element tuples
+// TODO: tuples of arrays or other non-portable types
+// TODO: tuples of tuples, structs of structs
+
+// TODO: the 'with' keyword

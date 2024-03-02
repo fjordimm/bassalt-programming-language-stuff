@@ -1,0 +1,70 @@
+
+using UnityEngine::*;
+
+namespace UnityTerrainGeneration::Controllers,
+class PlayerController : Monobehaviour
+{
+	[SerializeField] private Transform& playerCam;
+	[SerializeField] private GameObject& playerBody;
+	
+	[SerializeField] private float camSensitivityX;
+	[SerializeField] private float camSensitivityY;
+
+	private float camRotationX;
+	private float camRotationY;
+	
+	[SerializeField] private float movementSpeed;
+
+	private Rigidbody& playerRigidbody;
+
+	[SerializeField] private LayerMask& groundLayerMask;
+	[SerializeField] private float groundDrag;
+	[SerializeField] private float airDrag;
+	[SerializeField] private float groundRaycastExtraDist;
+
+	override Start()
+	{
+		Cursor.lockState = CursorLockMode::Locked;
+		Cursor.visible = false;
+
+		this.playerRigidbody = this.GetComponent<Rigidbody>();
+		this.playerRigidbody*.freezeRotation = true;
+	}
+
+	override Update()
+	{
+		this.camRotationX -= Input.getAxisRaw("Mouse Y") * camSensitivityX;
+		this.camRotationX = Mathf::Clamp(camRotationX, -90f, 90f);
+
+		this.camRotationY += Input.getAxisRaw("Mouse X") * camSensitivityY;
+
+		this.transform*.rotation = Quaternion::Euler(0f, camRotationY, 0f);
+		this.playerCam*.transform*.rotation = Quaternion::Euler(camRotationX, camRotationY, 0f);
+
+		///////
+
+		float verticalMovement = Input.getAxisRaw("Vertical");
+		float horizontalMovement = Input.getAxisRaw("Horizontal");
+
+		Vector3 direction = Vector3::Normalize(Vector3::Add(Vector3::Mult(this.transform*.forward, verticalMovement), Vector3::Mult(this.transform*.right, horizontalMovement)));
+
+		this.playerRigidbody*.addForce(Vector3::Mult(direction, this.movementSpeed * Time.deltaTime), ForceMode::Force);
+
+		///////
+
+		bool isOnGround = Physics.raycast(
+			this.playerBody*.transform*.position,
+			Vector3::Down,
+			this.playerBody.getComponent<CapsuleCollider>()*.height / 2 + this.groundRaycastExtraDist,
+			this.groundLayerMask
+		);
+
+		if (isOnGround)
+		{ this.playerRigidbody*.drag = this.groundDrag; }
+		else
+		{ this.playerRigidbody*.drag = this.airDrag; }
+
+		if (isOnGround)
+		{ this.playerRigidbody*.addForce(Vector3::Mult(Vector3::Up, direction.magnitude * Time.deltaTime * 5000), ForceMode::Force); }
+	}
+}

@@ -1,0 +1,15 @@
+
+program Main
+{
+	putchar args[0];
+	byte aByte = args[0];
+	char aChar = args[0]@c;
+
+	[const byte] refToArgs = args;
+	
+	[const char]{args.length} thingy === ()
+	{
+		for int i in (0, thingy.length)
+		{ thingy[i] = args[i]@b; }
+	}
+}

@@ -1,0 +1,80 @@
+
+void Main()
+{
+	Point p1 = Point(3.2, 5.7); // immutable public face
+	Point! p2 = Point(3.2, 5.7); // mutable public face
+	Point~private p3 = Point(3.2, 5.7); // immutable private face
+	Point!~private p4 = Point(3.2, 5.7); // mutable private face
+
+	Point^ r1 = new Point(3.2, 5.7);
+	Point!^ r2 = new Point!(3.2, 5.7);
+	Point~private^ r3 = new Point~private(3.2, 5.7);
+	Point!~private^ r4 = new Point!~private(3.2, 5.7);
+
+	Point p = Point(2.1, 3.7);
+	p.addToX(5.0);
+	stdout << p.getDistToOrigin();
+
+	Point sum = Point::Add(Origin&, p&);
+	Point::AverageOut(p&!, sum&!);
+}
+
+portable class Point
+{
+	float! x {public get};
+	float! y {public get};
+
+	public this(float x, float y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+
+	// In this method, 'this' is of type 'Point!~private' (the mutable private face)
+	public void resetToOrigin()!
+	{
+		this.x = 0;
+		this.y = 0;
+	}
+
+	// In this method, 'this' is of type 'Point!~private' (the mutable private face)
+	public void addToX(float v)!
+	{
+		this.x += v;
+	}
+
+	// In this method, 'this' is of type 'Point!~private' (the mutable private face)
+	public void addToY(float v)!
+	{
+		this.y += v;
+	}
+
+	// In this method, 'this' is of type 'Point~private' (the immutable private face)
+	public float getDistToOrigin()
+	{
+		return Math::Sqrt(this.x * this.x + this.y * this.y);
+	}
+}
+
+namespace Point
+{
+	public const Point Origin = Point(0, 0);
+
+	public Point Add(Point& a, Point& b)
+	{
+		return Point(a@.x + b@.x, a@.y + b@.y);
+	}
+
+	// Only functions in the namespace Point can have private-faced parameters in which public-faced variables can be passed into
+	void AverageOut(Point!~private& a, Point!~private& b)
+	{
+		float avgx = (a@.x + b@.x) / 2;
+		float avgy = (a@.y + b@.y) / 2;
+
+		a@.x = avgx;
+		a@.y = avgy;
+
+		b@.x = avgx;
+		b@.y = avgy;
+	}
+}

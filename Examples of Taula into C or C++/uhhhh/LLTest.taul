@@ -1,0 +1,52 @@
+
+struct Node
+{
+	int data;
+	Node^ next;
+}
+
+void recPrintStack(Node& node)
+{
+	if (node != null)
+	{
+		stdout << f"  Node({node@.data}),";
+		recPrintStack(node@.next);
+	}
+	else
+	{ stdout << "  NullNode"; }
+}
+
+void Main()
+{
+	stdout << "=== Starting Program ===";
+
+	Node^ head = new Node(Node{data=1, next=null});
+	Node& cur = head;
+	for i in 2..16
+	{
+		cur@.next = new Node(Node{data=i, next=null});
+		cur = cur@.next;
+	}
+
+	stdout << "Stack:";
+	recPrintStack(head);
+
+	if cur != null
+	{ stdout << f"cur = Node({cur@.data})"; }
+	else
+	{ stdout << "cur is null"; }
+	stdout <<;
+
+	head@.next@.next@.next = null;
+
+	stdout << "Stack:";
+	recPrintStack(head);
+
+	if cur != null
+	{ stdout << f"cur = Node({cur@.data})"; }
+	else
+	{ stdout << "cur is null"; }
+	stdout <<;
+
+	stdout << "=== Ending Program ===";
+}

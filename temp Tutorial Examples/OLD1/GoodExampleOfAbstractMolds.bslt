@@ -1,0 +1,32 @@
+
+program Main
+{
+	float theVolumeOfThisCylinder = Cylinder(5.8, 0.3).volume();
+}
+
+abstract const mold Prism
+{
+	public{get} const float height;
+
+	public float volume()
+	{ return height * surfaceArea(); }
+
+	abstract private float surfaceArea();
+},
+{
+	public Prism(float -> height) {}
+}
+
+const mold Cylinder : Prism
+{
+	public{get} const float radius;
+
+	implement surfaceArea()
+	{ return Math.Pi * radius * radius; }
+},
+{
+	public Cylinder(float _height, float -> radius)
+	{
+		base(_height);
+	}
+}

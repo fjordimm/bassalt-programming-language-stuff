@@ -1,0 +1,16 @@
+
+//////////////////////////////
+
+/*
+
+Functions, classes, etc. do not need to be marked as unsafe.
+
+If the main function has it,
+	or calls a function/method that has it,
+	or uses a class with an unsafe struct,
+	or any other recursive usage of an unsafe context,
+	then the program must be compiled with the 'unsafe' option.
+
+*/
+
+//////////////////////////////

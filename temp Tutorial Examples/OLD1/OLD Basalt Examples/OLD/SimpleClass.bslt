@@ -1,0 +1,37 @@
+
+program Main {
+
+	Person p = new Person("Joe", 53);
+	obj Person bob ("Bob", 47);
+	println bob.name;
+	println bob.age;
+	// Illegal: bob.name = "abfsiveujgbh";
+	bob.age = 238939;
+
+}
+
+class Person {
+
+	occupy
+		const string name,
+		int age;
+
+	methods {
+		public get name;
+		public get set age;
+
+		public void doBirthday() {
+			this.age++;
+		}
+	}
+
+	public Person(string n, int a) {
+		construct n, a;
+	}
+
+	public immutable viae V {
+		get name;
+		get age;
+	}
+
+}

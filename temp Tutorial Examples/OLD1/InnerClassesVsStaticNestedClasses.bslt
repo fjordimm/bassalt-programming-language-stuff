@@ -1,0 +1,109 @@
+
+class Family
+{
+	const rgb baseHairColor;
+	const float baseHeight;
+	fixed familyMember father;
+	fixed familyMember mother;
+	fixed [fixed familyMember] children;
+	fixed House house;
+
+	void allBirthdays()
+	{
+		father.birthday();
+		mother.birthday();
+		for familyMember f in children
+		{ f.birthday(); }
+	}
+
+	// An inner class
+	class familyMember
+	{
+		const string name;
+		const Gender gender;
+		int age;
+		rgb hairColor;
+		float height;
+
+		void birthday()
+		{
+			age++;
+			height += 0.1;
+			hairColor = Color.Gradient(hairColor, 0xE6E6E6, 0.03);
+		}
+	},
+	{
+		public face
+		{
+			get name, gender, age, hairColor, height;
+			set hairColor;
+			birthday();
+		}
+
+		public familyMember(string -> name, Gender -> gender, int -> age)
+		{
+			this;
+			hairColor = baseHairColor with { randomize(0.07) };
+			height = baseHeight * (age + 1)@f;
+		}
+	}
+},
+{
+	public face
+	{
+		get baseHairColor, baseHeight, father, mother, children;
+		allBirthdays();
+	}
+
+	public Family()
+	{
+		this;
+		switch Random.Int(0, 4)
+		{
+			case 0
+			{ baseHairColor = Color.Brown; }
+			case 1
+			{ baseHairColor = Color.Black; }
+			case 2
+			{ baseHairColor = Color.Red; }
+			case 3
+			{ baseHairColor = Color.Yellow; }
+			case else
+			{ baseHairColor = Color.Magenta; }
+		}
+
+		baseHeight = Random.Float(0.1, 0.7);
+
+		father = new familyMember(Random.Name(), Gender.Male, Random.Int(21, 60));
+
+		mother = new familyMember(Random.Name(), Gender.Female, Random.Int(21, 60));
+
+		children = new [fixed familyMember]{Random.Int(0, 5)}();
+		for int i in (0, children.length)
+		{ children[i] = new familyMember(Random.Name(), Random.Bool() ? Gender.Male : Gender.Female, Random.Int(0, 19)); }
+
+		house = new House((Random.Int(50, 71), Random.Int(30, 51)), Random.Int(2, 7), Random.Int(1, 4));
+	}
+
+	private enum Gender
+	{ Male, Female }
+
+	// A static nested class
+	private class House
+	{
+		(float width, float depth) squareFootage;
+		int bedrooms;
+		int bathrooms;
+		float price;
+	},
+	{
+		public face
+		{ get squareFootage, bedrooms, bathrooms, price; }
+
+		public House((float, float) -> squareFootage, int -> bedrooms, int -> bathrooms)
+		{
+			this;
+			price = 150*squareFootage.width*squareFootage.depth + 9000*bedrooms@f + 13000*bathrooms;
+		}
+	}
+}

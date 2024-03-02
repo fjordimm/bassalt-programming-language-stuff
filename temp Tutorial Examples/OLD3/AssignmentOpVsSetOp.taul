@@ -1,0 +1,78 @@
+
+void Main()
+{
+	Bar bar => ('x', 'y');
+	bar => ('z', 'w');
+
+	Foo fooA => ('x', 'y');
+	fooA => ('z', 'w');
+	fooA = Foo('p', 'q');
+
+	Foo fooB = Foo('x', 'y');
+	fooB => ('z', 'w');
+	fooB = Foo('p', 'q');
+
+	/////
+
+	^Bar barPtr = new Bar('x', 'y');
+	barPtr@ => ('z', 'w');
+	
+	^Foo fooPtr = new Foo('x', 'y');
+	fooPtr@ => ('z', 'w');
+	fooPtr@ = Foo('p', 'q');
+
+	/////
+
+	Bar lorem => ('\0', '\0');
+	BarReassignerNaive(ref lorem, 'x', 'y');
+	
+	Bar ipsum => BarReassigner('x', 'y');
+}
+
+unit class Foo
+{
+	struct:
+	{
+		char a;
+		char b;
+	}
+
+	public get-set a;
+	public get-set b;
+
+	public constructor (char a, char b)
+	{
+		this@.a = a;
+		this@.b = b;
+	}
+}
+
+class Bar
+{
+	struct:
+	{
+		char a;
+		char b;
+	}
+
+	public get-set a;
+	public get-set b;
+
+	public constructor (char a, char b)
+	{
+		this@.a = a;
+		this@.b = b;
+	}
+}
+
+void BarReassignerNaive(&Bar that, char a, char b)
+{
+	that@.a = a;
+	that@.b = b;
+}
+
+constructor<Bar>{that} BarReassigner(char a, char b)
+{
+	that@.a = a;
+	that@.b = b;
+}

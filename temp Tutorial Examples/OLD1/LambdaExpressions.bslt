@@ -1,0 +1,55 @@
+
+// First see "AbstractFunctions"
+// Lambda expressions are just anonymous implementations of abstract functions
+
+program Main
+{
+	YellTheAnswerToAdding(47, 0.1); // Prints: THE OPERATION ON 47 AND 0.1 EQUALS 47.1!
+	YellTheAnswerTo(47, 0.1) { (float a, float b) { return a * b; } }; // Prints: THE OPERATION ON 47 AND 0.1 EQUALS 4.7!
+	YellTheAnswerTo(47, 0.1) { (float a, float b) => a - b; }; // Prints: THE OPERATION ON 47 AND 0.1 EQUALS 46.9!
+	YellTheAnswerTo(47, 0.1) (float a, float b) => a / b; // Prints: THE OPERATION ON 47 AND 0.1 EQUALS 470!
+
+	[int] nums = new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+	[int] onlyEvens = nums.findAll() (int x) => x % 2 == 0;
+
+	[IRunnable] thingies = new
+	(
+		new Screamer(),
+		new IRunnable() () { print "Mama mia"; },
+		new IRunnable() () { print "pizzeria"; }
+	);
+	for IRunnable ir in thingies
+	{ ir.run(); }
+
+	Func<float, float> square = new() (float x) => x * x;
+	Func<float, float> cube = new() (float x) => square.invoke(x) * x;
+}
+
+abstract void YellTheAnswerTo(float arg0, float arg1)
+{
+	print $"THE OPERATION ON {arg0} AND {arg1} EQUALS {Operation(arg0, arg1)}!";
+},
+{
+	abstract float Operation(float, float) =>; // The '=>' means it can be implemented in an anonymous function without specifying the name
+}
+
+interface IRunnable
+{
+	void run() =>;
+}
+
+class Screamer : IRunnable
+{
+	implement run()
+	{
+		print "Ahhhh";
+	}
+},
+{
+	public Screamer() {}
+}
+
+interface Func<type TArgument, type TResult>
+{
+	abstract TResult invoke(TArgument arg) =>;
+}

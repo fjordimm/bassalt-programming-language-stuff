@@ -1,0 +1,54 @@
+
+void Main()
+{
+	CharStack charStack => ();
+	charStack.push('e');
+	charStack.push('b');
+	print charStack.pop();
+}
+
+class CharStack
+{
+	^Node top;
+
+	public Char peek()
+	{
+		return this.top@.value;
+	}
+
+	public void push(Char charVal)
+	{
+		^Node newNode = new Node(charVal);
+		newNode@.next = cede this.top;
+		this.top = cede newNode;
+	}
+
+	public Char pop()
+	{
+		Char ret = this.top@.value;
+		this.top = cede this.top@.next;
+		return ret;
+	}
+},
+{
+	public CharStack()
+	{
+		this.top = null;
+	}
+
+	private struct Node
+	{
+		Char value;
+		^Node next;
+
+		public get value;
+		public get-set next;
+	},
+	{
+		public Node(Char value)
+		{
+			this.value = value;
+			this.next = null;
+		}
+	}
+}

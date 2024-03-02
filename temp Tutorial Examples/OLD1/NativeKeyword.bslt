@@ -1,0 +1,9 @@
+
+program Main
+{
+	char c = DoSomethingCool(3.4829);
+}
+
+native char DoSomethingCool(float x) => "someLibraryDll::doSomethingCool(float)";
+
+// You had to have compiled this program specifying the path of the library

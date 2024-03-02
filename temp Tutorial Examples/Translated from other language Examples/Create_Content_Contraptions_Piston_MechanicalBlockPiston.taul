@@ -1,0 +1,13 @@
+
+// https://github.com/Creators-of-Create/Create/blob/mc1.18/dev/src/main/java/com/simibubi/create/content/contraptions/piston/MechanicalPistonBlock.java
+
+namespace Create::Contraptions::Piston,
+class MechanicalBlockPiston : DirectionalAxisKineticBlock, IBE<MechanicalPistonBlockEntity>
+{
+	
+},
+with module
+{
+	public const EnumProperty<PistonState> State = EnumProperty<PistonState>::Create("state");
+
+}

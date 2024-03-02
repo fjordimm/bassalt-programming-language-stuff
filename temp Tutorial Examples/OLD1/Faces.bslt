@@ -1,0 +1,144 @@
+
+program Main
+{
+	SavingsAccount a = new SavingsAccount("Bob Main Account", 3592.99);
+
+	SavingsAccount.F b = a via F;
+
+	SavingsAccount.FLiable d = a via FLiable; // Illegal
+	SavingsAccount.FLiable e = new SavingsAccount.FLiable();
+
+	SavingsAccount.F f = a via FDebtChecker via F; // Illegal
+
+	[SavingsAccount]{30} acc === new() {...}
+	makeSureEverythingIsFine(acc via FDebtChecker);
+},
+{
+	void makeSureEverythingIsFine([SavingsAccount.FDebtChecker] accounts)
+	{
+		for SavingsAccount.FDebtChecker a in accounts
+		{
+			if (a.isInDebt())
+			{ Println("Bruh"); }
+		}
+	}
+}
+
+class SavingsAccount
+{
+	const uint128 uuid;
+	string accountNickname;
+	dec interestRate;
+	dec currentValue;
+
+	bool matches(SavingsAccount that)
+	{ return this.uuid == that.uuid; }
+
+	bool isInDebt()
+	{ return currentValue < 0; }
+
+	void deposit(dec val)
+	{ currentValue += val; }
+
+	void withdraw(dec val)
+	{ currentValue -= val; }
+
+	void lapseOneYear()
+	{ currentValue += currentValue * interestRate; }
+
+	void updateInterestRate()
+	{
+		dec newRate = Random.Dec(0.001, 0.07);
+		if isInDebt()
+		{ interestRate = newRate * 0.5; }
+		else
+		{ interestRate = newRate; }
+	}
+
+	void someOverload() {...}
+	void someOverload(int x) {...}
+	void someOverload(double x) {...}
+	void someOverload(char x, dec y) {...}
+},
+{
+	public SavingsAccount(string -> accountNickname, dec -> currentValue)
+	{
+		this;
+		uuid = Random.UInt128();
+		interestRate = 0;
+		updateInterestRate();
+	}
+
+	// The default face. You can also make the default protected face
+	public face
+	{
+		get accountNickname, interestRate, currentValue;
+		set accountNickname;
+		matches(SavingsAccount);
+		isInDebt();
+		deposit(dec);
+		withdraw(dec);
+		lapseOneYear();
+		updateInterestRate();
+	}
+	
+	// It is convention to use 'F' as the face that has all non-mutator methods that the default face has
+	public const face F
+	{
+		get accountNickname, interestRate, currentValue;
+		matches(SavingsAccount);
+		isInDebt();
+	}
+
+	// It is convention to use 'FLiable' as the face that allows all access
+	public face FLiable
+	{
+		get uuid, accountNickname, interestRate, currentValue;
+		set accountNickname, interestRate, currentValue;
+		matches(SavingsAccount);
+		isInDebt();
+		deposit(dec);
+		withdraw(dec);
+		lapseOneYear();
+		updateInterestRate();
+	}
+
+	// It is convention to put F at the beginning of the name of every face, like I for interfaces or T for generic types
+
+	public face FDebtChecker
+	{
+		isInDebt();
+	}
+
+	public face FNonUser
+	{
+		get accountNickname, interestRate, currentValue;
+		matches(SavingsAccount);
+		isInDebt();
+		lapseOneYear();
+		updateInterestRate();
+
+		// Subfaces are a thing I guess
+		face FNonUserAnonymous
+		{
+			get interestRate, currentValue;
+			matches(SavingsAccount);
+			isInDebt();
+			lapseOneYear();
+			updateInterestRate();
+		}
+	}
+
+	public face FOverloadDemonstrationTheLongWay
+	{
+		someOverload();
+		someOverload(int);
+		someOverload(double);
+		someOverload(char, dec);
+	}
+
+	public face FOverloadDemonstrationShortcut
+	{
+		someOverload(*);
+	}
+}

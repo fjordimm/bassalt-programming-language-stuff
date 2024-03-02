@@ -1,0 +1,36 @@
+program Main
+{
+	print "Hello, World!";
+	print in "Hello, World!\n";
+	
+	PrintACoolMessage();
+	Println(SomeConstant);
+
+	putchar 'f';
+	char someVar = getchar;
+
+	// You can make scopes without an if-statement, loop, class, etc.
+	{
+		int a = 15;
+		const int b = 18;
+		float c = 7.0;
+		float d = 7;
+	}
+
+	bool que = true && false;
+	char imTwoBytes = 'a';
+	string imNotPrimitiveButYeah = "asdoflafsdklnjp";
+
+	string theLongWay = "My favorite letter is " + someVar + ".";
+	string theShortWay = $"My favorite letter is {someVar}.";
+	// Both of these call the toString() method
+
+}, // This is how you attach helper functions and constants that are only for this one function/program
+{
+	void PrintACoolMessage()
+	{
+		print "A Cool Message.";
+	}
+
+	float SomeConstant = 1.618033989;
+}

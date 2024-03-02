@@ -1,0 +1,44 @@
+
+// Goal: make a stack implementation that uses an array of size n to store the elements (which means it is limited to that size).
+
+program Main {
+
+	obj Staq<int> thingy (10);
+	thingy.push(5);
+	thingy.push(3);
+	println thingy.pop();
+
+	obj Stack<int, 10> thingus ();
+	thingus.push(5);
+	thingus.push(3);
+	println thingus.pop();
+
+}
+
+// The array is stored dynamically in this implementation of a stack
+class Staq<type T> {
+
+	occupy
+		fixed []{T} arr;
+
+	methods {...}
+
+	public Staq(int size) {
+		construct new [size]{T};
+	}
+
+}
+
+// Nothing is stored dynamically at all!
+class Stack<type T, int S> {
+
+	occupy
+		obj [S]{T} arr;
+
+	methods {...}
+
+	public Stack() {
+		construct (); // The '()' calls the default constructor for an array
+	}
+
+}

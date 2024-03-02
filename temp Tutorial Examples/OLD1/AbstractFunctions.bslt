@@ -1,0 +1,123 @@
+
+program Main
+{
+	YellTheAnswerToAdding(47, 0.1); // Prints: THE OPERATION ON 47 AND 0.1 EQUALS 47.1!
+	YellTheAnswerTo(47, 0.1) { Operation(float a, float b) { return a * b; } }; // Prints: THE OPERATION ON 47 AND 0.1 EQUALS 4.7!
+	YellTheAnswerTo(47, 0.1) { Operation(float a, float b) => a - b; }; // Prints: THE OPERATION ON 47 AND 0.1 EQUALS 46.9!
+	// See "LambdaExpressions" for a shorter way to do the above
+
+	[Person] people = new
+	(
+		new FastGrowingPerson("Piper"),
+		new Person("Jim") { heightOf(int age) => 1.7 + 0.5 * age@f; },
+		new Person("Chadrick") { heightOf(int age) => 2.9 + Math.Sqrt(age@f); },
+		new Person("Maria") { heightOf(int age) { if age < 30 { return 1.9 * age@f; } else { return 1.9 * 30; } } }
+	);
+	for Person p in people
+	{ p.haveBirthday(); }
+
+	wait i didn't finish this thingy // Illegal
+}
+
+///////
+
+abstract void YellTheAnswerTo(float arg0, float arg1)
+{
+	print $"THE OPERATION ON {arg0} AND {arg1} EQUALS {Operation(arg0, arg1)}!";
+},
+{
+	abstract float Operation(float, float);
+}
+
+void YellTheAnswerToAdding(float arg0, float arg1) : YellTheAnswerTo(float, float)
+{
+	implement Operation(float a, float b)
+	{
+		return a + b;
+	}
+}
+
+///////
+
+abstract class Person
+{
+	const string name;
+	int age;
+	float height;
+
+	void haveBirthday()
+	{
+		age++;
+		height = heightOf(age);
+	}
+
+	abstract float heightOf(int);
+},
+{
+	public face
+	{
+		get name, age, height;
+		haveBirthday();
+	}
+
+	public Person(string -> name)
+	{
+		age = 0;
+		height = heightOf(age);
+	}
+}
+
+class FastGrowingPerson : Person
+{
+	implement heightOf(int age)
+	{
+		return 0.8 + 1.2 * age@f;
+	}
+},
+{
+	public FastGrowingPerson(string _name)
+	{
+		base(_name);
+	}
+}
+
+///////
+
+abstract bool AcceptableUsername(string candidate)
+{
+	return candidate.length > 3 && candidate.length < 16 && IsAcceptable(candidate);
+},
+{
+	abstract bool IsAcceptable(string);
+}
+
+bool HasNoPeriods(string candidate)
+{
+	implement IsAcceptable(string candidate)
+	{
+		return candidate.indexOf('.') == -1;
+	}
+}
+
+abstract void VerifyUsernames()
+{
+	[string] candidates = new
+	(
+		"jimmy123",
+		"sussy.baka",
+		"_obamaPrism"
+	);
+
+	for string str in candidates
+	{
+		print $"The username {str} {Acceptable(str) ? "is acceptable." : "is not acceptable."}";
+	}
+},
+{
+	abstract bool Acceptable(string) : AcceptableUsername(string);
+}
+
+void VerifyUsernamesWithNoPeriods() : VerifyUsernames()
+{
+	implement Acceptable(string) => HasNoPeriods(string);
+}

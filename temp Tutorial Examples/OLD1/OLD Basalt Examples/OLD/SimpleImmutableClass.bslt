@@ -1,0 +1,23 @@
+
+program Main {
+
+	Point p = new Point(3, 8);
+	println p.x;
+
+}
+
+immutable class Person {
+
+	occupy
+		const int x,
+		const int y;
+
+	methods {
+		public get x, y;
+	}
+
+	public Person(int x, int y) {
+		construct x, y;
+	}
+
+}

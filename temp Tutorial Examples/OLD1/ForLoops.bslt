@@ -1,0 +1,23 @@
+
+program Main
+{
+	[float] arr = new(1.023, -993.4, 7, 13.1, 0.000244, 0);
+
+	// the classic C-family style
+	for int i = 0; i < arr.length; i++
+	{
+		Println(arr[i]);
+	}
+
+	// for-each style for any IIterable object
+	for float item in arr
+	{
+		Println(item);
+	}
+
+	// more concise way (it's not really a tuple btw)
+	for int i in (0, arr.length)
+	{
+		Println(arr[i]);
+	}
+}

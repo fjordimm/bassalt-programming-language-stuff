@@ -1,0 +1,27 @@
+
+/*
+
+Operator Precedence:
+ 1) x.y   f(x)   a[i]   x@   x++   x--
+ 2) &x   +x   -x   !x   ~x   [T]x   new  cede   alloc   dealloc
+ 3) x via T   x with {...}
+ 4) x * y   x / y   x % y
+ 5) x + y   x - y
+ 6) x << y   x >> y   x >>> y
+ 7) x < y   x > y   x <= y   x >= y   is
+ 8) x == y   x != y
+ 9) x & y
+ 10) x ^ y
+ 11) x | y
+ 12) x && y
+ 13) x || y
+ 14) x ? y : z
+ 15) x = y   x => y   x += y   x -= y   x *= y   x /= y   x %= y   x &= y   x |= y   x ^= y   x <<= y   x >>= y   x >>>= y
+ 16) (...) -> {...}
+ 17) print   assert   throw
+
+Operator Associativity:
+ The ternary conditional operator is right-associative.
+ All binary operators (except the assignment operators) are left-associative.
+
+*/

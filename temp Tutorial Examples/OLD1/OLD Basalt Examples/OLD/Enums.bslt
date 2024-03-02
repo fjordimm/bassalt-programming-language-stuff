@@ -1,0 +1,31 @@
+
+program Main {
+
+	Dir direction = Dir.Up;
+	if direction == Dir.Right {
+		println "That's right.";
+	}
+
+	PersonTypeExact bobsAge = PersonTypeExact.Toddler;
+	PersonTypeOlder marysAge = PersonTypeOlder.Dead;
+	if bobsAge == marysAge {
+		println "Yeah they're about the same age";
+	}
+
+}
+
+enum Dir {
+	Up, Down, Left, Right
+}
+
+extendable enum PersonType {
+	Baby, Child, Teenager, Adult, Senior
+}
+
+enum PersonTypeExact : PersonType {
+	NewBorn, Baby, Toddler, Child, Tweenager, Teenager, YoungAdult, Adult, Boomer, Senior, NearlyDead
+}
+
+enum PersonTypeOlder : PersonType {
+	Baby, Child, Teenager, Adult, Senior, FuckingOld, Dying, Dead
+}

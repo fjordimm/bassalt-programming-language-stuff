@@ -1,0 +1,78 @@
+
+passable class Point
+{...}
+
+class Man
+{...}
+
+void Main()
+{
+	///// Passing by value /////
+
+	Int var = 13;
+	Int otherVar = var;
+
+	Point var = Point(1.9, 3.7);
+	Point otherVar = var;
+
+	<Char, Char> var = ('a', 'b');
+	<Char, Char> otherVar = var;
+
+	// cannot pass class instances by value if the class is not declared passable
+
+
+	///// Reference /////
+
+	Int var = 13;
+	&Int refToVar = ref var;
+	refToVar` += 7;
+
+	Point var = Point(1.9, 3.7);
+	&Point refToVar = ref var;
+	refToVar`.x += 0.1;
+
+	<Char, Char> var = ('a', 'b');
+	&<Char, Char> refToVar = ref var;
+	refToVar`.0 = 'x';
+
+	Man var (23, 6.1);
+	&Man refToVar = ref var;
+	refToVar`.age += 1;
+
+
+	///// Box (unique pointer) /////
+
+	^Int var = new 13;
+	var` += 7;
+
+	^Point var = new Point(1.9, 3.7);
+	var`.x += 0.1;
+
+	^<Char, Char> var = new ('a', 'b');
+	var`.0 = 'x';
+
+	^Man var = new Man(23, 6.1);
+	var`.age += 1;
+
+
+	///// Unsafe Pointer /////
+
+	unsafe
+	{
+		*Int var = alloc 13;
+		var` += 7;
+		dealloc var;
+
+		*Point var = alloc Point(1.9, 3.7);
+		var`.x += 0.1;
+		dealloc var;
+
+		*<Char, Char> var = alloc ('a', 'b');
+		var`.0 = 'x';
+		dealloc var;
+
+		*Man var = alloc Man(23, 6.1);
+		var`.age += 1;
+		dealloc var;
+	}
+}

@@ -1,0 +1,36 @@
+
+/*
+
+The reason it is this complicated is for performance.
+
+The alternative would be, whenever printing something, you...
+	1) create a new string on the stack
+	2) copy everything to that string
+	3) pass it to the Println function
+	4) the Println function copies the contents onto the console
+
+This way works by...
+	1) create a Precat object (basically a stack of references to anything) (stands for pre-concatenator)
+	2) pass that to the Println function
+	3) the Println function calls the toString() method on each section of the Precat and SOIFUSDFHISDFHIPHSDFIPSDFHIPSHDF
+
+*/
+
+void Main()
+{
+	// What you would normally write
+	{
+		Int num = 13;
+		Println(f"I like the number {num}");
+	}
+
+	// What is going on behind the scenes
+	{
+		Int num = 13;
+
+		const []Char prefix "I like the number";
+		Precat precat ();
+		precat.push(iref prefix);
+		precat.push(iref alloc )
+	}
+}

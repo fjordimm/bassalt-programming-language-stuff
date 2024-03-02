@@ -1,0 +1,145 @@
+
+namespace SomeGame.MainPackage.Elements
+{
+	interface IGameElement
+	{
+		void gameStart();
+		void gameUpdate();
+	}
+
+	abstract class Entity : IGameElement
+	{
+		double x;
+		double y;
+		int health;
+
+		void resetHealth()
+		{
+			health = MaxHealth;
+		}
+
+		implement gameStart()
+		{
+			resetHealth();
+			_gameStart();
+		}
+
+		// This is not included in any face, so it is private. Subclasses can implement it, but they cannot call it.
+		abstract void _gameStart();
+
+		implement gameUpdate()
+		{
+			health += HealthDelta;
+			if health > MaxHealth
+			{ resetHealth(); }
+
+			_gameUpdate();
+		}
+
+		abstract void _gameUpdate();
+	},
+	{
+		abstract public int MaxHealth;
+		abstract public int HealthDelta;
+
+		public face
+		{
+			get x, y, health;
+			set x, y, health;
+		}
+
+		// In addition to the stuff in the public face
+		protected face
+		{
+			resetHealth();
+		}
+
+		public Entity(double -> x, double -> y)
+		{
+			this;
+			health = MaxHealth;
+		}
+	}
+
+	enum Breed
+	{ Pug, Retriever, Husky, Dachshund }
+
+	unsealed class Dog : Entity
+	{
+		float tailAngle;
+
+		overrideable void bark()
+		{
+			Println("Woof");
+		}
+
+		overrideable implement _gameStart()
+		{
+			Println("Oh yeah, it's dog time");
+		}
+
+		implement _gameUpdate()
+		{
+			x += Random.Double(-1.0, 1.0);
+			y += Random.Double(-1.0, 1.0);
+			__gameUpdate();
+		}
+
+		abstract void __gameUpdate();
+	},
+	{
+		overrideable implement MaxHealth = 1200;
+		implement HealthDelta = 5;
+
+		abstract public Breed TheBreed;
+
+		public face
+		{
+			get tailAngle;
+			set tailAngle;
+			bark();
+		}
+
+		public Dog(double _x, double _y, float -> tailAngle)
+		{
+			this : base(_x, _y) {};
+		}
+	}
+
+	unsealed class PugFriend : Dog
+	{
+		override bark()
+		{
+			Println("Oink");
+		}
+
+		overrideable override _gameStart() {
+			Println("Oh yeah, it's pug time");
+		}
+
+		overrideable implement __gameUpdate()
+		{ }
+	},
+	{
+		overrideable override MaxHealth = 900;
+		implement TheBreed = Breed.Pug;
+
+		public face
+		{ }	
+
+		public PugFriend(double _x, double _y, float _tailAngle)
+		{
+			this : base(_x, _y, _tailAngle) {};
+		}
+	}
+
+	class MiniPugFriend : PugFriend
+	{
+		override MaxHealth = 450;
+
+		public MiniPugFriend(double _x, double _y, float _tailAngle)
+		{
+			this : base(_x, _y, _tailAngle);
+		}
+	}
+}

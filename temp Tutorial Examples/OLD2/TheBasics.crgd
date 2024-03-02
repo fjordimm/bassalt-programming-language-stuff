@@ -1,0 +1,34 @@
+
+void main()
+{
+	stdout::println("Hello world");
+
+	Int someInt = 7;
+	const Char someChar = 'z';
+
+	stdout::println(f"c = {someChar}");
+	
+	for Int i in (0, 30)
+	{
+		someFunc(i);
+	}
+
+	for Int i = 0; i < 30; i++
+	{
+		someFunc(i);
+	}
+
+	[15]Char myArray => ();
+	for Int i in (0, myArray.size)
+	{ myArray[i] = 'a'; }
+
+	for Char c in myArray
+	{
+		stdout.println(c);
+	}
+}
+
+void someFunc(Int a)
+{
+	stdout.println(f"haha {a} is funny");
+}

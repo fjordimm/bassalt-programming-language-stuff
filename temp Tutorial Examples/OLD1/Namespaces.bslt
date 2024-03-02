@@ -1,0 +1,42 @@
+
+namespace A
+{
+	namespace B
+	{
+		scheme C
+		{
+			int D = 13;
+		}
+	}
+}
+
+using A
+{ Println(A.B.C.D); }
+
+using A.B
+{ Println(B.C.D); }
+
+using A.B.C
+{ Println(C.D); }
+
+using A.*
+{ Println(B.C.D); }
+
+using A.**
+{ Println(C.D); }
+
+using D as A.B.C.D
+{ Println(D); }
+
+using in A.B.C
+{ Println(D); }
+
+///////
+
+namespace Com.JohnDoe.Stuff,
+program DoSomethingCool
+{
+	using in Math;
+
+	print 3 * Pi;
+}

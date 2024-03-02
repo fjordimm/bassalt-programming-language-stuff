@@ -1,0 +1,56 @@
+
+// The C# argument of why mutable structs are bad does not apply. That is a problem with PROPERTIES.
+// Methods of a mold do return copies of things, but public fields of a mold grant direct access to that field.
+
+program Main
+{
+	Vector a = Vector(5.6, -1.7);
+	print a.x;
+	a.x += 3;
+	a = Vector(a.x + 3, a.y);
+	a = a with { a.x += 3; };
+	a = a with { x += 3; }; // The 'a.' is only required if the name x is ambiguous
+	a = with { x += 3; };
+	a = with x += 3;
+	a = with a.invert();
+	a = with invert();
+
+	Vector b = a;
+	print a.y; // Prints: -1.7
+	print b.y; // Prints: -1.7
+	b.y *= 2;
+	print a.y; // Prints: -1.7
+	print b.y; // Prints: -3.4
+}
+
+mold Vector
+{
+	float x;
+	float y;
+
+	void invert()
+	{
+		this.x *= -1;
+		this.y *= -1;
+	}
+},
+{
+	public face
+	{
+		get x, y;
+		set x, y;
+		invert();
+	}
+
+	public Vector(float x, float y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+
+	public Vector Zero = Vector(0, 0);
+	public Vector Up = Vector(0, 1);
+	public Vector Down = Vector(0, -1);
+	public Vector Right = Vector(1, 0);
+	public Vector Left = Vector(-1, 0);
+}

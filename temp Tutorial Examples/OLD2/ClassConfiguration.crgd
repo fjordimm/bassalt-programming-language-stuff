@@ -1,0 +1,75 @@
+
+void Main()
+{
+	Couple var0 = Couple{$a = 'X'; $b = 'Y'};
+	Std.Out.Prtl(var0.a);
+	var0.a = 'M';
+
+	Pair var1 = Pair('X', 'Y');
+	Pair var2 = Pair(){$a = 'X'; $b = 'Y'};
+	Std.Out.Prtl(var2.a);
+	var2.a = 'M';
+	Std.Out.Prtl(var2.contains('M'));
+	var2.(Stuff).capitalize();
+
+	{
+		using Stuff.capitalize(...);
+
+		var2.capitalize();
+	}
+}
+
+struct Couple
+{
+	char a;
+	char b;
+}
+
+passable class Pair
+{
+	// Instead of the below, you could write 'struct: Couple;'
+	struct:
+	{
+		char a;
+		char b;
+	}
+
+	public get-set-init a;
+	public get-set-init b;
+
+	// You can use the 'this' keyword and don't have to include the '{self}'
+	public method{self} bool contains(char chr)
+	{
+		return self`.a == chr || self`.b == chr;
+	}
+
+	public method bool cntns(char chr)
+	{
+		return this`.a == chr || this`.b == chr;
+	}
+
+	// Again, you can use the 'this' keyword instead of the '{self}'
+	public constructor{self} ()
+	{
+		self`.a = 'A';
+		self`.b = 'A';
+	}
+
+	public constructor (char a, char b)
+	{
+		this`.a = a;
+		this`.b = b;
+	}
+}
+
+namespace Stuff
+{
+	// For something like this, you cannot use the 'this' keyword
+	public method<Pair>{that} void capitalize()
+	{
+		using Obel.Util.Ascii;
+
+		that`.a = Ascii.ToUppercase(that`.a);
+		that`.b = Ascii.ToUppercase(that`.b);
+	}
+}

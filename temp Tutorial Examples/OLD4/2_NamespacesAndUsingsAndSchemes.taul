@@ -1,0 +1,535 @@
+
+//////////////////////////////
+
+/*
+ Note that which file a piece of code lies in does not matter.
+ Think of it as every file gets concatenated together.
+ The exception to this is that everything defined on a file's top level (so not in any namespace) is private to that file.
+*/
+
+////////////////////////////////////////////////////////////
+
+///// Simple Namespace Example /////
+
+/*
+ These examples are not good practice for what the file structure of a program should look like;
+ they are only for demonstrating properties of namespaces.
+*/
+
+/******* 'file1.taul' *******/
+namespace Foo
+{
+	const int A = 1;
+
+	int Sum(int a, int b)
+	{
+		return a + b;
+	}
+
+	struct Point
+	{
+		int x;
+		int y;
+	}
+}
+
+void Main()
+{
+	stdout << Foo::A;
+	
+	stdout << Foo::Sum(9, 10);
+
+	Foo::Point p = Point{x=3, y=8};
+	stdout << p.x;
+}
+/****************************/
+
+////////////////////////////////////////////////////////////
+
+///// The 'using' Directive /////
+
+/******* 'file1.taul' *******/
+namespace Foo
+{
+	const int A = 1;
+}
+/****************************/
+
+/******* 'file2.taul' *******/
+void Main()
+{
+	stdout << Foo::A;
+}
+/****************************/
+
+// A 'using' directive can either be at the top of a file...
+/******* 'file3.taul' *******/
+using Foo::A;
+
+void Main()
+{
+	stdout << A;
+}
+/****************************/
+
+// ...or on the first line of block of code (function body, class constructor, etc.)
+/******* 'file4.taul' *******/
+void Main()
+{
+	using Foo::A;
+
+	stdout << A;
+}
+/****************************/
+
+////////////////////////////////////////////////////////////
+
+///// Another Example of The 'using' Directive /////
+
+/******* 'file1.taul' *******/
+namespace Foo
+{
+	const int A = 1;
+
+	namespace Bar
+	{
+		const int B = 2;
+
+		namespace Baz
+		{
+			const int C = 3;
+		}
+	}
+}
+
+namespace Foo,
+const int AA = 4;
+/****************************/
+
+/******* 'file2.taul' *******/
+namespace Foo
+{
+	const int AAA = 5;
+}
+
+namespace Foo,
+const int AAAA = 6;
+
+namespace Foo::Bar
+{
+	const int BB = 7;
+}
+
+namespace Foo::Bar::Baz
+{
+	const int CC = 8;
+}
+
+namespace Qux::Corge::Grault
+{
+	const int D = 9;
+}
+
+namespace Qux::Corge::Grault,
+const int DD = 10;
+/****************************/
+
+/******* 'file3.taul' *******/
+void Main()
+{
+	stdout << Foo::A;
+	stdout << Foo::AA;
+	stdout << Foo::AAA;
+	stdout << Foo::AAAA;
+	stdout << Foo::Bar::B;
+	stdout << Foo::Bar::BB;
+	stdout << Foo::Bar::Baz::C;
+	stdout << Foo::Bar::Baz::CC;
+	stdout << Qux::Corge::Grault::D;
+	stdout << Qux::Corge::Grault::DD;
+}
+/****************************/
+
+/******* 'file4.taul' *******/
+void Main()
+{
+	using Foo::AA;
+	using Foo::Bar;
+
+	stdout << Foo::A;
+	stdout << AA;
+	stdout << Foo::AAA;
+	stdout << Foo::AAAA;
+	stdout << Bar::B;
+	stdout << Bar::BB;
+	stdout << Bar::Baz::C;
+	stdout << Bar::Baz::CC;
+	stdout << Qux::Corge::Grault::D;
+	stdout << Qux::Corge::Grault::DD;
+}
+/****************************/
+
+/******* 'file5.taul' *******/
+void Main()
+{
+	using Foo::Bar::Baz;
+
+	stdout << Foo::A;
+	stdout << Foo::AA;
+	stdout << Foo::AAA;
+	stdout << Foo::AAAA;
+	stdout << Foo::Bar::B;
+	stdout << Foo::Bar::BB;
+	stdout << Baz::C;
+	stdout << Baz::CC;
+	stdout << Qux::Corge::Grault::D;
+	stdout << Qux::Corge::Grault::DD;
+}
+/****************************/
+
+/******* 'file6.taul' *******/
+using Foo::Bar;
+
+void Main()
+{
+	using Bar::Baz;
+
+	stdout << Baz::C;
+	stdout << Baz::CC;
+}
+/****************************/
+
+////////////////////////////////////////////////////////////
+
+///// How The 'using' Directive Works With Functions /////
+
+namespace Foo
+{
+	int F()
+	{
+		return 1;
+	}
+
+	int F(int a)
+	{
+		return a + 1;
+	}
+
+	int F(float a)
+	{
+		return (int)a + 1;
+	}
+
+	int F(int a, int b)
+	{
+		return a + b + 1;
+	}
+}
+
+void Main()
+{
+	stdout << Foo::F();
+	stdout << Foo::F(7_i);
+	stdout << Foo::F(13_f);
+	stdout << Foo::F(3, 5);
+}
+
+void Main()
+{
+	using Foo::F();
+
+	stdout << F();
+	stdout << F(7_i);
+	stdout << F(13_f);
+	stdout << F(3, 5);
+}
+
+void Main()
+{
+	using Foo::F(void);
+	using Foo::F(int);
+
+	stdout << F();
+	stdout << F(7);
+	stdout << Foo::F(13_f);
+	stdout << Foo::F(3, 5);
+}
+
+////////////////////////////////////////////////////////////
+
+///// The 'using-everything' Directive /////
+
+/*
+ This is the equivalent of the 'using namespace' directive in C++.
+ It's not recommended to use, but it may be the right choice for readability in certain circumstances.
+*/
+
+namespace Foo
+{
+	const int A1 = 1;
+	const int A2 = 2;
+	const int A3 = 3;
+
+	namespace Bar
+	{
+		const int B1 = 4;
+		const int B2 = 5;
+		const int B3 = 6;
+	}
+}
+
+void Main()
+{
+	// This includes everything in the namespace Foo
+	using Foo::*;
+
+	stdout << A1;
+	stdout << A2;
+	stdout << A3;
+	stdout << Bar::B1;
+	stdout << Bar::B2;
+	stdout << Bar::B3;
+}
+
+void Main()
+{
+	// This deeply includes everything in the namespace Foo (especially not recommended)
+	using Foo::**;
+
+	stdout << A1;
+	stdout << A2;
+	stdout << A3;
+	stdout << B1;
+	stdout << B2;
+	stdout << B3;
+}
+
+////////////////////////////////////////////////////////////
+
+///// Aliases /////
+
+namespace Foo
+{
+	const int A = 1;
+
+	int B()
+	{
+		return 1;
+	}
+
+	int B(int a)
+	{
+		return a + 1;
+	}
+
+	int B(float a)
+	{
+		return (int)a + 1;
+	}
+
+	int B(int a, int b)
+	{
+		return a + b + 1;
+	}
+}
+
+void Main()
+{
+	using Foo::A = Qux;
+
+	stdout << Qux;
+	stdout << Foo::B();
+	stdout << Foo::B(7_i);
+	stdout << Foo::B(13_f);
+	stdout << Foo::B(3, 5);
+}
+
+void Main()
+{
+	using Foo::B() = Qoz();
+
+	stdout << Foo::A;
+	stdout << Qoz();
+	stdout << Qoz(7_i);
+	stdout << Qoz(13_f);
+	stdout << Qoz(3, 5);
+}
+
+void Main()
+{
+	using Foo::B(void) = Qoz();
+	using Foo::B(int) = Qoz();
+
+	stdout << Foo::A;
+	stdout << Qoz();
+	stdout << Qoz(7_i);
+	stdout << Foo::B(13_f);
+	stdout << Foo::B(3, 5);
+}
+
+void Main()
+{
+	using Foo = Bar;
+
+	stdout << Bar::A;
+	stdout << Bar::B();
+	stdout << Bar::B(7_i);
+	stdout << Bar::B(13_f);
+	stdout << Bar::B(3, 5);
+}
+
+////////////////////////////////////////////////////////////
+
+///// Modules /////
+
+/*
+ Modules work exactly like namespaces besides three things:
+  - Their members have access modifiers (public/private)
+  - All their content must be defined in a single set of curly-braces, and therefore in a single file
+*/
+
+module MyMath
+{
+	public const double Pi = 3.14159;
+	public const double E = 2.71828;
+
+	public double Min(double a, double b)
+	{
+		return a < b ? a : b;
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+///// What The File Structure of a Program Should Look Like /////
+
+/*
+
+* my_text_adventure
+	* res
+		* texts
+			- title.txt
+			- win.txt
+			- lose.txt
+			* edgar
+				...
+			* lenore
+				...
+			* bernard
+				...
+	* out
+		* cintr
+			- my_text_adventure.c
+		* bin
+			- my_text_adventure.exe
+	* src
+		* Main
+			- Main.taul
+		* MyTextAdventure
+			- Game.taul
+			- UserIO.taul
+			* Characters
+				- Character.taul
+				- ITalkable.taul
+				- Edgar.taul
+				- Lenore.taul
+				- Bernard.taul
+			* Util
+				- TextFiles.taul
+				- Consts.taul
+
+*/
+
+/*--------- 'my_text_adventure/src/Main/Main.taul' ---------*/
+ using MyTextAdventure::Game;
+
+ void Main()
+ {
+	Game::Play();
+ }
+/*----------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Game.taul' ---------*/
+ using MyTextAdventure::UserIO;
+ using MyTextAdventure::Characters;
+ using MyTextAdventure::Util::TextLoading;
+ using MyTextAdventure::Util::Consts;
+
+ namespace MyTextAdventure,
+ module Game
+ {
+	/* stuff */
+ }
+/*---------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/UserIO.taul' ---------*/
+ namespace MyTextAdventure,
+ module UserIO
+ {
+	/* stuff */
+ }
+/*-----------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Characters/Character.taul' ---------*/
+ namespace MyTextAdventure::Characters,
+ unsealed class Character
+ {
+	/* stuff */
+ }
+/*-------------------------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Characters/ITalkable.taul' ---------*/
+ namespace MyTextAdventure::Characters,
+ interface ITalkable : Character
+ {
+	/* stuff */
+ }
+/*--------------------------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Characters/Edgar.taul' ---------*/
+ namespace MyTextAdventure::Characters,
+ class Edgar : Character, ITalkable
+ {
+	/* stuff */
+ }
+/*---------------------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Characters/Lenore.taul' ---------*/
+ namespace MyTextAdventure::Characters,
+ class Lenore : Character
+ {
+	/* stuff */
+ }
+/*----------------------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Characters/Bernard.taul' ---------*/
+ namespace MyTextAdventure::Characters,
+ class Bernard : Character, ITalkable
+ {
+	/* stuff */
+ }
+/*-----------------------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Util/TextFiles.taul' ---------*/
+ namespace MyTextAdventure::Util,
+ module TextFiles
+ {
+	/* stuff */
+ }
+/*-------------------------------------------------------------------------------*/
+
+/*--------- 'my_text_adventure/src/MyTextAdventure/Util/Consts.taul' ---------*/
+ namespace MyTextAdventure::Util::Consts
+ {
+	/* stuff */
+ }
+/*----------------------------------------------------------------------------*/
+
+////////////////////////////////////////////////////////////
+
+///// Namespaces/Schemes/Classes Included By Default /////
+
+Taula::Math
+Taula::FileIO
+
+////////////////////////////////////////////////////////////

@@ -1,0 +1,46 @@
+
+void Main()
+{
+	bool var = true;
+	char8 var = 'a'_c8;
+	char var = 'a'_c;
+	char32 var = 'a'_c32;
+	sbyte var = 0_sb;
+	short var = 0_s;
+	int var = 0_i;
+	long var = 0_l;
+	byte var = 0_b;
+	ushort var = 0_us;
+	uint var = 0_ui;
+	ulong var = 0_ul;
+	float var = 0_f;
+	double var = 0_ff;
+	nint var = 0_ni;
+	nlong var = 0_nl;
+	unint var = 0_uni;
+	unlong var = 0_unl;
+	nbigdouble var = 0_nbd;
+
+	hdec var = 0_hd;
+	dec var = 0_d;
+	hfix var = 0_hx;
+	fix var = 0_x;
+	int128 var = 0_iii;
+	uint128 var = 0_uiii;
+	float128 var = 0_fff;
+	dec128 var = 0_ddd;
+	int256 var = 0_iiii;
+	uint256 var = 0_uiiii;
+	rgba var = 0_rgb;
+	datetime. var = 0_t;
+	
+	stack<int> var => ();
+	queue<int> var => ();
+	hashset<int> var => ();
+	dict<int, char> var => ();
+	lnklist<int> var => ();
+	vec<int> var => ();
+
+	string var => "hi";
+	stringf var => f"hi";
+}

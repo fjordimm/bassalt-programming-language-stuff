@@ -1,0 +1,72 @@
+
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+
+// List of bitwise operators: ~ ^ & | << >> ^= &= |= <<= >>=
+
+// List of raw operators: ~= ~~ ~== ~!=
+
+program Main
+{
+	rawfree Int a = 15;
+	a <<= 1;
+	a~~Float *= 0.2#f;
+	a ~= 0b0010001110;
+
+	// You can still use bitwise and raw operators on non-rawfree types, but not to assign itself
+	Char32 b = 'a';
+	rawfree Float c = b~~Float;
+
+	// The raw types are rawfree by default
+	// Also, you can only use bitwise and raw operators on the raw types
+	raw32 d ~= 0xFFFFFFFF#r32;
+	raw64 e ~= 92#d~~UShort;
+
+	// Also bitwise operators can be used on all integer primitives (SByte, Short, Int, Long, Byte, UShort, UInt, ULong) without declaring them as rawfree
+}
+
+///////
+
+program Main
+{
+	Float explicit = 27#f;
+	Float implicit = 27;
+
+	Int a = 13;
+	rawfree Float b = a~~Float;
+	rawfree Float sameAsTheVarB ~= a;
+	Float c = a @Float;
+	Float sameAsTheVarC = a @#f;
+
+	Println(a == b); // Illegal
+	Println(a == c); // Illegal
+	Println(a ~== b); // True
+	Println(a ~== c); // False
+
+	
+	Long f = a@#L + b@#L; // Fine 
+	Long d = @#L a + b; // Same as above
+
+	// This is weird, it's just shown to explain order of ops. Be more explicit
+	Long g = @#L @#d b + a @#f;
+	// The equivalent in Java/C# for above:
+	// long g = (long)((double)b + (double)(float)a);
+
+	// This is weird, it's just shown to explain order of ops. Be more explicit
+	Float h = (2#f~~Int + 3#f~~Int)@#f;
+	Float i = @#f 2~~Int + 3~~Int; // Same as above
+
+	rawfree Char theLetterB ~= 'a'~~UShort + 1#us;
+	rawfree Char sameAsAbove = ('a'~~UShort + 1#us)~~Char;
+	Char aShortcut = 'a' + 1#n;
+
+	// All in all, you would never normally use the bitwise operators on non-integer types or the rawfree operators on anything, unless defining a primitive
+}

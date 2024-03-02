@@ -1,0 +1,65 @@
+
+program Main {
+
+	Bird chirpy = new Bird("Chirpy", Color.Magenta);
+	for 0, Random.InRange(0, 10) {
+		doABigFlap(chirpy via VFlyer);
+	}
+	tellMeIfThisBirdIsAlive(chirpy via VCheckAlive);
+
+} nest {
+
+	void doABigFlap(Bird.VFlyer bird) {
+		for 0, 15 { bird.flap(); }
+	}
+
+	void tellMeIfThisBirdIsAlive(Bird.VCheckAlive bird) {
+		if bird.isAlive { Console.Println("Yep, it's fine."); }
+		else { Console.Println("Nope, it flew too high.") }
+	}
+
+}
+
+class Bird {
+
+	occupy
+		const string name;
+		const color col;
+		double altitude;
+		bool isAlive;
+
+	methods {
+		public {
+			get name;
+			get col;
+			get altitude;
+			get isAlive;
+
+			void flap() {
+				altitude += 0.1;
+				if altitude > 50.0 { isAlive = false; }
+			}
+		}
+	}
+
+	public Bird(string name, color col) {
+		construct name, col, 0.0, true;
+	}
+
+	public viae VFlyer {
+		get altitude;
+		flap();
+	}
+
+	public immutable viae V {
+		get name;
+		get col;
+		get altitude;
+		get isAlive;
+	}
+
+	public immutable viae VCheckAlive {
+		get isAlive;
+	}
+
+}

@@ -1,0 +1,115 @@
+
+
+//////////////////////////////
+
+///// All types of literals /////
+
+/*
+Compatible with only 'bool':
+ - true, false
+
+Compatible with all types except 'bool' or 'string':
+ - 0, 17, -482
+
+Compatible with all types except 'bool', 'string', or floating-point types:
+ - 0x0, 0xF83C9E
+ - 0o0, 0o137
+ - 0b0, 0b101101
+
+Compatible with all floating-point types:
+ - 0.0, 34.3, -1.6573
+ - 0e0, 2.3e+843, -0.1E-343
+
+Compatible with all types except 'bool', 'string', or floating-point types. Meant mainly for char types:
+ - '\0', '\n', 'a', ' ', '\u0DA9'
+
+Compatible with all types of at least 32 bits except 'bool', 'string', and any floating-point type. Meant mainly for 'rgba':
+ - '(0, 0, 0, 0)', '(26, 0, 208)', '(26, 0, 208, 255)'
+ - '#00000000', '#1A00D0', '#1A00D0FF'
+
+Compatible with all types of at least 64 bits except 'bool', 'string', and any floating-point type. Meant mainly for 'datetime':
+ - '0000-00-00 00:00:00', '2007-12-03 13:15:00'
+ - '0000-00-00', '2007-12-03'
+ - '00:00:00', '13:15:00'
+*/
+
+//////////////////////////////
+
+///// Literal Suffixes /////
+
+/* For a list of all built-in types and their respective literal suffixes, see '4_ListOfBuiltInTypes'. */
+
+void Main()
+{
+	int var1 = 13; // No suffix needed here, the type is implicit.
+	int var2 = 13i; // In this example, it is specifying (be it redundant) that '13' is an int.
+	int var3 = (int)13l; // In this example, it casts a long (with the value 13) into an int.
+
+	// An underscore may be used between the value and the suffix.
+	// For most kinds of literals, this is optional, but it is required for hex values since they can have letter digits.
+	int var4 = 13_i;
+	int var5 = (int)0x0B_b; // In this example, it casts a byte (with the value 11) into a int.
+	int var6 = 'x'i; // The underscore is not required for character literals.
+
+	// Literal suffixes are not case-dependent.
+	int var7 = 13I;
+	long var8 = 13L;
+	ulong var9 = 13ul;
+	ulong var10 = 13uL;
+	ulong var11 = 13Ul;
+	ulong var12 = 13UL;
+}
+
+//////////////////////////////
+
+///// Implicit Literals /////
+
+/*
+Taula is designed so that literals are only implicit if there is no ambiguity.
+It is also designed so that there is no unneccessary use of suffixes (for example, the prevalence of the 'f' suffix in C/C++/C#/Java when using floats instead of doubles).
+
+Unlike some languages, a plain integer number (e.g. 53) does NOT default to an int.
+Neither does a decimal number (e.g. 1.0) to a double, or any other kind of literal to any type.
+This means you have to specify a type when, for example, printing a number.
+But it also means you can use literals like variables, never questioning their type.
+*/
+
+void Main()
+{
+	int var1 = 13i; // Redundant. Could have simply written '13'.
+	long var2 = 13l; // Also redundant. Could have simply written '13'.
+	float var3 = 13.0f; // This is also redundant. Decimal points do not imply a 'double' unlike some languages.
+	float var4 = 2 + 3; // '2' and '3' are floats.
+
+	Foo(7); // The 7 is implicitly an int because there are no overloads of Foo()
+
+	Bar(7); // Illegal. You could be calling Bar(int), Bar(uint), Bar(char), or Bar(float), since a literal like '7' is compatible with ints, uints, chars, and floats.
+	Bar(7i);
+	Bar(7ui);
+	Bar(7c);
+	Bar(7f);
+	Bar(true); // Legal because a bool is the only type that 'true' or 'false' is compatible with.
+	Bar(7.0); // Legal because a float is the only type out of Bar()'s overloads that a literal like '7.0' is compatible with.
+
+	Baz(7.0); // Illegal. Both floats and doubles are compatible with a literal like '7.0'.
+	Baz(7.0f);
+
+	stdout << 5 + 7; // Illegal. There is no hint as to what type should be used, since printing (stream writing) has overloads for multiple types.
+	stdout << 5i + 7i;
+	stdout << 5i + 7; // '7' is implicitly an int.
+	stdout << 5 + 7i; // '5' is implicitly an int.
+	stdout << (int)(3 * (2 + 8)); // Legal. There is no reason for '3', '2', or '8' to be anything other than an int.
+}
+
+void Foo(int a) {...}
+
+void Bar(int a) {...}
+void Bar(uint a) {...}
+void Bar(char a) {...}
+void Bar(bool a) {...}
+void Bar(float a) {...}
+
+void Baz(float a) {...}
+void Baz(double a) {...}
+
+//////////////////////////////

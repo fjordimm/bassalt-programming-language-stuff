@@ -1,0 +1,72 @@
+
+program Main
+{
+	int a = 2;
+	int b = a;
+	Println(a); // Prints: 2
+	Println(b); // Prints: 2
+	a++;
+	Println(a); // Prints: 3
+	Println(b); // Prints: 2
+	b++;
+	Println(a); // Prints: 3
+	Println(b); // Prints: 3
+
+	int c = 2;
+	ref int d = ref c;
+	Println(c); // Prints: 2
+	Println(d); // Prints: 2
+	c++;
+	Println(c); // Prints: 3
+	Println(d); // Prints: 3
+	*d++;
+	Println(c); // Prints: 4
+	Println(d); // Prints: 4
+
+	const int e = 2;
+	ref Int f = ref e; // Illegal
+
+	int g = 2;
+	iref int h = iref g;
+	Println(g); // Prints: 2
+	Println(h); // Prints: 2
+	g++;
+	Println(g); // Prints: 3
+	Println(h); // Prints: 3
+	*h++; // Illegal
+
+	const int i = 2;
+	iref int j = ref i;
+
+	///////
+
+	int myInt = 13;
+	Increment(ref myInt);
+
+	///////
+
+	int thingy = 3;
+	IntAnalyzer thingyAnalyzer = new IntAnalyzer(iref thingy);
+	thingy -= 5;
+	Println(thingyAnalyzer.isPositive()); // Prints: false
+}
+
+void Increment(ref int x)
+{ *x++; }
+
+class IntAnalyzer {
+	fixed iref int a;
+
+	bool isPositive()
+	{ return *a >= 0; }
+},
+{
+	public face
+	{
+		get *a;
+		isPositive();
+	}
+
+	public IntAnalyzer(iref int -> a)
+	{ this; }
+}

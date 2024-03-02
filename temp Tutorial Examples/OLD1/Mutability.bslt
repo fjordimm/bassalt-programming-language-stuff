@@ -1,0 +1,43 @@
+
+/*
+
+An immutable type is defined as one of the following:
+	A primitive
+	A non-mutable mold
+	A const class
+	A tuple where every member is marked 'const', and therefore of an immutable type
+
+Immutable type variables can have the 'const' modifier.
+Non-immutable type variables can have the 'fixed' modifier.
+
+*/
+
+class Name
+{...}
+
+const class Name
+{...}
+// Every field must be const, and therefore of an immutable type
+
+unsealed class Name
+{...}
+// This class can be extended
+
+unsealed const class Name
+{...}
+// This class can be extended
+// Every field must be const. Every field of any subclass must be const
+
+mold Name
+{...}
+// Every field must be of an immutable type
+
+mutable mold Name
+{...}
+// Fields don't have to be of an immutable type
+
+const mold Name
+{...}
+// Every field must be const
+
+unsealed mold // Illegal

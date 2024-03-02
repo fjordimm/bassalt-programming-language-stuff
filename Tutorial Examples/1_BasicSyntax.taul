@@ -1,0 +1,275 @@
+
+////////////////////////////////////////////////////////////
+
+///// Hello World /////
+
+void Main()
+{
+	println$("Hello, world!"); // The dollar sign means this is a macro
+}
+
+////////////////////////////////////////////////////////////
+
+///// More Basic Printing /////
+
+void Main()
+{
+	print$("something"); // No newline character after
+	println$(); // Just a newline
+
+	int x = 327;
+	println$(x);
+
+	println$(f"x = {x}");
+}
+
+////////////////////////////////////////////////////////////
+
+///// Functions /////
+
+void Main()
+{
+	println$(FuncA(3, 4));
+}
+
+int FuncA(int a, int b)
+{
+	return a + b;
+}
+
+////////////////////////////////////////////////////////////
+
+///// Variables /////
+
+void Main()
+{
+	int a = 5;
+	a = 17;
+	a++;
+	float b = 5;
+	b += 2.7;
+	println$(a);
+
+	// Immutable value:
+	char! c = 'e';
+	c = 'f'; // Illegal
+
+	println$(Pi);
+}
+
+// Top-level variables must be const
+// See 'ConstFixedAndImm' for an explanation of what const does
+const double Pi = 3.14;
+
+////////////////////////////////////////////////////////////
+
+///// Control Keywords /////
+
+void Main()
+{
+	if 3 > 9
+	{
+		println$("lorem");
+	}
+	else if 7 > 4
+	{
+		println$("ipsum");
+	}
+	else
+	{
+		println$("dolor");
+	}
+
+	// Traditional 'for' loop:
+	for int i = 0; i < 30; i++
+	{
+		println$(i);
+	}
+
+	// Simplified 'for' loop:
+	for int i in 0..30
+	{
+		println$(i);
+	}
+
+	// Simplified 'for' loop with custom step:
+	for int i in 0..(2)..30
+	{
+		println$(i);
+	}
+
+	// 'for-each' loop:
+	char[] arr => {'a', 'b', 'c'};
+	for char c in arr
+	{
+		println$(c);
+	}
+
+	// 'while' loop:
+	int i = 0;
+	while i < 30
+	{
+		println$(i);
+		i++;
+	}
+
+	// 'do-while' loop:
+	int j = 0;
+	do
+	{
+		println$(i);
+		j++;
+	}
+	while j < 30;
+
+	// Infinite loop:
+	int k = 0;
+	loop
+	{
+		if (k >= 30) { break; }
+
+		println$(k);
+		k++;
+	}
+
+	// Labelled infinite loop:
+	int l = 0;
+	loop[MyLoop]
+	{
+		if l >= 30 { break MyLoop; }
+
+		println$(l);
+		l++;
+	}
+
+	// Labelled 'while' loop (labels also apply to 'do-while' loops and 'for' loops):
+	int m = 0;
+	while[MyLoop]
+	{
+		if l >= 30 { break MyLoop; }
+
+		println$(l);
+		l++;
+	}
+
+	// Switch case:
+	char ch = 'b';
+	switch ch
+	{
+		case 'a'
+		{
+			println$("nice, its A");
+		}
+		case 'b'
+		{
+			println$("nice, its B");
+		}
+		case else
+		{
+			println$("this is the default case");
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+///// Non-Dynamic Arrays /////
+
+void Main()
+{
+	// See how classes work for a better understanding of the '=>' notation
+	// For now, just know that the variables below cannot be passed as values or be reassigned new arrays
+
+	int[30] arrA => ();
+	for int i in 0..arrA.len
+	{
+		arrA[i] = i * i;
+	}
+
+	int[15] arrB => (5); // All elements initialized to 5
+	int[15] arrC => (); // All elements initialized to 0
+	int[3] arrD => {1, 2, 3};
+	int[] arrE => {1, 2, 3}; // Still a fixed size of 3
+}
+
+////////////////////////////////////////////////////////////
+
+///// Tuples /////
+
+/* Note: you cannot access the nth element of a tuple; think of the numbers as the name of each field */
+
+void Main()
+{
+	<float, char> thing = (3.7, 'e');
+	thing.0 = 2.9;
+	println$(thing.1);
+
+	float a0;
+	char a1;
+	(a0, a1) = thing;
+
+	(float b0, char b1) = (0.1, 'x');
+
+	float c0;
+	(c0, char c1) = SomeFunc();
+
+	(float d0, void) = SomeFunc();
+}
+
+<float, char> SomeFunc()
+{
+	return (9.9, 'z');
+}
+
+////////////////////////////////////////////////////////////
+
+///// Structs /////
+
+// Structs are simple data structures...
+// If you want public/private members, methods, etc, use a class
+// Think of structs as tuples with named members
+
+void Main()
+{
+	Foo p = Point(x=3, y=9);
+	p.x = 17;
+	println$(p.y);
+}
+
+// The members of a struct do not need to be declared as mutable. The mutability is up to the instance
+struct Point
+{
+	int x;
+	int y;
+}
+
+////////////////////////////////////////////////////////////
+
+///// References /////
+
+void Main()
+{
+	int foo = 13;
+	int& fooRef = foo&;
+	fooRef@ = 7; // now foo is 7
+}
+
+////////////////////////////////////////////////////////////
+
+///// Casting /////
+
+/* Note: there is no implicit casting (with a few exceptions (see '6_Casting')) */
+
+void Main()
+{
+	int someInt = 42;
+	ulong someULong = 3943;
+	float someFloat = -0.7;
+
+	ulong a = (ulong)someInt;
+	ulong b = (ulong)(someInt + (int)someULong);
+	int c = (int)someFloat;
+	double d = (double)someInt;
+}
+
+////////////////////////////////////////////////////////////

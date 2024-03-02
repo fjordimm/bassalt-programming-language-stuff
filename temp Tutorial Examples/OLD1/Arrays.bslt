@@ -1,0 +1,147 @@
+
+program Arrays
+{
+	// Default constructor, initializes all elements to 0 or null, depending on the type
+	[int]{7} arr = new();
+	[int] arr = new{7}();
+	[int]{7} arr = new{7}();
+	[int]{7} arr = new [int]{7}();
+	[int]{} arr = new [int]{7}();
+	[int] arr = new [int]{7}();
+
+	// Initializes all elements to the value specified
+	[int]{7} arr = new(-1);
+
+	// You can declare const if all the elements known. Also it's immutable
+	[const int]{3} arr = new(1, 2, 3);
+
+	// You also don't have to specify the length if u do that
+	[const int] arr = new(1, 2, 3);
+
+	// But that doesn't mean you can't change which const array it is pointing to unless you use 'fixed' before the []
+	[const int] arr = new(1, 2, 3);
+	arr = new(4, 5, 6);
+
+	///////
+
+	// Assuming Person is a class
+
+	// An array of Persons
+	[Person]{7} arr = new();
+
+	// The above is equivalent to this
+	[Person]{7} arr = new(null);
+
+	// An array of fixed Persons (here using the "mass constructor call" (so if Person is immutable then oof))
+	[fixed Person]{7} arr = new(("Default Name"));
+
+	// Same thing but all the elements known
+	[fixed Person]{3} arr = new(new Person("Jimmy"), new Person("Timmy"), new Person("Schimmy"));
+
+	// This would be an array of the same Person. So pretty much useless
+	[fixed Person]{7} arr = new(new Person("Jareld"));
+
+	///////
+
+	// Assuming CharPair is a mold
+
+	// An array of CharPairs with no argument
+	[CharPair]{7} arr => (); // Illegal
+
+	// An array of CharPairs
+	[CharPair]{7} arr = new(CharPair('\0', '\0'));
+
+	// An array of fixed CharPairs (here using the "mass constructor call" (so if CharPair is immutable then oof))
+	[fixed CharPair]{7} arr = new(('a', 'b'));
+
+	// Same thing but all the elements known
+	[fixed Person]{3} arr = new(CharPair('x', 'X'), CharPair('y', 'Y'), CharPair('z', 'Z'));
+
+	// If CharPair is immutable, then this would be useless. Otherwise, it might be useful
+	[fixed CharPair]{7} arr = new(CharPair('p', 'q'));
+
+	// This is pretty much useless tho
+	[const CharPair]{7} arr = new(CharPair('p', 'q'));
+
+	///////
+
+	// An array of tuples with no argument
+	[(bool, ulong, const char)]{7} arr => (); // Illegal
+
+	// An array of tuples (but having all those '\0's would be useless)
+	[(bool, ulong, const char)]{7} arr = new((false, 0, '\0'));
+
+	// This would be useless
+	[(const bool, const ulong, const char)]{7} arr = new((false, 0, '\0'));
+
+	///////
+
+	// An array of arrays
+	[[int]]{5} arr = new();
+	for int i in (0, arr.length)
+	{ arr[i] = new [int]{9}(); }
+
+	// For the above its probably better to specify the length of the subarray
+	[[int]{9}]{5} arr => ();
+	for int i in (0, arr.length)
+	{ arr[i] = new [int]{9}(); }
+
+	// This is (other than matrices) the best way though, using the mass constructor call
+	[fixed [int]{9}]{5} arr = new(());
+
+	// Same thing but all the thingies known
+	[fixed [int]] arr = new(new [int](1, 2, 3), new [int](4, 5, 6), new [int](7, 8, 9));
+
+	// Again, you can specify the length if you wish
+	[fixed [int]{3}]{3} arr = new(new [int]{3}(1, 2, 3), new [int]{3}(4, 5, 6), new [int]{3}(7, 8, 9));
+
+	// A matrix
+	[int]{5, 9} arr = new();
+
+	// So if you want to not specify the length you still need to put {,}
+	[int]{,} arr = new [int]{5, 9}();
+
+	// Same thing but all the elements known
+	[int]{,} arr = new((1, 2, 3), (4, 5, 6), (7, 8, 9));
+
+	// Again, you can specify the length if you wish
+	[int]{3, 3} arr = new((1, 2, 3), (4, 5, 6), (7, 8, 9));
+
+	// Matrices can have any number of dimensions
+	[int]{7, 5, 9, 1, 2, 13} arr = new();
+	
+	///////
+
+	/* What specifying the length or not does */
+
+	[int] myArray1 = new [int]{5}();
+	myArray1 = null;
+	myArray1 = new [int]{5}();
+	myArray1 = new [int]{173}();
+
+	[int]{} myArray2 = new [int]{5}();
+	myArray2 = null;
+	myArray2 = new [int]{5}();
+	myArray2 = new [int]{173}();
+
+	[int]{5} myArray3 = new [int]{5}();
+	myArray3 = null;
+	myArray3 = new [int]{5}();
+	myArray3 = new [int]{173}(); // Illegal
+
+	///////
+
+	/* And here's what getting and setting elements actually looks like */
+
+	[char]{7} anArray = new();
+	anArray[6] = 'a';
+	Println(anArray[6]);
+
+	[[char]{9}]{5} a2dArray = new();
+	a2dArray[4][8] = 'a';
+	Println(a2dArray[4][8]);
+
+	[char]{5, 9} aMatrix = new();
+	aMatrix[4, 8] = 'a';
+	Println(aMatrix[4, 8]);
+}

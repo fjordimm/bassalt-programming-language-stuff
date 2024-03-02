@@ -1,0 +1,27 @@
+
+void Main()
+{
+	int var1 = 13;
+	Increment(&var1);
+
+	int var2 = 13;
+	PrintOut(&var2);
+
+	int var3;
+	Set(&var3, 13);
+}
+
+void Increment(&int a)
+{
+	a@++;
+}
+
+void PrintOut(&!int a)
+{
+	print a@;
+}
+
+void Set(agent &int a, int value)
+{
+	a = value;
+}

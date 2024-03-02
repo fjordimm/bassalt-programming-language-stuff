@@ -1,0 +1,63 @@
+
+void Main()
+{
+	Pair pair => ('X', 'Y');
+
+	pair.Stuff::capitalize();
+	pair => Stuff::('Z');
+
+	{
+		using Stuff::capitalize<Pair>(...);
+		using Stuff::constructor<Pair>(...);
+
+		pair.capitalize();
+		pair => ('Z');
+	}
+}
+
+unit class Pair
+{
+	struct:
+	{
+		char a;
+		char b;
+	}
+
+	public get-set-init a;
+	public get-set-init b;
+
+	public method{self} bool contains(char chr)
+	{
+		return self@.a == chr || self@.b == chr;
+	}
+
+	public method bool cntns(char chr)
+	{
+		return this.a == chr || this.b == chr;
+	}
+
+	public constructor (char a, char b)
+	{
+		this.a = a;
+		this.b = b;
+	}
+}
+
+namespace Stuff
+{
+	// For extension methods, you cannot use the 'this' keyword
+
+	public method<Pair>{that} void capitalize()
+	{
+		using Taula::Util::Ascii;
+
+		that@.a = Ascii::ToUppercase(that@.a);
+		that@.b = Ascii::ToUppercase(that@.b);
+	}
+
+	public constructor<Pair>{that} (char c)
+	{
+		that@.a = c;
+		that@.b = c;
+	}
+}

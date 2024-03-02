@@ -1,0 +1,31 @@
+
+// This only works for primitive types and array elements. So you can't use this to mutate stuff in a class that was declared immutable.
+
+program Main
+{
+    const int multipleOfSeven === 1
+    {
+        while multipleOfSeven % 7 != 0
+        {
+            multipleOfSeven = Random.Int(0, 100);
+        }
+        // so in here you can mutate 'multipleOfSeven'...
+    }
+    // ...but out here you can't
+
+    [const char] someLetters === new [const char]{15}()
+    {
+        for int i in (0, someLetters.length)
+        {
+            someLetters[i] = Random.LatinUppercase();
+        }
+    }
+
+    [const float]{25} someFloats === new()
+    {
+        for int i in (0, someFloats.length)
+        {
+            someFloats[i] = Random.Float(0, Float.Max);
+        }
+    }
+}

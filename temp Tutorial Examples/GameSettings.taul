@@ -1,0 +1,40 @@
+
+namespace Kodi::Game,
+class CGameSettings : ISettingCallback, Observable
+{
+	CSettings!& msettings;
+
+	public this()
+	{
+		this.msettings = CServiceBroker::GetSettingsComponent()@.GetSettings();
+		
+		msettings@.registerCallback(this&, cede new string[] {SettingGamesEnable, SettingGamesShowOsdHelp});
+	}
+
+	override ~this()
+	{
+		msettings@.unregisterCallback(this&);
+	}
+
+	public bool gamesEnabled()
+	{ return msettings@.getBool(SettingGamesEnable); }
+
+	public bool showOsdHelp()
+	{ return msettings@.getBool(SettingGamesShowOsdHelp); }
+
+	public void setShowOsdHelp(bool bShow)!
+	{
+		if (msettings@.getBool(SettingGamesShowOsdHelp) != bShow)
+		{
+			msettings@.setBool(SettingGamesShowOsdHelp, bShow);
+
+			// todo: asynchronous save
+			msettings@.save();
+		}
+	}
+},
+{
+	const string SettingGamesEnable = "gamesgeneral.enable";
+	const string SettingGamesShowOsdHelp = "gamesgeneral.showosdhelp";
+	const string SettingGamesEnableAutosave = "gamesgeneral.enableautosave";
+}

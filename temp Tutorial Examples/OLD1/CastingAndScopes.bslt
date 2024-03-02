@@ -1,0 +1,92 @@
+
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+
+// @b for boolean
+// @r for raw type (this is what 'byte' is, basically just an integer tho)
+// @c for character
+// @i for integer
+// @f for floating-point
+// @d for fixed-point
+// @s for string
+
+program Main
+{
+	float castMe = 37.923;
+	ulong a = castMe;
+	ulong b = castMe @iu;
+	ulong c = castMe@iu;
+	ulong d = @iu castMe;
+	ulong f = castMe @iu64;
+	ulong g = castMe @i64;
+
+	/////
+
+	int num = -1048575987;
+
+	log num @r32;				// Prints: 0xC180000D
+	log num @i16;				// Prints: -1048575987
+	log num @iu32;				// Prints: -1048575987
+	log num @i64;				// Prints: -1048575987.0
+	log num @f32;				// Prints: -1048575987.0
+
+	log num cram type@r32;		// Prints: 0xC180000D
+	log num cram type@i16;		// Prints: 13
+	log num cram type@iu32;		// Prints: 3246391309
+	log num cram type@i64;		// Prints: 3246391309
+	log num cram type@f32;		// Prints: -16.00002479553222656250
+
+	/////
+
+	type@i32 thisIsTheSameAsAnInt = 372;
+	type@iu256 theNumberMustBeAMultipleOf8Tho = 924;
+
+	type@d64_9 thisIsTheSameAsADec = 3.8203; // It has 64 bits to store the integer value. The '_9' means it is shifted over 9 digits.
+	dec maxValue = 9223372036.854775807;
+
+	/////
+
+	double myVar = 7 / 3;
+	log myVar; // Prints: 2.3333333333333335
+
+	dec myOtherVar = 7 / 3;
+	log myOtherVar; // Prints: 2.333333333
+
+	log 7 / 3; // Defaults to 32-bit-signed-integer (int) ONLY if there is no other context to go off of.
+	log 7.0 / 3.0; // Defaults to 64-bit-float (double) ONLY if there is no other context to go off of.
+
+	log @f 7 / 3;		// Prints: 2.3333333333333335
+	log @f64 7 / 3;		// Prints: 2.3333333333333335
+	log @f32 7 / 3;		// Prints: 2.3333333
+	@f log 7 / 3;		// Prints: 2.3333333333333335
+	log 7@f / 3@f;		// Prints: 2.3333333333333335
+	log 7 @f / 3 @f;	// Prints: 2.3333333333333335
+	log 7 / 3 @f;		// Error, cannot do 'i32 / f64'
+
+	/////
+
+	log 5 + 1; // Prints: 6
+	log "" + 5 + 1; // Prints: 51
+	log @s 5 + 1; // Prints: 51
+	log 5 @s + 1 @s; // Prints: 51
+	log 5@s + 1; // Prints: 51
+	log "" + (5 + 1); // Prints: 6
+	log @s (5 + 1); // Prints: 6
+}

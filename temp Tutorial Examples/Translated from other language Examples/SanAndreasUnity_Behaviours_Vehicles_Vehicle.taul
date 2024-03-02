@@ -1,0 +1,159 @@
+
+// https://github.com/GTA-ASM/SanAndreasUnity/blob/dev/Assets/Scripts/Behaviours/Vehicles/Vehicle.cs
+
+using Taula::List;
+using Taula::Func;
+using UnityEngine::MonoBehaviour;
+using UnityEngine::LayerMask;
+using UnityEngine::Shader;
+using VehicleDef = SanAndreasUnity::Importing::Items::Definitions::VehicleDef;
+
+namespace SanAndreasUnity::Behaviours::Vehicles
+{
+	enum VehicleLight
+	{
+		#flagvalues
+		FrontLeft,
+		FrontRight,
+		RearLeft,
+		RearRight
+		#endflagvalues
+
+		Front = FrontLeft | FrontRight,
+		Rear = RearLeft | RearRight,
+
+		All = Front | Rear
+	}
+
+	enum VehicleBlinkerMode
+	{
+		None, Left, Right, Emergency
+	}
+}
+
+namespace SanAndreasUnity::Behaviours::Vehicles,
+unsealed class Vehicle : MonoBehaviour
+{
+	[HideInInspector]
+    Light!^! m_frontLeftLight {public get ref!};
+	[HideInInspector]
+	Light!^! m_frontRightLight {public get ref!};
+	[HideInInspector]
+	Light!^! m_rearLeftLight {public get ref!};
+	[HideInInspector]
+	Light!^! m_rearRightLight {public get ref!};
+
+	bool! frontLeftLightOk {public get};
+	bool! frontRightLightOk {public get};
+	bool! rearLeftLightOk {public get};
+	bool! rearRightLightOk {public get};
+
+	public void setFrontLeftLightOk(bool val)!
+	{
+		frontLeftLightOk = val;
+		this.setLight(VehicleLight::FrontLeft, value ? 1 : 0);
+	}
+	public void setFrontRightLightOk(bool val)!
+	{
+		frontRightLightOk = val;
+		this.setLight(VehicleLight::FrontRight, value ? 1 : 0);
+	}
+	public void setRearLeftLightOk(bool val)!
+	{
+		rearLeftLightOk = val;
+		this.setLight(VehicleLight::RearLeft, value ? 1 : 0);
+	}
+	public void setRearRightLightOk(bool val)!
+	{
+		rearRightLightOk = val;
+		this.setLight(VehicleLight::RearRight, value ? 1 : 0);
+	}
+
+	Material!^! directionalLightsMat;
+	VehicleBlinkerMode!^! blinkerMode;
+
+	Color32![] colors {public get ref};
+	float![] lights;
+	MaterialPropertyBlock!^! props;
+
+	bool! colorsChanged;
+	func<<Vehicle!~protected>, void>! onColorsChanged = (Vehicle!~protected self) -> {};
+
+	bool! isNightToggled {public get};
+	public void setIsNightToggled(bool val)
+	{
+		isNightToggled = val;
+
+		this.setLight(VehicleLight::FrontLeft, isNightToggled ? VehicleAPI::FrontLightIntensity : 0);
+		this.setLight(VehicleLight::FrontRight, isNightToggled ? VehicleAPI::FrontLightIntensity : 0);
+		this.setLight(VehicleLight::RearLeft, isNightToggled ? constRearNightIntensity : 0);
+		this.setLight(VehicleLight::RearRight, isNightToggled ? constRearNightIntensity : 0);
+	}
+
+	VehicleController!^! controller;
+
+	private bool m_isServer()
+	{ return Net.netStatus.isServer; }
+
+	public this()
+	{
+		m_frontLeftLight = null;
+		m_frontRightLight = null;
+		m_rearLeftLight = null;
+		m_rearRightLight = null;
+
+		frontLeftLightOk = true;
+		frontRightLightOk = true;
+		rearLeftLightOk = true;
+		rearRightLightOk = true;
+
+		directionalLightsMat = null;
+		blinkerMode = null;
+
+		colors => { DefaultVehicleColor, DefaultVehicleColor, DefaultVehicleColor, DefaultVehicleColor };
+		lights => { 0, 0, 0, 0 };
+		props = null;
+		colorsChanged = false;
+		isNightToggled = false;
+
+		controller = null;
+	}
+},
+with module
+{
+	private const float BlinkerSum = 1.5;
+
+	public const Color32 DefaultVehicleColor = Color32::Default;
+	
+	private const int CarColorPropertyId = Shader::PropertyToID("_CarColor");
+	private const int CarEmissionPropertyId = Shader::PropertyToID("_CarEmission");
+
+	private const float ConstRearNightIntensity = 0.7;
+},
+with singleton
+{
+	List<Vehicle>! allVehicles;
+
+	public IIter<Vehicle> getAllVehicles()
+	{ return allVehicles.getIter(); }
+
+	public int getNumVehicles()
+	{ return allVehicles.size; }
+
+	public IIter<Rigidbody> getAllVehicleRigidbodies
+	{ return allVehicles.getIter().select((Vehicle v) -> {v.rigidbody}).where((Rigidbody r) -> {r != null}); }
+
+	int! layer = -1;
+
+	public int getLayer()!
+	{ return layer == -1 ? layer = UnityEngine::LayerMask.nameToLayer("Vehicle") : layer }
+
+	public int getLayerMask()!
+	{ return 1 << getLayer(); }
+
+	public int getMeshLayer()!
+	{ return UnityEngine::LayerMask.nameToLayer("VehicleMesh"); }
+
+	public int getMeshLayerMask()!
+	{ return 1 << getMeshLayer(); }
+}

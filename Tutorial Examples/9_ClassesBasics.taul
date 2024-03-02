@@ -1,0 +1,99 @@
+
+//////////////////////////////
+
+///// Simple Non-Portable Class /////
+
+class Foo
+{
+	// Fields
+	public{get, set} int x;
+	public{get, set} int y;
+
+	// Constructor
+	public this(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+}
+
+void Main()
+{
+	Foo fooA => (3, 7);
+	fooA.x = 9;
+	fooA.y += 2;
+	println$(fooA.x);
+
+	// Since Foo is non-portable, it cannot be passed as a value, nor be reassigned...
+	Foo fooB = foo; // Illegal
+	fooA => (8, 2); // Illegal
+}
+
+//////////////////////////////
+
+///// Simple Portable Class /////
+
+portable class Bar
+{
+	// Fields
+	public{get, set} int x;
+	public{get, set} int y;
+
+	// Constructor
+	public this(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+}
+
+void Main()
+{
+	Bar barA = Bar(3, 7);
+	barA.x = 9;
+	barA.y += 2;
+	println$(barA.x);
+
+	Bar barB = barA;
+	barA = Bar(8, 2);
+}
+
+//////////////////////////////
+
+///// Static Members /////
+
+class Foo
+{
+	// Fields
+	public int a;
+	public int b;
+
+	// Constructor
+	public this(int a, int b)
+	{
+		this.a = a;
+		this.b = b;
+	}
+},
+with module
+{
+	/* Everything in this block will be treated as static. In other words, this is like a module named 'Foo'. */
+
+	const int SomeConst = 12345;
+
+	void SomeFunc()
+	{ println$("hello"); }
+}
+
+void Main()
+{
+	Foo foo => ('a', 'b');
+	println$(foo.a);
+	println$(foo.b);
+	println$(Foo::SomeConst);
+	Foo::SomeFunc();
+}
+
+//////////////////////////////
+
+// TODO: non-portable classes as members of a class

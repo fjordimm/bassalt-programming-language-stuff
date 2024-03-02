@@ -1,0 +1,60 @@
+
+unsealed class Person
+{
+	const string name;
+	string nickname;
+	int age;
+	float height;
+
+	void birthday()
+	{
+		age++;
+		height += 0.1;
+	}
+}, // Everything before the comma is non-static, after the comma is static
+{
+	public face
+	{
+		get name, nickname, age, height;
+		set nickname;
+		birthday();
+	}
+
+	public Person(string _name, string _nickname, int _age, float _height)
+	{
+		name = _name;
+		nickname = _nickname;
+		age = _age;
+		height = _height;
+	}
+
+	public Person(string -> name, int -> age, float -> height, string -> nickname)
+	{ this; }
+
+	public Person(string _name, int _age, float _height)
+	{
+		this => Person(_name, _age, _height, _name);
+	}
+}
+
+unsealed class Worker : Person
+{
+	float salary;
+},
+{
+	public face
+	{
+		get salary;
+		set salary;
+	}
+
+	public Worker(string _name, int _age, float _height, float -> salary, string _nickname)
+	{
+		this : base(_name, _age, _height, _nickname);
+	}
+
+	public Worker(string _name, int _age, float _height, float _salary)
+	{
+		this => Worker(_name, _age, _height, _salary, _name);
+	}
+}

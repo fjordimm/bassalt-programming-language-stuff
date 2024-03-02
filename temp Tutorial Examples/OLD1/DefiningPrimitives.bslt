@@ -1,0 +1,84 @@
+
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+
+// Primitives must be either 8, 16, 32, or 64 bits
+primitive DigitNum : 8
+{
+	// In these operation overrides, you can only use bitwise, raw, or primitive operations. Also no recursion
+
+	// In general, you shouldn't have a cascade of function calls for primitives, so stick to only bitwise and raw operations
+
+	override +(rawfree DigitNum that)
+	{
+		rawfree DigitNum ret ~= this~~Byte + that~~Byte;
+
+		if ret~~Byte > 9#b || ret~~Byte < 0#b
+		{ throw "A DigitNum cannot contain a value outside of [0, 9]."; }
+		else
+		{ return ret; }
+	}
+
+	// List of operations that can be overridden: + - * / % > < >= <= ++ --
+	// List of operations that are generated automatically: == != += -= *= /= %=
+
+	// All the other overrides or custom methods don't have the limitations described above
+
+	override @Byte()
+	{ return this~~Byte; }
+	override @Int()
+	{ return (this~~Byte)@#n; }
+
+	override toString()
+	{
+		switch this~~Byte
+		{
+			case 0
+			{ return "Zero"; }
+			case 1
+			{ return "One"; }
+			case 2
+			{ return "Two"; }
+			case 3
+			{ return "Three"; }
+			case 4
+			{ return "Four"; }
+			case 5
+			{ return "Five"; }
+			case 6
+			{ return "Six"; }
+			case 7
+			{ return "Seven"; }
+			case 8
+			{ return "Eight"; }
+			case 9
+			{ return "Nine"; }
+			case else
+			{ throw "A DigitNum cannot contain a value outside of [0, 9]."; }
+		}
+	}
+
+	Bool isEven()
+	{ return this~~Byte % 2#b == 0#b; }
+},
+{
+	override DigitNum DefaultValue = 0x0#r8;
+
+	public DigitNum MinValue = 0x0#r8;
+	public DigitNum MaxValue = 0x9#r8;
+
+	public face
+	{ isEven(); }
+
+	public DigitNum(Byte a)
+	{ construct a~~raw8; }
+
+	public DigitNum(Int a)
+	{ construct (a@#b)::raw8; }
+}

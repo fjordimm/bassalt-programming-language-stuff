@@ -1,0 +1,259 @@
+
+////////////////////////////////////////////////////////////
+
+///// Hello World /////
+
+void Main()
+{
+	stdout << "Hello, world!";
+}
+
+////////////////////////////////////////////////////////////
+
+///// More Basic Printing /////
+
+void Main()
+{
+	stdout << "something", false; // No newline character after
+	stdout <<; // Just a newline
+
+	int x = 327;
+	stdout << x; // All types overload the stream write operator ('<<'). Custom types that haven't implemented it will throw an error
+
+	stdout << f"x = {x}";
+}
+
+////////////////////////////////////////////////////////////
+
+///// Functions /////
+
+void Main()
+{
+	stdout << FuncA(3, 4);
+}
+
+int FuncA(int a, int b)
+{
+	return a + b;
+}
+
+////////////////////////////////////////////////////////////
+
+///// Variables /////
+
+void Main()
+{
+	int! a = 5; // The '!' makes this variable mutable
+	a = 17;
+	a++;
+	float! b = 5;
+	b += 2.7;
+	stdout << a;
+
+	// Immutable value:
+	char c = 'e';
+	c = 'f'; // Illegal
+
+	stdout << Pi;
+}
+
+// Top-level variables must be const
+// See 'ConstFixedAndImm' for an explanation of what const does
+const double Pi = 3.14;
+
+////////////////////////////////////////////////////////////
+
+///// Control Keywords /////
+
+void Main()
+{
+	if 3 > 9
+	{
+		stdout << "lorem";
+	}
+	else if 7 > 4
+	{
+		stdout << "ipsum";
+	}
+	else
+	{
+		stdout << "dolor";
+	}
+
+	// Traditional 'for' loop:
+	for int i = 0; i < 30; i++
+	{
+		stdout << i;
+	}
+
+	// Simplified 'for' loop:
+	for int i in 0..30
+	{
+		stdout << i;
+	}
+
+	// Simplified 'for' loop with custom step:
+	for int i in 0..(2)..30
+	{
+		stdout << i;
+	}
+
+	// 'for-each' loop:
+	char[] arr => {'a', 'b', 'c'};
+	for char c in arr
+	{
+		stdout << c;
+	}
+
+	// 'while' loop:
+	int! i = 0;
+	while i < 30
+	{
+		i++;
+	}
+
+	// 'do-while' loop:
+	int! j = 0;
+	do
+	{
+		j++;
+	}
+	while j < 30;
+
+	// Infinite loop:
+	int! k = 0;
+	loop
+	{
+		if (k >= 30) { break; }
+		k++;
+	}
+
+	// Labelled infinite loop:
+	int! l = 0;
+	loop :MyLoop
+	{
+		if (l >= 30) { break MyLoop; }
+		l++;
+	}
+
+	// Switch case:
+	char ch = 'b';
+	switch ch
+	{
+		case 'a'
+		{
+			stdout << "nice, its A";
+		}
+		case 'b'
+		{
+			stdout << "nice, its B";
+		}
+		case else
+		{
+			stdout << "this is the default case";
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+///// Non-Dynamic Arrays /////
+
+void Main()
+{
+	// See how classes work for a better understanding of the '=>' notation
+	// For now, just know that the array variables below cannot be passed as values or be reassigned new arrays
+
+	int![30] arrA => ();
+	for int i in 0..30
+	{
+		arrA[i] = i * i;
+	}
+
+	int![15] arrB => (5); // All elements initialized to 5
+	int![15] arrC => (); // All elements initialized to 0
+	int![3] arrD => {1, 2, 3};
+	int![] arrE => {1, 2, 3}; // Still a fixed size of 3
+}
+
+////////////////////////////////////////////////////////////
+
+///// Tuples /////
+
+/* Note: you cannot access the nth element of a tuple; think of the numbers as the name of each field */
+
+void Main()
+{
+	<float, char>! thing = (3.7, 'e');
+	thing.0 = 2.9;
+	stdout << thing.1;
+
+	float! a0;
+	char! a1;
+	(a0, a1) = thing;
+
+	(float! b0, char! b1) = (0.1, 'x');
+
+	float! c0;
+	(c0, char! c1) = SomeFunc();
+
+	(float! d0, void) = SomeFunc();
+}
+
+<float, char> SomeFunc()
+{
+	return (9.9, 'z');
+}
+
+////////////////////////////////////////////////////////////
+
+///// Structs /////
+
+// Structs are simple data structures...
+// If you want public/private members, methods, etc, use a class
+// Think of structs as tuples with named members
+
+void Main()
+{
+	Foo! p = Point{x=3, y=9};
+	p.x = 17;
+	stdout << p.y;
+}
+
+// The members of a struct do not need to be declared as mutable. The mutability is up to the instance
+struct Point
+{
+	int x;
+	int y;
+}
+
+////////////////////////////////////////////////////////////
+
+///// References /////
+
+void Main()
+{
+	int! foo = 13;
+	int!& fooRef = ref foo;
+	fooRef@ = 7; // now foo is 7
+}
+
+////////////////////////////////////////////////////////////
+
+///// Casting /////
+
+/* Note: there is no implicit casting (with a few exceptions (see '6_Casting')) */
+
+void Main()
+{
+	int someInt = 42;
+	ulong someULong = 3943;
+	float someFloat = -0.7;
+
+	ulong a = (ulong)someInt;
+	ulong b = (ulong)(someInt + (int)someULong);
+	int c = (int)someFloat;
+	double d = (double)someInt;
+}
+
+////////////////////////////////////////////////////////////

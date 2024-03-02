@@ -1,0 +1,61 @@
+
+/*
+
+Features to Cover:
+ - if var == 12 or 18 {...}
+ - tuples
+ - arrays
+ - nonstaticness in generics using the '?' symbol in the '<>' (or maybe '*', or maybe just '<>')
+ - normal reference, nonmodifier reference, agent reference
+ - naming conventions
+    - pascal case should always be used for consts, even in non-static scopes
+ - casting (direct casting vs converting types? also bitcasting?)
+ - optional parameters
+ - generics in functions
+ - native functions
+ - regex
+ - enums
+ - flag enums (e.g. DoThing(ThingFlags.A | ThingFlags.B | ThingFlags.C)). Although this is just enums and bitwise operators, add something more to explicitly mark it as a flag and/or make it so you don't have to manually type 1, 2, 4, 8, 16, etc.
+    - do it with the preprocessor directives #flagvalues and #endflagvalues
+ - passability
+ - something like C#'s 'out' keyword. It should look slightly different than a plain reference.
+ - string length in chars versus string length in actual characters (also how will strings work with char8 vs char vs char32)
+ - a named 'loop' like in Rust.
+ - methods should be marked as a mutator or not
+ - anonymous structs
+ - marking nonprimitive arguments as Type>>imm, and when you pass it it implicitly does the 'via'
+ - faces
+ - there are four faces every class has: 1) the mutable public face, 2) the immutable public face, 3) the mutable private face, 4) the immutable private face.
+ - property modifiers for boxes (e.g. ^List x {public get ref};) and with faces (e.g. ^List x {public get ref via imm, get ref via FReadOnly};)
+    - with structs you can actually cede boxed fields. With classes, if you really wanted the option to do that then you would have to use the property modifier: {public cede}, and then the client would do 'cede obj.someField'. Also {public get} is meaningless/illegal for boxed fields.
+ - using the operator '<<' for printing to stdout, stderr, file streams, and string builders.
+ - the equivalent of overriding 'to_string()'. But actually instead of returning a string, its like writing to a stream.
+ - the equivalent of 'out' in C#.
+ - how the '^' and '&' pointers implicitly cast to each other.
+ - bitfields
+ - to do something like protected inheritence in C++, you can override the access modifier of parent members by overriding the default face, eg. 'face {...}'.
+ - annotations (equivalent of @LoremIpsum in Java or [LoremIpsum] in C#). How about it looks the same as C#?
+ - IIter or whatever you decide to call it (equivalent of IEnumerable in C# or Iterable in Java).
+ - lambda functions.
+ - the unsafe context
+ - singletons ('module Module {...}, with singleton {...}')
+ - thingy based off of Brian Will's 'use' block (https://youtu.be/QM1iUe6IofM?si=5Yb3lkDseXzeN3hL&t=2502), but for a different reason
+    - int! thing = int res { res = 0; while res < 50 { res++; } };
+ - maybe for strings do something like Rust's format!() macro (https://doc.rust-lang.org/std/macro.format.html)
+ - for when you need to have a reference to something boxed...
+    - if the secondary reference is within the same lifetime as the box, AND the box couldn't have been mutated in any way, then there is no problem
+	- if the box could have been mutated, maybe the box can store a list of secondary references and then when it destructs it can set all the secondary references to null
+       - or you don't even need it to store that list, the compiler can just recognize all secondary references that were ever assigned to that box and set them to null on the box's destruction (only set them to null if their pointer value is currently equal to the box's pointer value)
+	- or instead (if the box could have been mutated), you are forced to reassign the secondary reference
+	- or just let segfaults and undefined behavior happen. You are still protecting against memory leaks
+ - https://www.cs.cmu.edu/~gilpin/c%2B%2B/performance.html
+ - abstract classes and abstract methods, virtual classes and virtual methods
+
+Maybe:
+ - nullability with '?'
+ - extension methods (maybe leave this out; remember simple is better).
+ - '->' as a shortcut for '@.'
+ - a shortcut for 'cede new int[] {1, 2, 3}' would be just {1, 2, 3}.
+
+*/
+

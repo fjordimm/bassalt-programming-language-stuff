@@ -1,0 +1,34 @@
+
+namespace CoolExamples,
+class LinkedList
+{
+	private Node^ front;
+	private Node& back;
+
+	public this()
+	{
+		this.first = null;
+		this.last = null;
+	}
+
+	public void append(int val)
+	{
+		if first == null
+		{
+			this.first = new Node(data=val, next=null);
+			this.last = this.first;
+		}
+		else
+		{
+			
+		}
+	}
+},
+with module
+{
+	private struct Node
+	{
+		int data;
+		Node^ next;
+	}
+}

@@ -1,0 +1,34 @@
+
+program Main
+{
+	bool a = true;
+	char8 b = 3q8;
+	char c = 3q;
+	char32 d = 3q32;
+	sbyte e = 3sy;
+	short f = 3s;
+	int g = 3i;
+	long h = 3l;
+	byte i = 3y;
+	ushort j = 3us;
+	uint k = 3u;
+	ulong l = 3ul;
+	float m = 3f;
+	double n = 3d;
+	hdec o = 3mm;
+	dec p = 3m;
+	hfix q = 3pp;
+	fix r = 3p;
+	nint s = 3n;
+	nlong t = 3nl;
+	unint u = 3un;
+	unlong v = 3unl;
+	nbigdouble w = 3dd;
+	int128 x = 3i128;
+	uint128 y = 3u128;
+	float128 z = 3f128;
+	dec128 aa = 3m128;
+	int256 ab = 3i256;
+	uint256 ac = 3u256;
+	rgb ad = 3rgb;
+}

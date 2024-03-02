@@ -1,0 +1,40 @@
+
+program Main {
+
+	int, char yonky = 13, 'a';
+	Console.Println(yonky.item0); // prints: 13
+	yonky.item1 = 'b';
+
+	int, char yonkopers = yonky;
+	Console.Println(yonky.item1); // prints: b
+	yonkopers.item0 = 45;
+
+	Console.Println(yonky.item0); // still prints: 13
+
+	const int, const char chumpic = 13, 'a';
+
+	double d;
+	float f;
+	d, f = SomeFunction();
+
+	double ye, float yo = SomeFunction();
+
+	d, float eee = SomeFunction();
+	double ooo, f = SomeFunction();
+
+	d, void = SomeFunction();
+
+	d = SomeFunction().item0;
+
+	int, double chunky = 17, 348.3283;
+	DoSomething('x', chunky);
+
+}
+
+double, float SomeFunction() {
+	return 0.3, 25f;
+}
+
+void DoSomething(char a, int b, double c) {
+	Console.Println(a + " " + b + " " + c);
+}

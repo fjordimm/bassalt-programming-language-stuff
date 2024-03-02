@@ -1,0 +1,33 @@
+
+class Array<type TValue : IStringable> : IStringable, IIterable<TValue>
+{
+	fixed [TValue] arr;
+
+	ulong length() => arr.length;
+	TValue at(ulong index) => arr[index];
+	
+	implement toString()
+	{
+		string ret = "[";
+		for TValue val in arr
+		{
+			ret += $"{val}, ";
+		}
+		ret += "]";
+		return ret;
+	}
+
+	implement getIterator() => arr.getIterator();
+},
+{
+	public face
+	{
+		length();
+		at(ulong);
+	}
+
+	public Array<TValue>(ulong length)
+	{
+		arr = new [TValue]{length}();
+	}
+}

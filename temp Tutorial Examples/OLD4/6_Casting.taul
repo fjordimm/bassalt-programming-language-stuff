@@ -1,0 +1,59 @@
+
+//////////////////////////////
+
+///// Implicit Casting /////
+
+/*
+Implicit casting is not allowed unless:
+ 1. Both types are one of the following: char8, char, char32, sbyte, short, int, long, byte, ushort, uint, ulong
+ 2. The input type has a size less than or equal to that of the output type
+ 3. If the sizes are equal, both types are signed or both types are unsigned (where char types are unsigned)
+
+ Examples of legal implicit casting: from int to long, from ushort to int, from char to uint
+
+ In other words, there is only implicit casting if there is no loss of information.
+*/
+
+void Main()
+{
+	int varA = 5l; // Illegal. Implicit casting not allowed
+	int varB = (int)5l;
+
+	long varC = 5i; // Implicit casting from int to long
+}
+
+//////////////////////////////
+
+///// Normal Casting /////
+
+/* Normal casting should behave exactly like any other C-like language. */
+
+void Main()
+{
+	// Some casts just copy the value, like ushort to char.
+	char var1 = (char)5us;
+
+	// Some casts copy the value but cut some bits, like long to int. No overflow warning will be given.
+	int var2 = (int)99999999999999l;
+
+	// Some casts do a special operation, like double to int.
+	int var3 = (int)235.34829d;
+
+	int var4 = 5 + 8l; // Illegal. Here, '5' is a long. You cannot implicitly cast from long to int.
+	long var5 = 5 + 8i; // Here, '5' and '8' (both are ints) are added together and the result is implicitly casted to a long.
+}
+
+//////////////////////////////
+
+///// Bit-casting /////
+
+void Main()
+{
+	// Bit-casting must be done in an unsafe context.
+	unsafe
+	{
+		int varA = bitcast<int>(7.2f); // varA will have the value 1088841318.
+	}
+}
+
+//////////////////////////////

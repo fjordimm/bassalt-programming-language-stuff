@@ -1,0 +1,17 @@
+
+// https://github.com/contain-rs/linked-list/blob/master/src/lib.rs
+
+namespace MyLibrary,
+class LinkedList<type T>
+{
+	private 
+},
+with module
+{
+	private class Node<type T>
+	{
+		public Node<T> front;
+		public Node<T> back;
+		T elem;
+	}
+}

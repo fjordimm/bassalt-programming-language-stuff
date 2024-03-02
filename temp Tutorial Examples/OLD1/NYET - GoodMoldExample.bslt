@@ -1,0 +1,83 @@
+
+// kinda OUTDATED
+
+// Although this would be better done with primitives than molds
+
+program Main
+{
+	using Imperial.*;
+
+	Ft mountainElevation = Ft(7300);
+	Println($"The mountain elevation is {mountainElevation.toYd()} yards.");
+
+	Ft thing = mountainElevation * 3 + In(7);
+}
+
+div Imperial
+{
+	interface mold ImperialUnit
+	{
+		In toIn();
+		Ft toFt();
+		Yd toYd();
+	}
+
+	mold In : ImperialUnit
+	{
+		float val;
+
+		implement toIn() => this;
+		implement toFt() => Ft(val / 12);
+		implement toYd() => Yd(val / 36);
+
+		override operator +(ImperialUnit a) => In(val + a.toIn().val);
+		override operator -(ImperialUnit a) => In(val - a.toIn().val);
+		override operator *(ImperialUnit a) => In(val * a.toIn().val);
+		override operator /(ImperialUnit a) => In(val / a.toIn().val);
+
+		override operator *(float a) => In(val * a);
+		override operator /(float a) => In(val / a);
+	}
+	with
+	{
+		public face
+		{ get val; }
+
+		public new(float -> val)
+		{ construct; }
+	}
+
+	mold Ft : ImperialUnit
+	{
+		float val;
+
+		implement toIn() => In(val * 12);
+		implement toFt() => this;
+		implement toYd() => Yd(val / 3);
+	}
+	with
+	{
+		public face
+		{ get val; }
+
+		public new(float -> val)
+		{ construct; }
+	}
+
+	mold Yd : ImperialUnit
+	{
+		float val;
+
+		implement toIn() => In(val * 36);
+		implement toFt() => Ft(val * 3);
+		implement toYd() => this;
+	}
+	with
+	{
+		public face
+		{ get val; }
+
+		public new(float -> val)
+		{ construct; }
+	}
+}

@@ -1,0 +1,93 @@
+
+/*
+
+Patterns
+ - unsigned integer: 373, 0xFF, 0b010101100, 0o77
+ - signed integer: 8362, -7383
+ - decimal: 63, -38, 2.904, -0.001
+ - character: 'a', '\n', '\uFFFF';
+
+Raw Literals
+ - raw8
+    - Pattern: unsigned integer; Suffix: r8, r
+ - raw16
+    - Pattern: unsigned integer; Suffix: r16, r
+ - raw32
+    - Pattern: unsigned integer; Suffix: r32, r
+ - raw64
+    - Pattern: unsigned integer; Suffix: r64, r
+
+The built-in primitives:
+ - Bool
+    - Only: 'true' or 'false'
+ - Char8
+    - Pattern: character; Suffix: c8
+ - Char
+    - Pattern: character; Suffix: c16
+ - Char32
+    - Pattern: character; Suffix: c32
+ - SByte
+    - Pattern: signed integer; Suffix: bs
+ - Short
+    - Pattern: signed integer; Suffix: s
+ - Int
+    - Pattern: signed integer; Suffix: n
+ - Long
+    - Pattern: signed integer; Suffix: l
+ - Byte
+    - Pattern: unsigned integer; Suffix: b
+ - UShort
+    - Pattern: unsigned integer; Suffix: su
+ - UInt
+    - Pattern: unsigned integer; Suffix: nu
+ - ULong
+    - Pattern: unsigned integer; Suffix: lu
+ - Float
+    - Pattern: decimal; Suffix: f
+ - Double
+    - Pattern: decimal; Suffix: d
+ - BiDec (32-bit decimal float)
+    - Pattern: decimal; Suffix: mm
+ - Dec (64-bit decimal float)
+    - Pattern: decimal; Suffix: m
+ - Fix (64-bit decimal fixed point number with 9 fraction digits)
+    - Pattern: decimal; Suffix: p
+// note that the suffixes can all be capitalized.
+
+The built-in classes:
+ - String
+ - Stack<type T>
+ - Queue<type T>
+ - List<type T>
+
+The built-in interfaces:
+ - IIterable<type T>
+ - IIterator<type T>
+
+The built-in molds:
+ - Int128
+    - Pattern: signed integer; Suffix: ng
+ - UInt128
+    - Pattern: signed integer; Suffix: ug
+ - Float128
+    - Pattern: decimal; Suffix: fg
+ - Dec128
+    - Pattern: decimal; Suffix: mg
+ - Int256
+    - Pattern: signed integer; Suffix: ngg
+ - UInt256
+    - Pattern: signed integer; Suffix: ugg
+ - Color
+    - Pattern: unsigned integer; Suffix: col
+    - 0xFFFFFFcol, 4294967295col, `0xFF, 0xFF, 0xFF`, `255, 255, 255`
+ - Time
+    - `7/29/2022`, `12:30`, `11:59.999`, `7/29/2022, 9:13.721`
+
+The built-in schemes:
+ - Math
+
+The built-in functions:
+ - Print(*)
+ - Println(*)
+
+*/

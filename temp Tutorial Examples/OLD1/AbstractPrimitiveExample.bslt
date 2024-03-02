@@ -1,0 +1,98 @@
+
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+// OUTDATED
+
+program Main
+{
+	using Imperial.*;
+
+	Ft mountainElevation = Ft(7300);
+	Println($"The mountain elevation is {mountainElevation@Yd} yards.");
+
+	Ft thing = mountainElevation * 3.0 + In(7.0);
+}
+
+div Imperial
+{
+	abstract primitive ImperialUnit : 64
+	{
+		override +(rawfree ImperialUnit that) => this~~Double + that~~Double;
+		override -(rawfree ImperialUnit that) => this~~Double - that~~Double;
+		override *(rawfree ImperialUnit that) => this~~Double * that~~Double;
+		override /(rawfree ImperialUnit that) => this~~Double / that~~Double;
+		override >(rawfree ImperialUnit that) => this~~Double > that~~Double;
+		override <(rawfree ImperialUnit that) => this~~Double < that~~Double;
+		override >=(rawfree ImperialUnit that) => this~~Double >= that~~Double;
+		override <=(rawfree ImperialUnit that) => this~~Double <= that~~Double;
+
+		override *(rawfree Double that) => this~~Double * that;
+		override /(rawfree Double that) => this~~Double / that;
+
+		override ++() => this~~Double + (1d * Multiplier);
+		override --() => this~~Double - (1d * Multiplier);
+
+		overrideable override toString()
+		{ return (this~~Double / Multiplier).toString(); }
+
+		override @In() => this~~In;
+		override @Ft() => this~~Ft;
+		override @Yd() => this~~Yd;
+	},
+	{
+		abstract protected Double Multiplier;
+	}
+
+	primitive In : ImperialUnit
+	{ },
+	{
+		implement Multiplier = 1;
+
+		public In(rawfree Double val)
+		{ construct (val * Multiplier)~~raw64; }
+
+		public In(rawfree ImperialUnit val)
+		{ construct (val@In)~~raw64; }
+	}
+
+	primitive Ft : ImperialUnit
+	{ },
+	{
+		implement Multiplier = 12;
+
+		public Ft(rawfree Double val)
+		{ construct (val * Multiplier)~~raw64; }
+
+		public Ft(rawfree ImperialUnit val)
+		{ construct (val@Ft)~~raw64; }
+	}
+
+	primitive Yd : ImperialUnit
+	{ },
+	{
+		implement Multiplier = 36d;
+
+		public Yd(rawfree Double val)
+		{ construct (val * Multiplier)~~raw64; }
+
+		public Yd(rawfree ImperialUnit val)
+		{ construct (val@Yd)~~raw64; }
+	}
+
+	primitive Mi : ImperialUnit
+	{ },
+	{
+		implement Multiplier = 63360d;
+
+		public Mi(rawfree Double val)
+		{ construct (val * Multiplier)~~raw64; }
+
+		public Mi(rawfree ImperialUnit val)
+		{ construct (val@Mi)~~raw64; }
+	}
+}

@@ -1,0 +1,68 @@
+
+namespace CustomImpls,
+public class Vector<anytype T>
+{
+	^[]T arr;
+	Int capacity;
+	Int current;
+
+	public void push(T data)
+	{
+		if this.current == this.capacity {
+            ^[]T temp = new [2 * this.capacity]T ();
+
+            for Int i in (0, this.capacity) {
+                temp[i] = this.arr[i];
+            }
+
+            this.capacity *= 2;
+            arr = cede temp;
+        }
+
+        arr[this.current] = data;
+        this.current++;
+	}
+
+    public void push(T data, Int index)
+    {
+        if index == this.capacity
+            this.push(data);
+        else
+            this.arr[index] = data;
+    }
+
+	public T get(Int index)
+    {
+        if (index < this.current)
+            return this.arr[index];
+    }
+
+	public void pop()
+	{ this.current--; }
+
+	public Int size()
+	{ return this.current; }
+
+	public Int getcapacity()
+	{ return this.capacity; }
+
+	^String toString()
+    {
+		StringBuilder sb => ();
+
+        for Int i in (0, this.current) {
+            sb.push(this.arr[i]);
+        }
+		sb.push("\n");
+
+		return cede sb.getString();
+    }
+},
+{
+	public Vector()
+	{
+		this.arr = new [1]TItem();
+		this.capacity = 1;
+		this.current = 0;
+	}
+}

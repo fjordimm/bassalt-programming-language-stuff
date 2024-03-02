@@ -1,0 +1,49 @@
+
+// passable, all fields/subfields must be passable, all must be nonreference types
+passable class Thing
+{...}
+
+// passable, all fields/subfields must be passable, some may be reference types (which must be nonmutators)
+impure passable class Thing
+{...}
+
+// passable, all fields/subfields must be passable, some may be reference types (which may be mutators)
+mutable passable class Thing
+{...}
+
+// passable, all fields/subfields must be fixed, all must be passable, all must be nonreference types
+fixed passable class Thing
+{...}
+
+// passable, all fields/subfields must be fixed, all must be passable, some may be reference types (which must be nonmutators)
+fixed impure passable class Thing
+{...}
+
+// nonpassable, all fields/subfields must be nonreference types
+class Thing
+{...}
+
+// nonpassable, some fields/subfields may be reference types (which must be nonmutators)
+impure class Thing
+{...}
+
+// nonpassable, some fields/subfields may be reference types (which may be mutators)
+mutable class Thing
+{...}
+
+// nonpassable, all fields/subfields must be fixed, all must be nonreference types
+fixed class Thing
+{...}
+
+// nonpassable, all fields/subfields must be fixed, some may be reference types (which must be nonmutators)
+fixed impure class Thing
+{...}
+
+
+///// Generics /////
+
+sizet TSize
+anytype TValue
+passable anytype TValue
+anyref<anytype> TValue
+anyref<passable anytype> TValue

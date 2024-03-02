@@ -1,0 +1,106 @@
+
+interface class IGameElement {
+	methods {
+		void gameStart();
+		void gameUpdate();
+	}
+}
+
+abstract class Entity : IGameElement {
+
+	abstract public int MaxHealth;
+	abstract public int HealthDelta;
+
+	occupy
+		double x,
+		double y,
+		int health;
+
+	methods {
+		public get set x, y, health;
+
+		implement gameStart() {
+			this.health = MaxHealth;
+			this.a_gameStart();
+		}
+		abstract private void a_gameStart(); // yes it's actually private, so Dog cannot call this method, it can only implement it
+
+		implement gameUpdate() {
+			this.health += HealthDelta;
+			this.a_gameUpdate();
+		}
+		abstract private void a_gameUpdate();
+	}
+
+	public immutable viae V {
+		get x, y, health;
+	}
+
+	public Entity(double x, double y) {
+		construct x, y, MaxHealth;
+	}
+
+}
+
+enum Breed { Pug, Retriever, Husky, Dachshund }
+
+class Dog : Entity {
+
+	implement MaxHealth = 500;
+	implement HealthDelta = 1;
+
+	abstract public Breed TheBreed;
+
+	occupy
+		const color eyeColor;
+
+	methods {
+		public get eyeColor;
+
+		public void bark() {
+			println "Woof";
+		}
+
+		implement a_gameStart() {
+			this.o_gameStart();
+		}
+		overrideable private void o_gameStart() {}
+
+		implement a_gameUpdate() {
+			this.x += Random.InRange(-1.0, 1.0);
+			this.y += Random.InRange(-1.0, 1.0);
+			this.o_gameUpdate();
+		}
+		overrideable private void o_gameUpdate() {}
+	}
+
+	public immutable viae V {
+		get eyeColor;
+		bark();
+	}
+
+	public Dog(double x, double y) {
+		super(x, y);
+		construct Random.RandomColor();
+	}
+
+}
+
+class PugDog : Dog {
+
+	implement TheBreed = Breed.Pug;
+
+	occupy;
+
+	methods {
+		override o_gameStart() {
+			println "Yeah it's pug time";
+		}
+	}
+
+	public PugDog(double x, double y) {
+		super(x, y);
+		construct;
+	}
+
+}

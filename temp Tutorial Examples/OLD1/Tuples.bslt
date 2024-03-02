@@ -1,0 +1,45 @@
+
+program Main
+{
+	(double x, double y) pos = (0, 0);
+	print pos.x;
+	print pos.0;
+	pos.x += 3;
+	pos = (pos.x + 3, pos.y);
+	pos = pos with { pos.x += 3; };
+	pos = pos with { pos.0 += 3; };
+	pos = pos with { x += 3; };  // The 'pos.' is only required if the name x is ambiguous
+	pos = with { x += 3; };
+	pos = with x += 3;
+
+	(int, char) thingy = (3, 'r');
+	thingy = with thingy.0 = 5;
+	(int, char) otherThingy = thingy with thingy.0 = 7;
+	print thingy.0; // Prints: 5
+	print otherThingy.0; // Prints: 7
+
+	(float, bool) fullValue = someFunction();
+
+	float onlyOnePart = someFunction().0;
+	float alsoOnlyOnePart = someFunction().value;
+
+	float f;
+	bool b;
+	(f, b) = someFunction();
+
+	(float fl, bool bo) = someFunction();
+
+	bool boo;
+	(void, boo) = someFunction();
+
+	(void, bool bol) = someFunction();
+
+	(const int, const int, const int) imImmutable = (1, 2, 3);
+	(const char, fixed Person) imMostlyImmutable = ('x', new Person());
+},
+{
+	(float value, bool isGood) someFunction()
+	{
+		return (3.7, false);
+	}
+}

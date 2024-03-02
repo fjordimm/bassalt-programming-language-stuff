@@ -1,0 +1,9 @@
+
+program Main {
+
+	int x = 234;
+	x = x bitand 8;
+
+}
+
+bitand bitor bitxor bitnot bitlsh bitrsh

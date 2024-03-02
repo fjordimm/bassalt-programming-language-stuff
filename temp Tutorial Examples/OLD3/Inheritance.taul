@@ -1,0 +1,141 @@
+
+using CoolGame::World::GameManager;
+using CoolGame::Collisions::CollisionBox;
+
+namespace CoolGame::World::GameElements
+{
+	interface IGameElement
+	{
+		abstract public method void onGameStart(GameManager game);
+		abstract public method void onGameTick(GameManager game);
+	}
+
+	abstract class Entity : IGameElement
+	{
+		abstract public const CollisionBox MyCollisionBox;
+
+		struct:
+		{
+			double x {public get-set};
+			double y {public get-set};
+			double z {public get-set};
+		}
+
+		public constructor (double x, double y, double z)
+		{
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+
+		implement onGameStart(GameManager game)
+		{
+			if game.isIllegalPosition(this.x, this.y, this.z)
+			{ game.kill(&this); }
+
+			this.o_onGameStart(game);
+		}
+
+		implement onGameTick(GameManager game)
+		{
+			if game.isIllegalPosition(this.x, this.y, this.z)
+			{ game.kill(&this); }
+
+			this.o_onGameTick(game);
+		}
+
+		unsealed private method void o_onGameStart(GameManager game)
+		{ }
+
+		unsealed private method void o_onGameTick(GameManager game)
+		{ }
+
+		abstract public method &string getName();
+	}
+
+	abstract class Creature : Entity
+	{
+		abstract public const int MaxHealth;
+		abstract public const int HealthDelta;
+
+		struct:
+		{
+			int health {public get, protected set};
+		}
+
+		public constructor (double x, double y, double z)
+		{
+			base(x, y, z);
+			this.health = MaxHealth;
+		}
+
+		unsealed override o_onGameTick(GameManager game)
+		{
+			this.health += HealthDelta;
+		}
+
+		unsealed public void takeDamage(int amount)
+		{
+			this.health -= amount;
+		}
+	}
+
+	unsealed class Dog : Creature
+	{
+		unsealed implement MyCollisionBox = CollisionBox(-0.5, -0.5, 0.5, 0.5);
+		unsealed implement MaxHealth = 3000;
+		unsealed implement HealthDelta = 5;
+
+		public constructor (double x, double y, double z)
+		{
+			base(x, y, z);
+		}
+
+		unsealed implement getName()
+		{
+			return "Dog";
+		}
+
+		unsealed override takeDamage(int amount)
+		{
+			base.takeDamage(amount);
+			print "Arf!!!";
+		}
+
+		unsealed public method void bark()
+		{
+			print "Woof!";
+		}
+	}
+
+	unsealed class PetDog : Dog
+	{
+		struct:
+		{
+			fixed &Entity owner {public get};
+			^string name {public get-set};
+		}
+
+		public constructor(double x, double y, double z, &Entity owner)
+		{
+			base(x, y, z);
+			this.owner = owner;
+			this.name = "PetDog";
+		}
+
+		unsealed override getName()
+		{
+			return this.name;
+		}
+
+		unsealed override takeDamage(int amount)
+		{
+			base.takeDamage(amount);
+
+			if this.health <= 0
+			{
+				print f"{this.owner.getName()}'s pet dog '{this.getName()}' has died!";
+			}
+		}
+	}
+}

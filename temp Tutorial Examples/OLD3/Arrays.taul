@@ -1,0 +1,27 @@
+
+void Main()
+{
+	[7]int arrA => ();
+	print arrA[0];
+
+	const [7]int arrB => ();
+	arrB[0] = 2; // Illegal
+
+	[3]int arrC => ( (1, 2, 3) );
+
+	[]int arrD => ( (1, 2, 3) );
+
+	^[7]int arrE = new [7]int();
+	arrE = new [7]int();
+	arrE = new [5]int(); // Illegal
+	print arrE@[0];
+
+	^[]int arrF = new [7]int();
+	arrF = new [7]int();
+	arrF = new [5]int();
+
+	[2, 3]int matA => ( ((1, 2, 3), (4, 5, 6)) );
+	print matA[0, 0];
+
+	^[,]int matB = new [2, 3]int();
+}

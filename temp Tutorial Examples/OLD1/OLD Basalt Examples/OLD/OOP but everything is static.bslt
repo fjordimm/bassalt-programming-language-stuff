@@ -1,0 +1,80 @@
+
+program Main {
+
+	// the array is static, but each value is dynamic
+	obj [100]{Person} refsToTheSamePerson (new Person(Random.RandomName(), Random.InRange(0, 120)));
+
+	// the array is static, but each value is dynamic
+	obj [100]{Person} refsToPeople (null);
+	foreach peopleRefs {
+		each = new Random.RandomName(), Random.InRange(0, 120);
+	}
+
+	// everything is static
+	obj [100]Person peopleAllWithTheSameNameAndAge (Random.RandomName(), Random.InRange(0, 120));
+
+	// everything is static
+	obj [100]Person people {
+		construct Random.RandomName(), Random.InRange(0, 120); // you could use a counter variable here if you needed the index in the constructor
+	};
+
+}
+
+class Person {
+
+	occupy
+		const string name;
+		const int age;
+		bool isAlive;
+
+	methods {
+		public get name, age;
+		public get set isAlive;
+	}
+
+	public Person(string name, int age) construct name, age, true;
+
+}
+
+class Passenger {
+
+	occupy
+		obj Person person; // Notice that there are no '()' so it isn't initiated until the construct phrase
+		dub comfortLevel;
+
+	methods {
+		public use person; // 'use' is used here, not 'get' or 'set', because 'person' is not a variable but a singular object
+		public get set comfortLevel;
+	}
+
+	public Passenger(string name, int age) {
+		construct (name, age), 1.0; // the '()' here call the Person constructor
+	}
+
+}
+
+class Plane {
+
+	occupy
+		obj Passenger pilot;
+		obj [30]Passenger passengers;
+
+	methods {
+		public use pilot, passengers;
+
+		public void crashPlane() {
+			foreach passengers each.person.isAlive = false;
+		}
+	}
+
+	public Plane() {
+		construct (Random.RandomName(), Random.InRange(21, 95)), {
+			construct Random.RandomName(), Random.InRange(3, 95);
+		};
+
+		foreach passengers {
+			each.comfortLevel = Random.InRange(0.0, 1.0);
+		}
+	}
+
+}

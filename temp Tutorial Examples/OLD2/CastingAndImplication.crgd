@@ -1,0 +1,17 @@
+
+// You can find the abbreviations for primitive types in 'PrimitiveTypes.crgd'
+
+void Main()
+{
+	// You can explicitly write the type when writing literals
+	Int a = 13_i;
+
+	// But depending on the context, the type may be implicit
+	Int b = 13;
+
+	// Note that there are no default implicit types, such as 21 being an Int or 21.0 being a Double
+
+	// You can cast using the @ symbol
+	Float c = a @f;
+	
+}

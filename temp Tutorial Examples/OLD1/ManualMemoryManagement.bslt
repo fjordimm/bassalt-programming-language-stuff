@@ -1,0 +1,30 @@
+
+program Main
+{
+	Thing thing = new Thing(); // Will be cleared up by garbage collection
+
+	Thing otherThing = alloc Thing(); // Must be cleared up with the 'delete' keyword
+	delete otherThing;
+}
+
+class Thing
+{
+	char chr;
+},
+{
+	public face
+	{
+		get chr;
+		set chr;
+	}
+
+	public Thing()
+	{
+		this;
+		chr = '\0';
+	}
+
+	// The 'alloc' keyword is not allowed unless a destructor is provided. It is the programmer's job to make sure the destructor works
+	public ~Thing()
+	{ }
+}

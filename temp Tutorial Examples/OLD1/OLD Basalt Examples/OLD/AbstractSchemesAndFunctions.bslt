@@ -1,0 +1,81 @@
+
+scheme 
+
+
+/////////////////////////////////////////////////////
+
+program Main {
+	
+}
+
+abstract double VolumeOfPrism(double h) {
+	methods {
+		abstract double areaOfFace();
+	}
+
+	return h * areaOfFace();
+}
+
+double VolumeOfTriangularPrism(double h, double l, double w) : VolumeOfPrism(double) {
+	super(h) {
+		implement areaOfFace() {
+			
+		}
+	}
+}
+
+abstract void Chump() {
+	yes();
+} nest {
+	abstract void yes() : VolumeOfPrism(double);
+}
+
+void Champ() : Chump() {
+	implement yes() VolumeOfTriangularPrism();
+}
+
+////////////////////////////////////////////
+
+abstract string Chunkup() {
+	return a + "{{{" + chonk() + "}}}";
+} nest {
+	abstract int a;
+	abstract string chonk();
+}
+
+string Sus(char thingus) : Chunkup() {
+	super() {
+		implement a = 999;
+		implement chonk() {
+			return "" + thingus + thingus + thingus;
+		}
+	}
+}
+
+////////////////////////////////////////////
+
+abstract scheme ThingyMaker {
+
+	abstract public 
+
+}
+
+abstract
+
+///////////////////////////////
+
+int SomeFunction() {
+
+	methods {
+		void chunkIt() {
+			println "chunk";
+		}
+	}
+
+	chunkIt();
+	chunkIt();
+	chunkIt();
+
+	return 235235;
+
+}

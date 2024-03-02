@@ -1,0 +1,87 @@
+
+class ClassA<type T>
+{...}
+// Anything of type T can be declared fixed
+// Anything of type T is not assumed to be nullable
+
+class ClassB<const type T>
+{...}
+// Anything of type T can be declared const
+// Anything of type T is not assumed to be nullable
+
+class ClassC<ref type T>
+{...}
+// Anything of type T can be declared fixed
+// Anything of type T is assumed to be nullable
+
+class ClassD<ref const type T>
+{...}
+// Anything of type T can be declared const
+// Anything of type T is assumed to be nullable
+
+program Main
+{
+	ClassA<char> varName;
+	ClassA<ImmutableMold> varName;
+	ClassA<MutableMold> varName;
+	ClassA<ConstClass> varName;
+	ClassA<NonconstClass> varName;
+	ClassA<ref char> varName;
+	ClassA<ref ImmutableMold> varName;
+	ClassA<ref MutableMold> varName;
+	ClassA<ref ConstClass> varName;
+	ClassA<ref NonconstClass> varName;
+	ClassA<iref char> varName;
+	ClassA<iref ImmutableMold> varName;
+	ClassA<iref MutableMold> varName;
+	ClassA<iref ConstClass> varName;
+	ClassA<iref NonconstClass> varName;
+
+	ClassB<char> varName;
+	ClassB<ImmutableMold> varName;
+	ClassB<MutableMold> varName; // Illegal
+	ClassB<ConstClass> varName;
+	ClassB<NonconstClass> varName; // Illegal
+	ClassB<ref char> varName; // Illegal
+	ClassB<ref ImmutableMold> varName; // Illegal
+	ClassB<ref MutableMold> varName; // Illegal
+	ClassB<ref ConstClass> varName; // Illegal
+	ClassB<ref NonconstClass> varName; // Illegal
+	ClassB<iref char> varName; // Illegal
+	ClassB<iref ImmutableMold> varName; // Illegal
+	ClassB<iref MutableMold> varName; // Illegal
+	ClassB<iref ConstClass> varName; // Illegal
+	ClassB<iref NonconstClass> varName; // Illegal
+
+	ClassC<char> varName; // Illegal
+	ClassC<ImmutableMold> varName; // Illegal
+	ClassC<MutableMold> varName; // Illegal
+	ClassC<ConstClass> varName;
+	ClassC<NonconstClass> varName;
+	ClassC<ref char> varName;
+	ClassC<ref ImmutableMold> varName;
+	ClassC<ref MutableMold> varName;
+	ClassC<ref ConstClass> varName;
+	ClassC<ref NonconstClass> varName;
+	ClassC<iref char> varName;
+	ClassC<iref ImmutableMold> varName;
+	ClassC<iref MutableMold> varName;
+	ClassC<iref ConstClass> varName;
+	ClassC<iref NonconstClass> varName;
+
+	ClassD<char> varName; // Illegal
+	ClassD<ImmutableMold> varName; // Illegal
+	ClassD<MutableMold> varName; // Illegal
+	ClassD<ConstClass> varName;
+	ClassD<NonconstClass> varName; // Illegal
+	ClassD<ref char> varName; // Illegal
+	ClassD<ref ImmutableMold> varName; // Illegal
+	ClassD<ref MutableMold> varName; // Illegal
+	ClassD<ref ConstClass> varName; // Illegal
+	ClassD<ref NonconstClass> varName; // Illegal
+	ClassD<iref char> varName; // Illegal
+	ClassD<iref ImmutableMold> varName; // Illegal
+	ClassD<iref MutableMold> varName; // Illegal
+	ClassD<iref ConstClass> varName; // Illegal
+	ClassD<iref NonconstClass> varName; // Illegal
+}

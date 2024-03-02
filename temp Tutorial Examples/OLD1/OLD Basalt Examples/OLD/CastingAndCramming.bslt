@@ -1,0 +1,20 @@
+
+program Main {
+	short a = -1s;
+	int b = a cram int;
+	println b; // Prints: -65535
+
+	short c = -1s;
+	int d = (int) c;
+	println d; // Prints: -1
+
+	Dog dog = new Dog(9, 0cFFFFFF);
+	Cat cat = dog cram Cat;
+}
+
+class Dog(int age, color furColor);
+
+class Cat(short age, color furColor);
+
+// So basically casting as you know it is done with "numberOrVariable :theNewType"
+// Cramming is just there for cool low level stuff

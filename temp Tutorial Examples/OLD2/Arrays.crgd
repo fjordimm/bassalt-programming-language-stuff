@@ -1,0 +1,23 @@
+
+void Main()
+{
+	// Static array
+	[13]int thing => ();
+
+	// Dynamic array
+	^[]int thing = new [13]int();
+
+	// Dynamic array with a set size
+	^[13]int thing = new [13]int();
+
+	// Static array of objects
+	[13]Man thing => (("Bob", 21));
+
+	// Static array of references (initialized to null)
+	[13]^int thing => ();
+
+	// Static array of references to 
+}
+
+class Man
+{...}

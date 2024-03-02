@@ -1,0 +1,21 @@
+
+/*
+
+Notable Features:
+ - The concept of passability (unit and non-unit classes)
+ - The concept of faces (including the mutable face and immutable face for primitive types, and the mutable private face, immutable private face, mutable public face, and immutable public face for classes)
+ - Explicit immutability
+ - Explicit ceding
+ - 'while (true)' loops called 'loop'
+ - Labelled loops that can be broken out of by name
+ - The unique pointer stuff that Rust does well, but it's better than Rust because Rust is not very explicit
+ - The dereference operator comes after, which makes you use less parenthesis. Examples:
+    - a@.b instead of (*a).b
+	- a.b@ instead of *(a.b)
+ - Clearness, especially that '=' always means direct assignment, and that there is explicit referencing/dereferencing
+ - Five built-in pointers types (&, ^, *, sptr, and wptr) (reference pointer, unique pointer, raw pointer, shared pointer, and weak pointer)
+ - Better mutability control than Rust, but also it is much less of a pain than Rust is
+ - 
+
+*/
+

@@ -1,0 +1,38 @@
+
+void Main()
+{
+	print "Hello, World!";
+
+	int someInt = 7;
+	const float someChar = 3.2;
+
+	print f"someChar = {someChar}";
+
+	for int i = 0; i < 30; i++
+	{ /* loop body */ }
+
+	for int i in (0, 30)
+	{ /* loop body */ }
+
+	[15]char myArray => ();
+	for int i in (0, myArray.size)
+	{ myArray[i] = 'a'; }
+	for char c in myArray
+	{ print c; }
+
+	SomeFunc(17);
+	print FunnyNumber;
+	someLocalFunc(13);
+
+	void someLocalFunc(int a)
+	{
+		print f"haha {a} is pretty cool";
+	}
+}
+
+void SomeFunc(int a)
+{
+	print f"haha {a} is funny";
+}
+
+float FunnyNumber = 420.69;

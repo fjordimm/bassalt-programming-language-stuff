@@ -1,0 +1,38 @@
+
+program Main {
+
+	const int seventhPrimeNumber = task int {
+		int temp = 0;
+		int c = 0;
+		while (c < 7) {
+			t++;
+			if Math.IsPrime(t) { c++; }
+		}
+		return temp;
+	};
+
+	const float randomNumberThatIsDivisibleByThirteen = task float {
+		int a = 1;
+		while a % 13 != 0 {
+			a = Random.Range(0, 1664);
+		}
+		return (float) a;
+	};
+
+	obj []{const char} theAlphabet (
+		task []{char} {
+			[]{char} temp = new [26]{char}();
+			for 0, 26 { temp[index] = 'A' + (char) index; }
+			return temp;
+		}
+	);
+
+	[]{const char} someAlphabet = new []{const char} (
+		task []{char} {
+			[]{char} temp = new [26]{char}();
+			for 0, 26 { temp[index] = 'A' + (char) index; }
+			return temp;
+		}
+	);
+
+}

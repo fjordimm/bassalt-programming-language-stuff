@@ -2,6 +2,7 @@
 /*
 
 Features to Cover:
+ - instead of casting like `(int) a`, do it like `a->int`
  - if var == 12 or 18 {...}
  - tuples
  - arrays

@@ -12,13 +12,11 @@ Notable Features:
  - The dereference operator comes after, which makes you use less parenthesis. Examples:
     - a@.b instead of (*a).b
 	- a.b@ instead of *(a.b)
- - The cast operator comes after, which makes you use less parenthesis. Examples:
-    - a->T.b instead of ((T)a).b
-	- a.b->T instead of (T)a.b
  - Clearness, especially that '=' always means direct assignment, and that there is explicit referencing/dereferencing
  - The built-in pointers types (&, ^, *, sptr, wptr, and kptr) (reference pointer, unique pointer, raw pointer, shared pointer, weak pointer, key pointer)
  - Better mutability control than Rust, but also it is much less of a pain than Rust is
  - Avoids getter and setter methods so that you can have direct access to fields of fields, and it avoids the badness of mutable Properties in C# but still has the concise syntax / access control
+ - Don't have to worry about values being implicitly casted, or about always writing the 'f' suffix, or '.0' suffix, etc.
 
 */
 

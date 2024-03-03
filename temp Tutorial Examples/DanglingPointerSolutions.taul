@@ -1,7 +1,7 @@
 
 /*
 Possible Solutions:
- - reference counted pointer
+ - reference counted pointer (actually nvm this is what shared pointer does)
  - shared pointer and weak pointer (as in C++)
  - tombstones (https://oberoidearsh.medium.com/dangling-pointers-tombstones-and-lock-and-keys-f6bd0791810f)
  - locks and keys (https://oberoidearsh.medium.com/dangling-pointers-tombstones-and-lock-and-keys-f6bd0791810f)

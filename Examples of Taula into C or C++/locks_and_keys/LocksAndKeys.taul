@@ -14,8 +14,47 @@ void Main()
 {
 	println$("=== Starting Program ===");
 
-	lptr<Point> a = lptr<Point>(Point{x=3, y=9});
-	PrintPoint(a->&);
+	lptr<Point> a = newlptr Point{ Point(x=3, y=9) };
+
+	wlptr<Point> b = (wlptr)a;
+
+	print$("a = ");
+	PrintPoint((&)a);
+	print$("b = ");
+	PrintPoint((&)b);
+
+	println$();
+	a@.x = 777;
+	a@.y += 0.1;
+
+	print$("a = ");
+	PrintPoint((&)a);
+	print$("b = ");
+	PrintPoint((&)b);
+
+	println$();
+	b@.x = 444;
+	b@.y += 0.08;
+
+	print$("a = ");
+	PrintPoint((&)a);
+	print$("b = ");
+	PrintPoint((&)b);
+	
+	println$();
+	a = null;
+
+	println$("a cannot be printed due to compiler errors");
+	print$("b = ");
+	PrintPoint((&)b); // Will have runtime error
+
+	println$();
+	a = newlptr Point{ Point(x=15, y=30) };
+
+	print$("a = ");
+	PrintPoint((&)a);
+	print$("b = ");
+	PrintPoint((&)b); // Will have runtime error
 
 	println$("=== Ending Program ===");
 }

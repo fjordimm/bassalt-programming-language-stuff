@@ -9,14 +9,18 @@
  int*					raw pointer type (of an int)
  sptr<int>				shared pointer type (of an int)
  wptr<int>				weak pointer type (of an int)
+ lptr<int>				lock-and-key owning pointer type (of an int)
+ wlptr<int>				lock-and-key secondary/weak pointer type (of an int)
 
  var&					address-of operator, returns a reference pointer
  var@					dereference operator
  new int{1}				new operator, returns a unique pointer
  alloc int{1}			alloc operator, returns a raw pointer
  dealloc var			dealloc operator, frees the object that 'var' points to
- sptr<int>(1)		creates and returns a shared pointer
- var.getWeak()			returns a weak pointer from a shared pointer
+ newsptr int{1}			creates and returns a shared pointer
+ (wptr)var				returns a weak pointer from a shared pointer
+ newlptr int{1}			creates and returns a lock-and-key owning pointer
+ (wlptr)var				returns a lock-and-key secondary/weak pointer from a lock-and-key owning pointer
 */
 
 //////////////////////////////
@@ -182,6 +186,8 @@ void Main() unsafe
 //////////////////////////////
 
 ///// Lock-and-key Pointers /////
+
+
 
 void Main()
 {

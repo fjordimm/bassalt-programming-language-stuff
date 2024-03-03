@@ -12,6 +12,10 @@ void PrintPoint(Point& p)
 
 void Main()
 {
+	println$("=== Starting Program ===");
+
 	lptr<Point> a = lptr<Point>(Point{x=3, y=9});
-	PrintPoint(a->);
+	PrintPoint(a->&);
+
+	println$("=== Ending Program ===");
 }

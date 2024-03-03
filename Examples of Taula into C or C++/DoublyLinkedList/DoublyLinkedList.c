@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 #include <stdio.h>
 
 ////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ void _BASSALT_ERROR_MallocFailed()
 	exit(1);
 }
 
-void _BASSALT_ERROR_BadWlptr()
+void _BASSALT_ERROR_BadLptr()
 {
 	fprintf(stderr, "Tried to dereference an invalid weak lock-and-key pointer!\n");
 	exit(1);
@@ -35,15 +36,16 @@ void _BASSALT_ERROR_BadWlptr()
 The term 'LK' refers to the lock-and-key method.
 LK key generation inspired by section 5.2 of https://www.cs.rochester.edu/u/jzhou41/papers/checkedc.pdf
 
-Bit allotment for LK keys (64 bits):
- - [63:48] for the randomly-generated program-scoped LK key header
-
+Bit allotment for LK keys (stored in a uint64_t):
+ - [63:48] for the randomly-generated global LK key header
+ - [47:0] for the key value
 */
 
-///// Global Key Incrementer For Locks-and-keys /////
+///// Global LK Key Constants /////
 
 #define _BASSALT_LK_NULLKEY 0
-static uint64_t _BASSALT_LK_KEYINCR = 1;
+static uint64_t _BASSALT_LK_HEADER; // will be initialized in main
+static uint64_t _BASSALT_LK_KEYVAL; // will be initialized in main, and will be incremented each time it is used
 
 ////////////////////////////////////////////////////////////
 
@@ -103,9 +105,9 @@ void Node_CONSTRUCTOR(List* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 	_THIS->count = 0;
-	_THIS->head._CKEY = _BASSALT_LOCKSANDKEYS_NULLKEY;
+	_THIS->head._CKEY = _BASSALT_LK_NULLKEY;
 	_THIS->head._ADDR = NULL;
-	_THIS->tail._CKEY = _BASSALT_LOCKSANDKEYS_NULLKEY;
+	_THIS->tail._CKEY = _BASSALT_LK_NULLKEY;
 	_THIS->tail._ADDR = NULL;
 }
 
@@ -118,11 +120,11 @@ void Node_append(List* _THIS, int32_t val)
 			/*Memory Safety Check*/ if (_TEMP0 == NULL) _BASSALT_ERROR_MallocFailed();
 			Node _TEMP1;
 				_TEMP1.data = val;
-				_TEMP1.prev._CKEY = _BASSALT_LOCKSANDKEYS_NULLKEY;
+				_TEMP1.prev._CKEY = _BASSALT_LK_NULLKEY;
 				_TEMP1.prev._ADDR = NULL;
-				_TEMP1.next._CKEY = _BASSALT_LOCKSANDKEYS_NULLKEY;
+				_TEMP1.next._CKEY = _BASSALT_LK_NULLKEY;
 				_TEMP1.next._ADDR = NULL;
-			_TEMP0->_KEY = _BASSALT_LOCKSANDKEYS_KEYINCR++;
+			_TEMP0->_KEY = _BASSALT_LK_KEYVAL++;
 			_TEMP0->_OBJ = _TEMP1;
 		newNode._CKEY = _TEMP0->_KEY;
 		newNode._ADDR = _TEMP0;
@@ -137,7 +139,7 @@ void Node_append(List* _THIS, int32_t val)
 	{
 		newNode._ADDR->_OBJ.prev = _THIS->head;
 		
-		/*Memory Safety Check*/ if (_THIS->head._ADDR == NULL || ) _BASSALT_ERROR_NullPtr();
+		/*Memory Safety Check*/ if (_THIS->head._ADDR == NULL || _THIS->head._CKEY != _THIS->head._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 		_THIS->head._ADDR->_OBJ.next = newNode;
 		_THIS->tail = _THIS->head._ADDR->_OBJ.next;
 	}
@@ -176,7 +178,11 @@ void Node_print(List* _THIS)
 
 int main(void)
 {
-
+	// Global LK initialization
+	srand(time(NULL));
+	rand();
+	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
+	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
 
 	printf("=== Starting Program ===\n");
 

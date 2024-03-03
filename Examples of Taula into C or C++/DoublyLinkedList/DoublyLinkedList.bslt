@@ -1,23 +1,68 @@
 
 class List
 {
-	private Node^ head;
+	private int count;
+	private lptr<Node> head;
+	private wlptr<Node> tail;
 
 	public this()
 	{
+		this.count == 0;
 		this.head = null;
+		this.tail = null;
+	}
+
+	public append(int val)
+	{
+		lptr<Node> newNode = newlptr Node{ Node(data=val, prev=null, next=null) };
+
+		if this.count == 0
+		{
+			this.head = cede newNode;
+			this.tail = (wlptr)this.head;
+		}
+		else if this.count == 1
+		{
+			newNode@.prev = (wlptr)this.head;
+
+			this.head@.next = cede newNode;
+			this.tail = (wlptr)this.head@.next;
+		}
+		else
+		{
+			newNode@.prev = this.tail;
+
+			this.tail@.next = cede newNode;
+			this.tail = (wlptr)this.tail@.next;
+		}
+
+		this.count++;
+	}
+
+	public print()
+	{
+		println$("List:");
+		
+		wlptr<Node> n = (wlptr)this.head;
+		while n != null
+		{
+			print$("  ");
+			PrintNode((!&)n);
+			println$();
+			n = (wlptr)n@.next;
+		}
 	}
 },
 with module
 {
-	private class Node
+	private struct Node
 	{
 		int data;
 		wlptr<Node> prev;
 		lptr<Node> next;
 	}
 
-	void PrintNode(Node!& node)
+	private void PrintNode(Node!& node)
 	{
 		print$("Node(");
 		print$(node@.prev == null ? "o " : "* ");
@@ -25,4 +70,9 @@ with module
 		print$(node@.next == null ? " o" : " *");
 		print$(")");
 	}
+}
+
+void Main()
+{
+
 }

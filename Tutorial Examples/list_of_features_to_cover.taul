@@ -51,6 +51,7 @@ Features to Cover:
  - https://www.cs.cmu.edu/~gilpin/c%2B%2B/performance.html
  - abstract classes and abstract methods, virtual classes and virtual methods
  - 'casting' between pointer types
+ - vtables, and also maybe the vtable pointer value is used as type identification
 
 Maybe:
  - nullability with '?'

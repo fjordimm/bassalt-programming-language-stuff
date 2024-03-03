@@ -43,7 +43,7 @@ Bit allotment for LK keys (stored in a uint64_t):
 
 ///// Global LK Key Constants /////
 
-#define _BASSALT_LK_NULLKEY 0
+#define _BASSALT_LK_INVALIDKEY 0
 static uint64_t _BASSALT_LK_HEADER; // will be initialized in main
 static uint64_t _BASSALT_LK_KEYVAL; // will be initialized in main, and will be incremented each time it is used
 
@@ -105,9 +105,9 @@ void Node_CONSTRUCTOR(List* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 	_THIS->count = 0;
-	_THIS->head._CKEY = _BASSALT_LK_NULLKEY;
+	_THIS->head._CKEY = _BASSALT_LK_INVALIDKEY;
 	_THIS->head._ADDR = NULL;
-	_THIS->tail._CKEY = _BASSALT_LK_NULLKEY;
+	_THIS->tail._CKEY = _BASSALT_LK_INVALIDKEY;
 	_THIS->tail._ADDR = NULL;
 }
 
@@ -120,9 +120,9 @@ void Node_append(List* _THIS, int32_t val)
 			/*Memory Safety Check*/ if (_TEMP0 == NULL) _BASSALT_ERROR_MallocFailed();
 			Node _TEMP1;
 				_TEMP1.data = val;
-				_TEMP1.prev._CKEY = _BASSALT_LK_NULLKEY;
+				_TEMP1.prev._CKEY = _BASSALT_LK_INVALIDKEY;
 				_TEMP1.prev._ADDR = NULL;
-				_TEMP1.next._CKEY = _BASSALT_LK_NULLKEY;
+				_TEMP1.next._CKEY = _BASSALT_LK_INVALIDKEY;
 				_TEMP1.next._ADDR = NULL;
 			_TEMP0->_KEY = _BASSALT_LK_KEYVAL++;
 			_TEMP0->_OBJ = _TEMP1;
@@ -195,7 +195,7 @@ int main(void)
 
 	printf("=== Ending Program ===\n");
 
-	// TODO: destructors
+	// TODO: destructors, and LK destructors must set the object's _KEY to _BASSALT_LK_INVALIDKEY
 
 	return 0;
 }

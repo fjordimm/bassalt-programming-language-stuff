@@ -19,21 +19,21 @@ class List
 		if this.count == 0
 		{
 			this.head = cede newNode;
-			this.tail = this.head;
+			this.tail = (wlptr)this.head;
 		}
 		else if this.count == 1
 		{
-			newNode@.prev = this.head;
+			newNode@.prev = (wlptr)this.head;
 
 			this.head@.next = cede newNode;
-			this.tail = this.head@.next;
+			this.tail = (wlptr)this.head@.next;
 		}
 		else
 		{
 			newNode@.prev = this.tail;
 
 			this.tail@.next = cede newNode;
-			this.tail = this.tail@.next;
+			this.tail = (wlptr)this.tail@.next;
 		}
 
 		this.count++;
@@ -41,16 +41,16 @@ class List
 
 	public print()
 	{
-		println$(f"List ({this.count}):");
+		println$("List:");
 		
-		wlptr<Node> n = this.head;
+		wlptr<Node> n = (wlptr)this.head;
 		while n != null
 		{
 			print$("  ");
-			PrintNode(n);
+			PrintNode((!&)n);
 			println$();
 			
-			n = n@.next;
+			n = (wlptr)n@.next;
 		}
 	}
 },

@@ -8,9 +8,9 @@
  int^					unique pointer type
  int*					raw pointer type
  sptr<int>				shared pointer type
- sptrw<int>				weak shared pointer type
+ wsptr<int>				weak shared pointer type
  lptr<int>				primary/owning lock-and-key pointer type
- lptrw<int>				secondary/weak lock-and-key pointer type
+ wlptr<int>				secondary/weak lock-and-key pointer type
 
  var&					address-of operator, returns a reference pointer
  var@					dereference operator
@@ -50,7 +50,7 @@ void Main()
 	r3@ = 111; // a is now 111.
 	r3 = b&; // Illegal, r3 is fixed.
 
-	int!& r4 = a&;
+	int!& r4 = a&!;
 	r4@ = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
 	println$(r4@);
 	baboei
@@ -58,12 +58,12 @@ void Main()
 	println$(r4@);
 
 	// Think of fixedness as polymorphism. Unfixed types (e.g. int) are subsets of fixed types (e.g. int!).
-	int!& r5 = a&;
-	int!& r6 = c&;
+	int!& r5 = a&!;
+	int!& r6 = c&!;
 	int& r6 = a&;
 	int& r7 = c&; // Illegal, r7 can mutate what it points to, so it cannot point to a fixed type.
 
-	int!&! r8 = a&;
+	int!&! r8 = a&!;
 	println$(r8@);
 	r8@ = 100; // Illegal, r8 points to a fixed type.
 	r8 = b&; // Illegal, r8 is fixed.

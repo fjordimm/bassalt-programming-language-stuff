@@ -74,5 +74,28 @@ with module
 
 void Main()
 {
+	println$("=== Starting Program ===");
 
+	List a => ();
+	
+	a.append(1);
+	a.print();
+	
+	a.append(2);
+	a.print();
+
+	a.append(3);
+	a.print();
+
+	List b => ();
+	b.append(11);
+	b.append(12);
+	b.append(13);
+	b.append(14);
+	b.append(15);
+	b.print();
+
+	println$("=== Ending Program ===");
 }
+
+// TODO: you could get rid of all the explicit pointer casting

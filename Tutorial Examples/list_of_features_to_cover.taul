@@ -2,7 +2,6 @@
 /*
 
 Features to Cover:
- - NEVERMIND DONT DO THIS: instead of casting like `(int) a`, do it like `a->int`
  - if var == 12 or 18 {...}
  - tuples
  - arrays
@@ -51,6 +50,7 @@ Features to Cover:
 	- or just let segfaults and undefined behavior happen. You are still protecting against memory leaks
  - https://www.cs.cmu.edu/~gilpin/c%2B%2B/performance.html
  - abstract classes and abstract methods, virtual classes and virtual methods
+ - 'casting' between pointer types
 
 Maybe:
  - nullability with '?'

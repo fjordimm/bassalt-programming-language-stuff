@@ -14,6 +14,7 @@
 
  var&					address-of operator, returns a reference pointer
  var@					dereference operator
+ var->field				arrow operator, equivalent to `var@.field`
  new int{1}				new operator, returns a unique pointer
  alloc int{1}			alloc operator, returns a raw pointer
  dealloc var			dealloc operator, frees the object that 'var' points to

@@ -177,6 +177,19 @@ void Main() unsafe
 
 //////////////////////////////
 
+///// Shared and Weak Pointers /////
+
+//////////////////////////////
+
+///// Lock-and-key Pointers /////
+
+void Main()
+{
+	
+}
+
+//////////////////////////////
+
 // TODO: explicit casting from one pointer type to another (e.g. `int* rp = (*)someUniquePtr` and that is actually a shortcut for `int* rp = (int*)someUniquePtr`)
 // TODO: combining them (e.g. int^*)
 // TODO: equality between them

@@ -79,9 +79,9 @@ with module
 {
 	/* Everything in this block will be treated as static. In other words, this is like a module named 'Foo'. */
 
-	const int SomeConst = 12345;
+	public const int SomeConst = 12345;
 
-	void SomeFunc()
+	public void SomeFunc()
 	{ println$("hello"); }
 }
 

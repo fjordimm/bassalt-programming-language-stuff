@@ -1,5 +1,28 @@
 
-class Deque
+class List
 {
-	
+	private Node^ head;
+
+	public this()
+	{
+		this.head = null;
+	}
+},
+with module
+{
+	private class Node
+	{
+		int data;
+		wlptr<Node> prev;
+		lptr<Node> next;
+	}
+
+	void PrintNode(Node!& node)
+	{
+		print$("Node(");
+		print$(node@.prev == null ? "o " : "* ");
+		print$(node@.data);
+		print$(node@.next == null ? " o" : " *");
+		print$(")");
+	}
 }

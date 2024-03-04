@@ -261,7 +261,7 @@ void List_printBackToFront(List* _THIS)
 int main(void)
 {
 	// Global LK initialization
-	srand(time(NULL));
+	srand(time(NULL) + clock());
 	rand();
 	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
 	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();

@@ -435,35 +435,48 @@ int main(void)
 {
 	printf("[[[ Starting Benchmark ]]]\n");
 
-	{
-		printf("Running program using raw pointers...\n");
-		clock_t timeStart = clock();
-
-		for (int i = 0; i < 1000000; i++)
-		{
-			int* p = (int*)malloc(sizeof(int));
-			free(p);
-		}
-
-		clock_t timeEnd = clock();
-		printf("  Time elapsed: %i\n", timeEnd - timeStart);
-	}
+	// Global LK initialization
+	srand(time(NULL) + clock());
+	rand();
+	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
+	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
 
 	{
 		printf("Running program using LK pointers...\n");
 		clock_t timeStart = clock();
 
-		for (int i = 0; i < 1000000; i++)
+		WLKList list;
+		WLKList_CONSTRUCTOR(&list);
+		for (int i = 0; i < 10000; i++)
 		{
-			int* p = (int*)malloc(sizeof(int));
-			free(p);
+			WLKList_append(&list, i);
 		}
+		WLKList_IMPLDESTRUCTOR(&list);
 
 		clock_t timeEnd = clock();
 		printf("  Time elapsed: %i\n", timeEnd - timeStart);
 	}
 
+	{
+		printf("Running program using raw pointers...\n");
+		clock_t timeStart = clock();
+
+		NLKList list;
+		NLKList_CONSTRUCTOR(&list);
+		for (int i = 0; i < 10000; i++)
+		{
+			NLKList_append(&list, i);
+		}
+		NLKList_IMPLDESTRUCTOR(&list);
+
+		clock_t timeEnd = clock();
+		printf("  Time elapsed: %i\n", timeEnd - timeStart);
+	}
+
+	
+
 	printf("[[[ Ending  Benchmark ]]]\n");
+	return 0;
 }
 
 ////////////////////////////////////////////////////////////

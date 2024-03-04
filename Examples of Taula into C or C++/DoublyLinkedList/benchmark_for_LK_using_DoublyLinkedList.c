@@ -259,45 +259,26 @@ void WLKList_printBackToFront(WLKList* _THIS)
 
 ////////////////////////////////////////////////////////////
 
-///// Definition for the LK pointer tuple for 'NLKNode' /////
-
-typedef struct
-{
-	uint64_t _CKEY;
-	struct __NLKNode_LOCKANDKEY* _ADDR;
-} NLKNode_LPTR;
-
 ///// Definition for struct 'NLKNode' /////
 
-typedef struct
+typedef struct __NLKNode
 {
 	int32_t data;
-	NLKNode_LPTR prev;
-	NLKNode_LPTR next;
+	struct __NLKNode* prev;
+	struct __NLKNode* next;
 } NLKNode;
-
-///// Definition for the LK object struct for 'NLKNode' /////
-
-typedef struct __NLKNode_LOCKANDKEY
-{
-	uint64_t _KEY;
-	NLKNode _OBJ;
-} NLKNode_LOCKANDKEY;
 
 ///// Definition for the implicit destructor for 'NLKNode' /////
 
 void NLKNode_IMPLDESTRUCTOR(NLKNode* _P);
 void NLKNode_IMPLDESTRUCTOR(NLKNode* _P)
 {
-	if (_P->next._ADDR != NULL)
+	if (_P->next != NULL)
 	{
 		/*Memory Safety Check*/ // if (_P->next._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-		/*Memory Safety Check*/ if (_P->next._CKEY != _P->next._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		NLKNode_IMPLDESTRUCTOR(&(_P->next._ADDR->_OBJ));
-		_P->next._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
-		free(_P->next._ADDR);
-		_P->next._CKEY = _BASSALT_LK_INVALIDKEY;
-		_P->next._ADDR = NULL;
+		NLKNode_IMPLDESTRUCTOR(_P->next);
+		free(_P->next);
+		_P->next = NULL;
 	}
 }
 
@@ -309,9 +290,9 @@ void PrintNLKNode(NLKNode* node)
 {
 	printf("Node(");
 	/*Memory Safety Check*/ if (node == NULL) _BASSALT_ERROR_NullPtr();
-	printf(node->prev._ADDR == NULL ? "o " : "* ");
+	printf(node->prev == NULL ? "o " : "* ");
 	printf("%i", node->data);
-	printf(node->next._ADDR == NULL ? " o" : " *");
+	printf(node->next == NULL ? " o" : " *");
 	printf(")");
 }
 
@@ -322,8 +303,8 @@ void PrintNLKNode(NLKNode* node)
 typedef struct
 {
 	int32_t count;
-	NLKNode_LPTR head;
-	NLKNode_LPTR tail;
+	NLKNode* head;
+	NLKNode* tail;
 } NLKList;
 
 ///// Definition for the constructor of 'NLKList' /////
@@ -331,25 +312,20 @@ typedef struct
 void NLKList_CONSTRUCTOR(NLKList* _THIS)
 {
 	_THIS->count = 0;
-	_THIS->head._CKEY = _BASSALT_LK_INVALIDKEY;
-	_THIS->head._ADDR = NULL;
-	_THIS->tail._CKEY = _BASSALT_LK_INVALIDKEY;
-	_THIS->tail._ADDR = NULL;
+	_THIS->head = NULL;
+	_THIS->tail = NULL;
 }
 
 ///// Definition for the implicit destructor for 'NLKList' /////
 
 void NLKList_IMPLDESTRUCTOR(NLKList* _P)
 {
-	if (_P->head._ADDR != NULL)
+	if (_P->head != NULL)
 	{
 		/*Memory Safety Check*/ // if (_P->head._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-		/*Memory Safety Check*/ if (_P->head._CKEY != _P->head._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		NLKNode_IMPLDESTRUCTOR(&(_P->head._ADDR->_OBJ));
-		_P->head._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
-		free(_P->head._ADDR);
-		_P->head._CKEY = _BASSALT_LK_INVALIDKEY;
-		_P->head._ADDR = NULL;
+		NLKNode_IMPLDESTRUCTOR(_P->head);
+		free(_P->head);
+		_P->head = NULL;
 	}
 }
 
@@ -359,19 +335,11 @@ void NLKList_append(NLKList* _THIS, int32_t val)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 
-	NLKNode_LPTR newNode;
-		NLKNode_LOCKANDKEY* _TEMP0 = (NLKNode_LOCKANDKEY*)malloc(sizeof(NLKNode_LOCKANDKEY));
-			/*Memory Safety Check*/ if (_TEMP0 == NULL) _BASSALT_ERROR_MallocFailed();
-			NLKNode _TEMP1;
-				_TEMP1.data = val;
-				_TEMP1.prev._CKEY = _BASSALT_LK_INVALIDKEY;
-				_TEMP1.prev._ADDR = NULL;
-				_TEMP1.next._CKEY = _BASSALT_LK_INVALIDKEY;
-				_TEMP1.next._ADDR = NULL;
-			_TEMP0->_KEY = _BASSALT_LK_KEYVAL++;
-			_TEMP0->_OBJ = _TEMP1;
-		newNode._CKEY = _TEMP0->_KEY;
-		newNode._ADDR = _TEMP0;
+	NLKNode* newNode = (NLKNode*)malloc(sizeof(NLKNode));
+		/*Memory Safety Check*/ if (newNode == NULL) _BASSALT_ERROR_MallocFailed();
+		newNode->data = val;
+		newNode->prev = NULL;
+		newNode->next = NULL;
 	
 	if (_THIS->count == 0)
 	{
@@ -380,21 +348,19 @@ void NLKList_append(NLKList* _THIS, int32_t val)
 	}
 	else if (_THIS->count == 1)
 	{
-		newNode._ADDR->_OBJ.prev = _THIS->head;
+		newNode->prev = _THIS->head;
 		
-		/*Memory Safety Check*/ if (_THIS->head._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-		/*Memory Safety Check*/ // if (_THIS->head._CKEY != _THIS->head._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		_THIS->head._ADDR->_OBJ.next = newNode;
-		_THIS->tail = _THIS->head._ADDR->_OBJ.next;
+		/*Memory Safety Check*/ if (_THIS->head == NULL) _BASSALT_ERROR_NullPtr();
+		_THIS->head->next = newNode;
+		_THIS->tail = _THIS->head->next;
 	}
 	else
 	{
-		newNode._ADDR->_OBJ.prev = _THIS->tail;
+		newNode->prev = _THIS->tail;
 
-		/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-		/*Memory Safety Check*/ if (_THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		_THIS->tail._ADDR->_OBJ.next = newNode;
-		_THIS->tail = _THIS->tail._ADDR->_OBJ.next;
+		/*Memory Safety Check*/ if (_THIS->tail == NULL) _BASSALT_ERROR_NullPtr();
+		_THIS->tail->next = newNode;
+		_THIS->tail = _THIS->tail->next;
 	}
 
 	_THIS->count++;
@@ -406,18 +372,13 @@ void NLKList_removeLast(NLKList* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 
-	/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-	/*Memory Safety Check*/ if (_THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-	_THIS->tail = _THIS->tail._ADDR->_OBJ.prev;
-	/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-	/*Memory Safety Check*/ if (_THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-	/*Memory Safety Check*/ if (_THIS->tail._ADDR->_OBJ.next._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-	/*Memory Safety Check*/ // if (_THIS->tail._ADDR->_OBJ.next._CKEY != _THIS->tail._ADDR->_OBJ.next._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-	NLKNode_IMPLDESTRUCTOR(&(_THIS->tail._ADDR->_OBJ.next._ADDR->_OBJ));
-	_THIS->tail._ADDR->_OBJ.next._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
-	free(_THIS->tail._ADDR->_OBJ.next._ADDR);
-	_THIS->tail._ADDR->_OBJ.next._CKEY = _BASSALT_LK_INVALIDKEY;
-	_THIS->tail._ADDR->_OBJ.next._ADDR = NULL;
+	/*Memory Safety Check*/ if (_THIS->tail == NULL) _BASSALT_ERROR_NullPtr();
+	_THIS->tail = _THIS->tail->prev;
+	/*Memory Safety Check*/ if (_THIS->tail == NULL) _BASSALT_ERROR_NullPtr();
+	/*Memory Safety Check*/ if (_THIS->tail->next == NULL) _BASSALT_ERROR_NullPtr();
+	NLKNode_IMPLDESTRUCTOR(_THIS->tail->next);
+	free(_THIS->tail->next);
+	_THIS->tail->next = NULL;
 
 	_THIS->count--;
 }
@@ -430,16 +391,15 @@ void NLKList_printFrontToBack(NLKList* _THIS)
 
 	printf("List (%i) front-to-back:\n", _THIS->count);
 
-	NLKNode_LPTR n = _THIS->head;
-	while (n._ADDR != NULL)
+	NLKNode* n = _THIS->head;
+	while (n != NULL)
 	{
 		printf("  ");
-		/*Memory Safety Check*/ if (n._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-		/*Memory Safety Check*/ if (n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		PrintNLKNode(&(n._ADDR->_OBJ));
+		/*Memory Safety Check*/ if (n == NULL) _BASSALT_ERROR_NullPtr();
+		PrintNLKNode(n);
 		printf("\n");
 		
-		n = n._ADDR->_OBJ.next;
+		n = n->next;
 	}
 }
 
@@ -451,18 +411,19 @@ void NLKList_printBackToFront(NLKList* _THIS)
 
 	printf("List (%i) back-to-front:\n", _THIS->count);
 
-	NLKNode_LPTR n = _THIS->tail;
-	while (n._ADDR != NULL)
+	NLKNode* n = _THIS->tail;
+	while (n != NULL)
 	{
 		printf("  ");
-		/*Memory Safety Check*/ if (n._ADDR == NULL) _BASSALT_ERROR_NullPtr();
-		/*Memory Safety Check*/ if (n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		PrintNLKNode(&(n._ADDR->_OBJ));
+		/*Memory Safety Check*/ if (n == NULL) _BASSALT_ERROR_NullPtr();
+		PrintNLKNode(n);
 		printf("\n");
 		
-		n = n._ADDR->_OBJ.prev;
+		n = n->prev;
 	}
 }
+
+////////////////////////////////////////////////////////////
 
 /*************************************************************************/
 /**************************** Main function ******************************/

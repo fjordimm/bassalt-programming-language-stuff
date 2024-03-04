@@ -433,122 +433,37 @@ void NLKList_printBackToFront(NLKList* _THIS)
 
 int main(void)
 {
-	// Global LK initialization
-	srand(time(NULL));
-	rand();
-	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
-	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
+	printf("[[[ Starting Benchmark ]]]\n");
 
-	printf("=== Starting Program ===\n");
-	printf("\n");
+	{
+		printf("Running program using raw pointers...\n");
+		clock_t timeStart = clock();
 
-	NLKList a;
-	NLKList_CONSTRUCTOR(&a);
-	
-	NLKList_append(&a, 1);
-	NLKList_printFrontToBack(&a);
-	NLKList_printBackToFront(&a);
-	printf("\n");
+		for (int i = 0; i < 1000000; i++)
+		{
+			int* p = (int*)malloc(sizeof(int));
+			free(p);
+		}
 
-	NLKList_append(&a, 2);
-	NLKList_printFrontToBack(&a);
-	NLKList_printBackToFront(&a);
-	printf("\n");
+		clock_t timeEnd = clock();
+		printf("  Time elapsed: %i\n", timeEnd - timeStart);
+	}
 
-	NLKList_append(&a, 3);
-	NLKList_printFrontToBack(&a);
-	NLKList_printBackToFront(&a);
-	printf("\n");
+	{
+		printf("Running program using LK pointers...\n");
+		clock_t timeStart = clock();
 
-	NLKList b;
-	NLKList_CONSTRUCTOR(&b);
-	NLKList_append(&b, 11);
-	NLKList_append(&b, 12);
-	NLKList_append(&b, 13);
-	NLKList_append(&b, 14);
-	NLKList_append(&b, 15);
-	NLKList_printFrontToBack(&b);
-	NLKList_printBackToFront(&b);
-	printf("\n");
+		for (int i = 0; i < 1000000; i++)
+		{
+			int* p = (int*)malloc(sizeof(int));
+			free(p);
+		}
 
-	NLKList_removeLast(&b);
-	NLKList_printFrontToBack(&b);
-	NLKList_printBackToFront(&b);
-	printf("\n");
+		clock_t timeEnd = clock();
+		printf("  Time elapsed: %i\n", timeEnd - timeStart);
+	}
 
-	NLKList_removeLast(&b);
-	NLKList_printFrontToBack(&b);
-	NLKList_printBackToFront(&b);
-	printf("\n");
-
-	printf("=== Ending Program ===\n");
-
-	// Implicit destructors
-	NLKList_IMPLDESTRUCTOR(&a);
-	NLKList_IMPLDESTRUCTOR(&b);
-
-	return 0;
+	printf("[[[ Ending  Benchmark ]]]\n");
 }
-
-/*
-int main(void)
-{
-	// Global LK initialization
-	srand(time(NULL));
-	rand();
-	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
-	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
-
-	printf("=== Starting Program ===\n");
-	printf("\n");
-
-	WLKList a;
-	WLKList_CONSTRUCTOR(&a);
-	
-	WLKList_append(&a, 1);
-	WLKList_printFrontToBack(&a);
-	WLKList_printBackToFront(&a);
-	printf("\n");
-
-	WLKList_append(&a, 2);
-	WLKList_printFrontToBack(&a);
-	WLKList_printBackToFront(&a);
-	printf("\n");
-
-	WLKList_append(&a, 3);
-	WLKList_printFrontToBack(&a);
-	WLKList_printBackToFront(&a);
-	printf("\n");
-
-	WLKList b;
-	WLKList_CONSTRUCTOR(&b);
-	WLKList_append(&b, 11);
-	WLKList_append(&b, 12);
-	WLKList_append(&b, 13);
-	WLKList_append(&b, 14);
-	WLKList_append(&b, 15);
-	WLKList_printFrontToBack(&b);
-	WLKList_printBackToFront(&b);
-	printf("\n");
-
-	WLKList_removeLast(&b);
-	WLKList_printFrontToBack(&b);
-	WLKList_printBackToFront(&b);
-	printf("\n");
-
-	WLKList_removeLast(&b);
-	WLKList_printFrontToBack(&b);
-	WLKList_printBackToFront(&b);
-	printf("\n");
-
-	printf("=== Ending Program ===\n");
-
-	// Implicit destructors
-	WLKList_IMPLDESTRUCTOR(&a);
-	WLKList_IMPLDESTRUCTOR(&b);
-
-	return 0;
-}
-*/
 
 ////////////////////////////////////////////////////////////

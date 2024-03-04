@@ -32,15 +32,6 @@ void _BASSALT_ERROR_BadLptr()
 
 ////////////////////////////////////////////////////////////
 
-/*
-The term 'LK' refers to the lock-and-key method.
-LK key generation inspired by section 5.2 of https://www.cs.rochester.edu/u/jzhou41/papers/checkedc.pdf
-
-Bit allotment for LK keys (stored in a uint64_t):
- - [63:48] for the randomly-generated global LK key header
- - [47:0] for the key value
-*/
-
 ///// Global LK key constants /////
 
 #define _BASSALT_LK_INVALIDKEY 0
@@ -49,41 +40,41 @@ static uint64_t _BASSALT_LK_KEYVAL; // will be initialized in main, and will be 
 
 ////////////////////////////////////////////////////////////
 
-///// Definition for the LK pointer tuple for 'Node' /////
+///// Definition for the LK pointer tuple for 'WLKNode' /////
 
 typedef struct
 {
 	uint64_t _CKEY;
-	struct __Node_LOCKANDKEY* _ADDR;
-} Node_LPTR;
+	struct __WLKNode_LOCKANDKEY* _ADDR;
+} WLKNode_LPTR;
 
-///// Definition for struct 'Node' /////
+///// Definition for struct 'WLKNode' /////
 
 typedef struct
 {
 	int32_t data;
-	Node_LPTR prev;
-	Node_LPTR next;
-} Node;
+	WLKNode_LPTR prev;
+	WLKNode_LPTR next;
+} WLKNode;
 
-///// Definition for the LK object struct for 'Node' /////
+///// Definition for the LK object struct for 'WLKNode' /////
 
-typedef struct __Node_LOCKANDKEY
+typedef struct __WLKNode_LOCKANDKEY
 {
 	uint64_t _KEY;
-	Node _OBJ;
-} Node_LOCKANDKEY;
+	WLKNode _OBJ;
+} WLKNode_LOCKANDKEY;
 
-///// Definition for the implicit destructor for 'Node' /////
+///// Definition for the implicit destructor for 'WLKNode' /////
 
-void Node_IMPLDESTRUCTOR(Node* _P);
-void Node_IMPLDESTRUCTOR(Node* _P)
+void WLKNode_IMPLDESTRUCTOR(WLKNode* _P);
+void WLKNode_IMPLDESTRUCTOR(WLKNode* _P)
 {
 	if (_P->next._ADDR != NULL)
 	{
 		/*Memory Safety Check*/ // if (_P->next._ADDR == NULL) _BASSALT_ERROR_NullPtr();
 		/*Memory Safety Check*/ if (_P->next._CKEY != _P->next._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		Node_IMPLDESTRUCTOR(&(_P->next._ADDR->_OBJ));
+		WLKNode_IMPLDESTRUCTOR(&(_P->next._ADDR->_OBJ));
 		_P->next._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
 		free(_P->next._ADDR);
 		_P->next._CKEY = _BASSALT_LK_INVALIDKEY;
@@ -93,9 +84,9 @@ void Node_IMPLDESTRUCTOR(Node* _P)
 
 ////////////////////////////////////////////////////////////
 
-///// Definition for the function 'PrintNode(Node!& node)' /////
+///// Definition for the function 'PrintWLKNode(WLKNode!& node)' /////
 
-void PrintNode(Node* node)
+void PrintWLKNode(WLKNode* node)
 {
 	printf("Node(");
 	/*Memory Safety Check*/ if (node == NULL) _BASSALT_ERROR_NullPtr();
@@ -107,18 +98,18 @@ void PrintNode(Node* node)
 
 ////////////////////////////////////////////////////////////
 
-///// Definition for the struct of class 'List' /////
+///// Definition for the struct of class 'WLKList' /////
 
 typedef struct
 {
 	int32_t count;
-	Node_LPTR head;
-	Node_LPTR tail;
-} List;
+	WLKNode_LPTR head;
+	WLKNode_LPTR tail;
+} WLKList;
 
-///// Definition for the constructor of 'List' /////
+///// Definition for the constructor of 'WLKList' /////
 
-void List_CONSTRUCTOR(List* _THIS)
+void WLKList_CONSTRUCTOR(WLKList* _THIS)
 {
 	_THIS->count = 0;
 	_THIS->head._CKEY = _BASSALT_LK_INVALIDKEY;
@@ -127,15 +118,15 @@ void List_CONSTRUCTOR(List* _THIS)
 	_THIS->tail._ADDR = NULL;
 }
 
-///// Definition for the implicit destructor for 'List' /////
+///// Definition for the implicit destructor for 'WLKList' /////
 
-void List_IMPLDESTRUCTOR(List* _P)
+void WLKList_IMPLDESTRUCTOR(WLKList* _P)
 {
 	if (_P->head._ADDR != NULL)
 	{
 		/*Memory Safety Check*/ // if (_P->head._ADDR == NULL) _BASSALT_ERROR_NullPtr();
 		/*Memory Safety Check*/ if (_P->head._CKEY != _P->head._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		Node_IMPLDESTRUCTOR(&(_P->head._ADDR->_OBJ));
+		WLKNode_IMPLDESTRUCTOR(&(_P->head._ADDR->_OBJ));
 		_P->head._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
 		free(_P->head._ADDR);
 		_P->head._CKEY = _BASSALT_LK_INVALIDKEY;
@@ -143,16 +134,16 @@ void List_IMPLDESTRUCTOR(List* _P)
 	}
 }
 
-///// Definition for List.append(int val) /////
+///// Definition for WLKList.append(int val) /////
 
-void List_append(List* _THIS, int32_t val)
+void WLKList_append(WLKList* _THIS, int32_t val)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 
-	Node_LPTR newNode;
-		Node_LOCKANDKEY* _TEMP0 = (Node_LOCKANDKEY*)malloc(sizeof(Node_LOCKANDKEY));
+	WLKNode_LPTR newNode;
+		WLKNode_LOCKANDKEY* _TEMP0 = (WLKNode_LOCKANDKEY*)malloc(sizeof(WLKNode_LOCKANDKEY));
 			/*Memory Safety Check*/ if (_TEMP0 == NULL) _BASSALT_ERROR_MallocFailed();
-			Node _TEMP1;
+			WLKNode _TEMP1;
 				_TEMP1.data = val;
 				_TEMP1.prev._CKEY = _BASSALT_LK_INVALIDKEY;
 				_TEMP1.prev._ADDR = NULL;
@@ -190,9 +181,9 @@ void List_append(List* _THIS, int32_t val)
 	_THIS->count++;
 }
 
-///// Definition for List.removeLast() /////
+///// Definition for WLKList.removeLast() /////
 
-void List_removeLast(List* _THIS)
+void WLKList_removeLast(WLKList* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 
@@ -203,7 +194,7 @@ void List_removeLast(List* _THIS)
 	/*Memory Safety Check*/ if (_THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 	/*Memory Safety Check*/ if (_THIS->tail._ADDR->_OBJ.next._ADDR == NULL) _BASSALT_ERROR_NullPtr();
 	/*Memory Safety Check*/ // if (_THIS->tail._ADDR->_OBJ.next._CKEY != _THIS->tail._ADDR->_OBJ.next._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-	Node_IMPLDESTRUCTOR(&(_THIS->tail._ADDR->_OBJ.next._ADDR->_OBJ));
+	WLKNode_IMPLDESTRUCTOR(&(_THIS->tail._ADDR->_OBJ.next._ADDR->_OBJ));
 	_THIS->tail._ADDR->_OBJ.next._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
 	free(_THIS->tail._ADDR->_OBJ.next._ADDR);
 	_THIS->tail._ADDR->_OBJ.next._CKEY = _BASSALT_LK_INVALIDKEY;
@@ -212,42 +203,42 @@ void List_removeLast(List* _THIS)
 	_THIS->count--;
 }
 
-///// Definition for List.printFrontToBack() /////
+///// Definition for WLKList.printFrontToBack() /////
 
-void List_printFrontToBack(List* _THIS)
+void WLKList_printFrontToBack(WLKList* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 
 	printf("List (%i) front-to-back:\n", _THIS->count);
 
-	Node_LPTR n = _THIS->head;
+	WLKNode_LPTR n = _THIS->head;
 	while (n._ADDR != NULL)
 	{
 		printf("  ");
 		/*Memory Safety Check*/ if (n._ADDR == NULL) _BASSALT_ERROR_NullPtr();
 		/*Memory Safety Check*/ if (n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		PrintNode(&(n._ADDR->_OBJ));
+		PrintWLKNode(&(n._ADDR->_OBJ));
 		printf("\n");
 		
 		n = n._ADDR->_OBJ.next;
 	}
 }
 
-///// Definition for List.printBackToFront() /////
+///// Definition for WLKList.printBackToFront() /////
 
-void List_printBackToFront(List* _THIS)
+void WLKList_printBackToFront(WLKList* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 
 	printf("List (%i) back-to-front:\n", _THIS->count);
 
-	Node_LPTR n = _THIS->tail;
+	WLKNode_LPTR n = _THIS->tail;
 	while (n._ADDR != NULL)
 	{
 		printf("  ");
 		/*Memory Safety Check*/ if (n._ADDR == NULL) _BASSALT_ERROR_NullPtr();
 		/*Memory Safety Check*/ if (n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
-		PrintNode(&(n._ADDR->_OBJ));
+		PrintWLKNode(&(n._ADDR->_OBJ));
 		printf("\n");
 		
 		n = n._ADDR->_OBJ.prev;
@@ -269,50 +260,50 @@ int main(void)
 	printf("=== Starting Program ===\n");
 	printf("\n");
 
-	List a;
-	List_CONSTRUCTOR(&a);
+	WLKList a;
+	WLKList_CONSTRUCTOR(&a);
 	
-	List_append(&a, 1);
-	List_printFrontToBack(&a);
-	List_printBackToFront(&a);
+	WLKList_append(&a, 1);
+	WLKList_printFrontToBack(&a);
+	WLKList_printBackToFront(&a);
 	printf("\n");
 
-	List_append(&a, 2);
-	List_printFrontToBack(&a);
-	List_printBackToFront(&a);
+	WLKList_append(&a, 2);
+	WLKList_printFrontToBack(&a);
+	WLKList_printBackToFront(&a);
 	printf("\n");
 
-	List_append(&a, 3);
-	List_printFrontToBack(&a);
-	List_printBackToFront(&a);
+	WLKList_append(&a, 3);
+	WLKList_printFrontToBack(&a);
+	WLKList_printBackToFront(&a);
 	printf("\n");
 
-	List b;
-	List_CONSTRUCTOR(&b);
-	List_append(&b, 11);
-	List_append(&b, 12);
-	List_append(&b, 13);
-	List_append(&b, 14);
-	List_append(&b, 15);
-	List_printFrontToBack(&b);
-	List_printBackToFront(&b);
+	WLKList b;
+	WLKList_CONSTRUCTOR(&b);
+	WLKList_append(&b, 11);
+	WLKList_append(&b, 12);
+	WLKList_append(&b, 13);
+	WLKList_append(&b, 14);
+	WLKList_append(&b, 15);
+	WLKList_printFrontToBack(&b);
+	WLKList_printBackToFront(&b);
 	printf("\n");
 
-	List_removeLast(&b);
-	List_printFrontToBack(&b);
-	List_printBackToFront(&b);
+	WLKList_removeLast(&b);
+	WLKList_printFrontToBack(&b);
+	WLKList_printBackToFront(&b);
 	printf("\n");
 
-	List_removeLast(&b);
-	List_printFrontToBack(&b);
-	List_printBackToFront(&b);
+	WLKList_removeLast(&b);
+	WLKList_printFrontToBack(&b);
+	WLKList_printBackToFront(&b);
 	printf("\n");
 
 	printf("=== Ending Program ===\n");
 
 	// Implicit destructors
-	List_IMPLDESTRUCTOR(&a);
-	List_IMPLDESTRUCTOR(&b);
+	WLKList_IMPLDESTRUCTOR(&a);
+	WLKList_IMPLDESTRUCTOR(&b);
 
 	return 0;
 }

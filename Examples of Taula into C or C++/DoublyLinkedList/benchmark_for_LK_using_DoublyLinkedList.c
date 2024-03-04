@@ -441,8 +441,8 @@ int main(void)
 	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
 	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
 
-	const int listSize = 5000;
-	const int repeats = 10;
+	const int listSize = 150;
+	const int repeats = 7000;
 
 	double totalTimeNLK = 0.0;
 	double totalTimeWLK = 0.0;

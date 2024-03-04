@@ -464,9 +464,26 @@ int main(void)
 
 			totalTimeNLK += (double)(timeEnd - timeStart);
 		}
+
+		{
+			clock_t timeStart = clock();
+
+			WLKList list;
+			WLKList_CONSTRUCTOR(&list);
+			for (int i = 0; i < listSize; i++)
+			{
+				WLKList_append(&list, i);
+			}
+			WLKList_IMPLDESTRUCTOR(&list);
+
+			clock_t timeEnd = clock();
+
+			totalTimeWLK += (double)(timeEnd - timeStart);
+		}
 	}
 
-	printf("  With LK average time: %f\n", totalTimeNLK / (double)repeats);
+	printf("  No LK average time: %f\n", totalTimeNLK / (double)repeats);
+	printf("  With LK average time: %f\n", totalTimeWLK / (double)repeats);
 
 	// {
 	// 	printf("Running program using raw pointers...\n");

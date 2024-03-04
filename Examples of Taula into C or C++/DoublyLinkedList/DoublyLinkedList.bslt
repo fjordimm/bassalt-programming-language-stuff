@@ -43,7 +43,7 @@ class List
 	{
 		this.tail = this.tail@.prev;
 		this.tail@.next = null;
-		
+
 		this.count--;
 	}
 
@@ -124,6 +124,11 @@ void Main()
 	b.append(13);
 	b.append(14);
 	b.append(15);
+	b.printFrontToBack();
+	b.printBackToFront();
+	println$();
+
+	b.removeLast();
 	b.printFrontToBack();
 	b.printBackToFront();
 	println$();

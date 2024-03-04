@@ -282,6 +282,11 @@ int main(void)
 	Node_printBackToFront(&b);
 	printf("\n");
 
+	Node_removeLast(&b);
+	Node_printFrontToBack(&b);
+	Node_printBackToFront(&b);
+	printf("\n");
+
 	printf("=== Ending Program ===\n");
 
 	// TODO: destructors, and LK destructors must set the object's _KEY to _BASSALT_LK_INVALIDKEY

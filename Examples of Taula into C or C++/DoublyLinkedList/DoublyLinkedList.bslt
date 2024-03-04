@@ -39,9 +39,15 @@ class List
 		this.count++;
 	}
 
-	public print()
+	public removeLast()
 	{
-		println$(f"List ({this.count}):");
+		this.tail@.prev@.next = null;
+		this.count--;
+	}
+
+	public printFrontToBack()
+	{
+		println$(f"List ({this.count}) front-to-back:");
 		
 		wlptr<Node> n = this.head;
 		while n != null
@@ -51,6 +57,21 @@ class List
 			println$();
 			
 			n = n@.next;
+		}
+	}
+
+	public printBackToFront()
+	{
+		println$(f"List ({this.count}) back-to-front:");
+		
+		wlptr<Node> n = this.tail;
+		while n != null
+		{
+			print$("  ");
+			PrintNode(n);
+			println$();
+			
+			n = n@.prev;
 		}
 	}
 },
@@ -76,17 +97,24 @@ with module
 void Main()
 {
 	println$("=== Starting Program ===");
+	println$();
 
 	List a => ();
 	
 	a.append(1);
-	a.print();
+	a.printFrontToBack();
+	a.printBackToFront();
+	println$();
 	
 	a.append(2);
-	a.print();
+	a.printFrontToBack();
+	a.printBackToFront();
+	println$();
 
 	a.append(3);
-	a.print();
+	a.printFrontToBack();
+	a.printBackToFront();
+	println$();
 
 	List b => ();
 	b.append(11);
@@ -94,7 +122,9 @@ void Main()
 	b.append(13);
 	b.append(14);
 	b.append(15);
-	b.print();
+	b.printFrontToBack();
+	b.printBackToFront();
+	println$();
 
 	println$("=== Ending Program ===");
 }

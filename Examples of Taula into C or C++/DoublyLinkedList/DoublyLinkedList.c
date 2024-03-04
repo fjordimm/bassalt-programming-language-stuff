@@ -10,7 +10,7 @@
 
 ////////////////////////////////////////////////////////////
 
-///// Bassalt Helper Functions /////
+///// Bassalt helper functions /////
 
 void _BASSALT_ERROR_NullPtr()
 {
@@ -41,7 +41,7 @@ Bit allotment for LK keys (stored in a uint64_t):
  - [47:0] for the key value
 */
 
-///// Global LK Key Constants /////
+///// Global LK key constants /////
 
 #define _BASSALT_LK_INVALIDKEY 0
 static uint64_t _BASSALT_LK_HEADER; // will be initialized in main
@@ -49,7 +49,7 @@ static uint64_t _BASSALT_LK_KEYVAL; // will be initialized in main, and will be 
 
 ////////////////////////////////////////////////////////////
 
-///// Definition for Lock-and-key Pointer Tuple for 'Node' /////
+///// Definition for the LK pointer tuple for 'Node' /////
 
 typedef struct
 {
@@ -57,7 +57,7 @@ typedef struct
 	struct __Node_LOCKANDKEY* _ADDR;
 } Node_LPTR;
 
-///// Definition for Struct 'Node' /////
+///// Definition for struct 'Node' /////
 
 typedef struct
 {
@@ -66,7 +66,7 @@ typedef struct
 	Node_LPTR next;
 } Node;
 
-///// Definition for Lock-and-key Struct for 'Node' /////
+///// Definition for the LK object struct for 'Node' /////
 
 typedef struct __Node_LOCKANDKEY
 {
@@ -74,9 +74,11 @@ typedef struct __Node_LOCKANDKEY
 	Node _OBJ;
 } Node_LOCKANDKEY;
 
+///// Definition for the ___________ for 'Node' /////
+
 ////////////////////////////////////////////////////////////
 
-///// Definition for Function 'PrintNode(Node!& node)' /////
+///// Definition for the function 'PrintNode(Node!& node)' /////
 
 void PrintNode(Node* node)
 {
@@ -90,7 +92,7 @@ void PrintNode(Node* node)
 
 ////////////////////////////////////////////////////////////
 
-///// Definition for Struct of Class 'List' /////
+///// Definition for the struct of class 'List' /////
 
 typedef struct
 {
@@ -99,7 +101,7 @@ typedef struct
 	Node_LPTR tail;
 } List;
 
-///// Definition for Constructor of 'List' /////
+///// Definition for the constructor of 'List' /////
 
 void Node_CONSTRUCTOR(List* _THIS)
 {
@@ -115,6 +117,8 @@ void Node_CONSTRUCTOR(List* _THIS)
 
 void Node_append(List* _THIS, int32_t val)
 {
+	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
+
 	Node_LPTR newNode;
 		Node_LOCKANDKEY* _TEMP0 = (Node_LOCKANDKEY*)malloc(sizeof(Node_LOCKANDKEY));
 			/*Memory Safety Check*/ if (_TEMP0 == NULL) _BASSALT_ERROR_MallocFailed();
@@ -129,7 +133,6 @@ void Node_append(List* _THIS, int32_t val)
 		newNode._CKEY = _TEMP0->_KEY;
 		newNode._ADDR = _TEMP0;
 	
-	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 	if (_THIS->count == 0)
 	{
 		_THIS->head = newNode;
@@ -147,6 +150,7 @@ void Node_append(List* _THIS, int32_t val)
 	{
 		newNode._ADDR->_OBJ.prev = _THIS->tail;
 
+		/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL || _THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 		_THIS->tail._ADDR->_OBJ.next = newNode;
 		_THIS->tail = _THIS->tail._ADDR->_OBJ.next;
 	}
@@ -154,17 +158,28 @@ void Node_append(List* _THIS, int32_t val)
 	_THIS->count++;
 }
 
-///// Definition for List.print() /////
+///// Definition for List.removeLast() /////
 
-void Node_print(List* _THIS)
+void Node_removeLast(List* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
-	printf("List (%i)\n", _THIS->count);
+
+	
+}
+
+///// Definition for List.printFrontToBack() /////
+
+void Node_printFrontToBack(List* _THIS)
+{
+	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
+
+	printf("List (%i) front-to-back:\n", _THIS->count);
 
 	Node_LPTR n = _THIS->head;
 	while (n._ADDR != NULL)
 	{
 		printf("  ");
+		/*Memory Safety Check*/ if (n._ADDR == NULL || n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 		PrintNode(&(n._ADDR->_OBJ));
 		printf("\n");
 		
@@ -172,9 +187,29 @@ void Node_print(List* _THIS)
 	}
 }
 
+///// Definition for List.printBackToFront() /////
+
+void Node_printBackToFront(List* _THIS)
+{
+	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
+
+	printf("List (%i) back-to-front:\n", _THIS->count);
+
+	Node_LPTR n = _THIS->tail;
+	while (n._ADDR != NULL)
+	{
+		printf("  ");
+		/*Memory Safety Check*/ if (n._ADDR == NULL || n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+		PrintNode(&(n._ADDR->_OBJ));
+		printf("\n");
+		
+		n = n._ADDR->_OBJ.prev;
+	}
+}
+
 ////////////////////////////////////////////////////////////
 
-///// Main Function /////
+///// Main function /////
 
 int main(void)
 {
@@ -185,13 +220,36 @@ int main(void)
 	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
 
 	printf("=== Starting Program ===\n");
+	printf("\n");
 
 	List a;
 	Node_CONSTRUCTOR(&a);
 	
-	Node_append(&a, 21);
-	Node_append(&a, 33);
-	Node_print(&a);
+	Node_append(&a, 1);
+	Node_printFrontToBack(&a);
+	Node_printBackToFront(&a);
+	printf("\n");
+
+	Node_append(&a, 2);
+	Node_printFrontToBack(&a);
+	Node_printBackToFront(&a);
+	printf("\n");
+
+	Node_append(&a, 3);
+	Node_printFrontToBack(&a);
+	Node_printBackToFront(&a);
+	printf("\n");
+
+	List b;
+	Node_CONSTRUCTOR(&b);
+	Node_append(&b, 11);
+	Node_append(&b, 12);
+	Node_append(&b, 13);
+	Node_append(&b, 14);
+	Node_append(&b, 15);
+	Node_printFrontToBack(&b);
+	Node_printBackToFront(&b);
+	printf("\n");
 
 	printf("=== Ending Program ===\n");
 

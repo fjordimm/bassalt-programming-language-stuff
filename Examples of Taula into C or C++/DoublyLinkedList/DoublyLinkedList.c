@@ -74,7 +74,22 @@ typedef struct __Node_LOCKANDKEY
 	Node _OBJ;
 } Node_LOCKANDKEY;
 
-///// Definition for the ___________ for 'Node' /////
+///// Definition for the implicit destructor for 'Node' /////
+
+void Node_IMPLDESTRUCTOR(Node* _P);
+void Node_IMPLDESTRUCTOR(Node* _P)
+{
+	if (_P->next._ADDR != NULL)
+	{
+		/*Memory Safety Check*/ // if (_P->next._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+		/*Memory Safety Check*/ if (_P->next._CKEY != _P->next._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+		Node_IMPLDESTRUCTOR(&(_P->next._ADDR->_OBJ));
+		_P->next._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
+		free(_P->next._ADDR);
+		_P->next._CKEY = _BASSALT_LK_INVALIDKEY;
+		_P->next._ADDR = NULL;
+	}
+}
 
 ////////////////////////////////////////////////////////////
 
@@ -105,7 +120,6 @@ typedef struct
 
 void Node_CONSTRUCTOR(List* _THIS)
 {
-	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 	_THIS->count = 0;
 	_THIS->head._CKEY = _BASSALT_LK_INVALIDKEY;
 	_THIS->head._ADDR = NULL;
@@ -142,7 +156,8 @@ void Node_append(List* _THIS, int32_t val)
 	{
 		newNode._ADDR->_OBJ.prev = _THIS->head;
 		
-		/*Memory Safety Check*/ if (_THIS->head._ADDR == NULL || _THIS->head._CKEY != _THIS->head._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+		/*Memory Safety Check*/ if (_THIS->head._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+		/*Memory Safety Check*/ // if (_THIS->head._CKEY != _THIS->head._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 		_THIS->head._ADDR->_OBJ.next = newNode;
 		_THIS->tail = _THIS->head._ADDR->_OBJ.next;
 	}
@@ -150,7 +165,8 @@ void Node_append(List* _THIS, int32_t val)
 	{
 		newNode._ADDR->_OBJ.prev = _THIS->tail;
 
-		/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL || _THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+		/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+		/*Memory Safety Check*/ if (_THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 		_THIS->tail._ADDR->_OBJ.next = newNode;
 		_THIS->tail = _THIS->tail._ADDR->_OBJ.next;
 	}
@@ -164,7 +180,20 @@ void Node_removeLast(List* _THIS)
 {
 	/*Memory Safety Check*/ if (_THIS == NULL) _BASSALT_ERROR_NullPtr();
 
-	
+	/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+	/*Memory Safety Check*/ if (_THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+	_THIS->tail = _THIS->tail._ADDR->_OBJ.prev;
+	/*Memory Safety Check*/ if (_THIS->tail._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+	/*Memory Safety Check*/ if (_THIS->tail._CKEY != _THIS->tail._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+	/*Memory Safety Check*/ if (_THIS->tail._ADDR->_OBJ.next._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+	/*Memory Safety Check*/ // if (_THIS->tail._ADDR->_OBJ.next._CKEY != _THIS->tail._ADDR->_OBJ.next._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+	Node_IMPLDESTRUCTOR(&(_THIS->tail._ADDR->_OBJ.next._ADDR->_OBJ));
+	_THIS->tail._ADDR->_OBJ.next._ADDR->_KEY = _BASSALT_LK_INVALIDKEY;
+	free(_THIS->tail._ADDR->_OBJ.next._ADDR);
+	_THIS->tail._ADDR->_OBJ.next._CKEY = _BASSALT_LK_INVALIDKEY;
+	_THIS->tail._ADDR->_OBJ.next._ADDR = NULL;
+
+	_THIS->count--;
 }
 
 ///// Definition for List.printFrontToBack() /////
@@ -179,7 +208,8 @@ void Node_printFrontToBack(List* _THIS)
 	while (n._ADDR != NULL)
 	{
 		printf("  ");
-		/*Memory Safety Check*/ if (n._ADDR == NULL || n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+		/*Memory Safety Check*/ if (n._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+		/*Memory Safety Check*/ if (n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 		PrintNode(&(n._ADDR->_OBJ));
 		printf("\n");
 		
@@ -199,7 +229,8 @@ void Node_printBackToFront(List* _THIS)
 	while (n._ADDR != NULL)
 	{
 		printf("  ");
-		/*Memory Safety Check*/ if (n._ADDR == NULL || n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+		/*Memory Safety Check*/ if (n._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+		/*Memory Safety Check*/ if (n._CKEY != n._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
 		PrintNode(&(n._ADDR->_OBJ));
 		printf("\n");
 		

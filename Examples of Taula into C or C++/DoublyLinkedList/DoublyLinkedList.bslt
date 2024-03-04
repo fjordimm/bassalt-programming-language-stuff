@@ -41,7 +41,9 @@ class List
 
 	public removeLast()
 	{
-		this.tail@.prev@.next = null;
+		this.tail = this.tail@.prev;
+		this.tail@.next = null;
+		
 		this.count--;
 	}
 

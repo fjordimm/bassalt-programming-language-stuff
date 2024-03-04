@@ -441,39 +441,64 @@ int main(void)
 	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
 	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
 
+	const int listSize = 5000;
+	const int repeats = 10;
+
+	double totalTimeNLK = 0.0;
+	double totalTimeWLK = 0.0;
+
+	for (int r = 0; r < repeats; r++)
 	{
-		printf("Running program using LK pointers...\n");
-		clock_t timeStart = clock();
-
-		WLKList list;
-		WLKList_CONSTRUCTOR(&list);
-		for (int i = 0; i < 10000; i++)
 		{
-			WLKList_append(&list, i);
-		}
-		WLKList_IMPLDESTRUCTOR(&list);
+			clock_t timeStart = clock();
 
-		clock_t timeEnd = clock();
-		printf("  Time elapsed: %i\n", timeEnd - timeStart);
+			NLKList list;
+			NLKList_CONSTRUCTOR(&list);
+			for (int i = 0; i < listSize; i++)
+			{
+				NLKList_append(&list, i);
+			}
+			NLKList_IMPLDESTRUCTOR(&list);
+
+			clock_t timeEnd = clock();
+
+			totalTimeNLK += (double)(timeEnd - timeStart);
+		}
 	}
 
-	{
-		printf("Running program using raw pointers...\n");
-		clock_t timeStart = clock();
+	printf("  With LK average time: %f\n", totalTimeNLK / (double)repeats);
 
-		NLKList list;
-		NLKList_CONSTRUCTOR(&list);
-		for (int i = 0; i < 10000; i++)
-		{
-			NLKList_append(&list, i);
-		}
-		NLKList_IMPLDESTRUCTOR(&list);
+	// {
+	// 	printf("Running program using raw pointers...\n");
+	// 	clock_t timeStart = clock();
 
-		clock_t timeEnd = clock();
-		printf("  Time elapsed: %i\n", timeEnd - timeStart);
-	}
+	// 	NLKList list;
+	// 	NLKList_CONSTRUCTOR(&list);
+	// 	for (int i = 0; i < listSize; i++)
+	// 	{
+	// 		NLKList_append(&list, i);
+	// 	}
+	// 	NLKList_IMPLDESTRUCTOR(&list);
 
-	
+	// 	clock_t timeEnd = clock();
+	// 	printf("  Time elapsed: %i\n", timeEnd - timeStart);
+	// }
+
+	// {
+	// 	printf("Running program using LK pointers...\n");
+	// 	clock_t timeStart = clock();
+
+	// 	WLKList list;
+	// 	WLKList_CONSTRUCTOR(&list);
+	// 	for (int i = 0; i < listSize; i++)
+	// 	{
+	// 		WLKList_append(&list, i);
+	// 	}
+	// 	WLKList_IMPLDESTRUCTOR(&list);
+
+	// 	clock_t timeEnd = clock();
+	// 	printf("  Time elapsed: %i\n", timeEnd - timeStart);
+	// }
 
 	printf("[[[ Ending  Benchmark ]]]\n");
 	return 0;

@@ -23,17 +23,17 @@ class List
 		}
 		else if this.count == 1
 		{
-			newNode@.prev = this.head;
+			newNode`.prev = this.head;
 
-			this.head@.next = cede newNode;
-			this.tail = this.head@.next;
+			this.head`.next = cede newNode;
+			this.tail = this.head`.next;
 		}
 		else
 		{
-			newNode@.prev = this.tail;
+			newNode`.prev = this.tail;
 
-			this.tail@.next = cede newNode;
-			this.tail = this.tail@.next;
+			this.tail`.next = cede newNode;
+			this.tail = this.tail`.next;
 		}
 
 		this.count++;
@@ -41,8 +41,8 @@ class List
 
 	public removeLast()
 	{
-		this.tail = this.tail@.prev;
-		this.tail@.next = null;
+		this.tail = this.tail`.prev;
+		this.tail`.next = null;
 
 		this.count--;
 	}
@@ -58,7 +58,7 @@ class List
 			PrintNode(n);
 			println$();
 			
-			n = n@.next;
+			n = n`.next;
 		}
 	}
 
@@ -73,7 +73,7 @@ class List
 			PrintNode(n);
 			println$();
 			
-			n = n@.prev;
+			n = n`.prev;
 		}
 	}
 },
@@ -89,9 +89,9 @@ with module
 	private void PrintNode(Node!& node)
 	{
 		print$("Node(");
-		print$(node@.prev == null ? "o " : "* ");
-		print$(node@.data);
-		print$(node@.next == null ? " o" : " *");
+		print$(node`.prev == null ? "o " : "* ");
+		print$(node`.data);
+		print$(node`.next == null ? " o" : " *");
 		print$(")");
 	}
 }

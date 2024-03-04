@@ -56,7 +56,7 @@ Features to Cover:
 Maybe:
  - nullability with '?'
  - extension methods (maybe leave this out; remember simple is better).
- - '->' as a shortcut for '@.'
+ - '->' as a shortcut for '`.'
  - a shortcut for 'cede new int[] {1, 2, 3}' would be just {1, 2, 3}.
 
 */

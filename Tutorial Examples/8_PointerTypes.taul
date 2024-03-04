@@ -4,23 +4,22 @@
 ///// Cheat Sheet /////
 
 /*
+ int*					raw pointer type
  int&					reference pointer type
  int^					unique pointer type
- int*					raw pointer type
+ kptr<int>				key-lock pointer type
+ wkptr<int>				weak key-lock pointer type
  sptr<int>				shared pointer type
  wsptr<int>				weak shared pointer type
- lptr<int>				primary/owning lock-and-key pointer type
- wlptr<int>				secondary/weak lock-and-key pointer type
 
- var&					address-of operator, returns a reference pointer
- var@					dereference operator
+ ref var				address-of operator, returns a reference pointer
+ rref var				raw address-of operator, returns a raw pointer
+ var`					dereference operator
  new int{1}				new operator, returns a unique pointer
  alloc int{1}			alloc operator, returns a raw pointer
  dealloc var			dealloc operator, frees the object that 'var' points to
  newsptr int{1}			newsptr operator, creates and returns a shared pointer
- (sptrw)var				returns a weak pointer from a shared pointer
  newlptr int{1}			newlptr operator, creates and returns a primary/owning lock-and-key pointer
- (lptrw)var				returns a secondary/weak lock-and-key pointer from a lock-and-key owning pointer
 */
 
 //////////////////////////////
@@ -33,29 +32,32 @@ void Main()
 	int b = 2;
 	int! c = 3;
 
+
+	print$(a`);
+
 	int& r1 = a&;
-	println$(r1@); // Prints: 1
+	println$(r1`); // Prints: 1
 	a = 10;
-	println$(r1@); // Prints: 10
+	println$(r1`); // Prints: 10
 
 	int& r2 = a&;
-	r2@ = 11; // a is now 11.
+	r2` = 11; // a is now 11.
 	r2 = b&;
-	r2@ = 22; // b is now 22.
+	r2` = 22; // b is now 22.
 
 	r2 = 8; // Illegal, the value of a reference must be either null or a valid memory address.
 	r2++; // Illegal, the value of a reference must be either null or a valid memory address.
 
 	int&! r3 = a&;
-	r3@ = 111; // a is now 111.
+	r3` = 111; // a is now 111.
 	r3 = b&; // Illegal, r3 is fixed.
 
 	int!& r4 = a&!;
-	r4@ = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
-	println$(r4@);
+	r4` = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
+	println$(r4`);
 	baboei
 	r4 = b&; // The value of r4 can still be changed.
-	println$(r4@);
+	println$(r4`);
 
 	// Think of fixedness as polymorphism. Unfixed types (e.g. int) are subsets of fixed types (e.g. int!).
 	int!& r5 = a&!;
@@ -64,8 +66,8 @@ void Main()
 	int& r7 = c&; // Illegal, r7 can mutate what it points to, so it cannot point to a fixed type.
 
 	int!&! r8 = a&!;
-	println$(r8@);
-	r8@ = 100; // Illegal, r8 points to a fixed type.
+	println$(r8`);
+	r8` = 100; // Illegal, r8 points to a fixed type.
 	r8 = b&; // Illegal, r8 is fixed.
 
 	///////////
@@ -82,8 +84,8 @@ void Main()
 	///////////
 
 	int& r13 = null;
-	println$(r13@); // Runtime error.
-	r13@ = 1000; // Runtime error.
+	println$(r13`); // Runtime error.
+	r13` = 1000; // Runtime error.
 
 	int& r14 = a&;
 	int& r15 = a&;
@@ -110,21 +112,21 @@ void Main()
 	///////////
 
 	int^ up1 = new int{7};
-	println$(up1@); // Prints: 7
-	up1@ = 8;
-	println$(up1@); // Prints: 8
+	println$(up1`); // Prints: 7
+	up1` = 8;
+	println$(up1`); // Prints: 8
 
 	int^ up2 = new int{3};
 	int^ up3 = new int{3};
 	println$(up2 == up3); // Prints: false
-	println$(up2@ == up3@); // Prints: true
+	println$(up2` == up3`); // Prints: true
 
 	int^ up4 = new int{9};
-	println$(up4@); // Prints: 9
+	println$(up4`); // Prints: 9
 	int^ up5 = up4; // Illegal.
 	int^ up5 = cede up4; // up4 has now given ownership of the object to up5.
-	println$(up5@); // Prints: 9
-	println$(up4@); // Runtime error (null pointer).
+	println$(up5`); // Prints: 9
+	println$(up4`); // Runtime error (null pointer).
 	println$(up4 == null); // Prints: true
 
 	///////////
@@ -153,28 +155,28 @@ void Main() unsafe
 	///////////
 
 	int* rp1 = alloc int{7};
-	println$(rp1@); // Prints: 7
-	rp1@ = 8;
-	println$(rp1@); // Prints: 8
+	println$(rp1`); // Prints: 7
+	rp1` = 8;
+	println$(rp1`); // Prints: 8
 	dealloc rp1;
 
 	int* rp2 = alloc int{3};
 	int* rp3 = alloc int{3};
 	println$(rp2 == rp3); // Prints: false
-	println$(rp2@ == rp3@); // Prints: true
+	println$(rp2` == rp3`); // Prints: true
 	dealloc rp2;
 	dealloc rp3;
 
 	int* rp4 = alloc int{9};
-	println$(rp4@); // Prints: 9
+	println$(rp4`); // Prints: 9
 	int* rp5 = rp4;
-	println$(rp5@); // Prints: 9
-	println$(rp4@); // Prints: 9
+	println$(rp5`); // Prints: 9
+	println$(rp4`); // Prints: 9
 	println$(rp4 == null); // Prints: false
 	dealloc rp4;
 	println$(rp5 == null); // Prints: false
-	println$(rp4@); // Undefined behavior, dereferencing a dangling pointer
-	println$(rp5@); // Undefined behavior, dereferencing a dangling pointer
+	println$(rp4`); // Undefined behavior, dereferencing a dangling pointer
+	println$(rp5`); // Undefined behavior, dereferencing a dangling pointer
 
 	///////////
 }

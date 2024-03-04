@@ -10,8 +10,8 @@ Notable Features:
  - Labelled loops that can be broken out of by name, and infinite loops called 'loop'
  - The unique pointer stuff that Rust does well, but it's better than Rust because Rust is not very explicit
  - The dereference operator comes after, which makes you use less parenthesis. Examples:
-    - a@.b instead of (*a).b
-	- a.b@ instead of *(a.b)
+    - a`.b instead of (*a).b
+	- a.b` instead of *(a.b)
  - Clearness, especially that '=' always means direct assignment, and that there is explicit referencing/dereferencing
  - The built-in pointers types (&, ^, *, sptr, ptrw, lptr, and lptrw) (reference pointer, unique pointer, raw pointer, shared pointer, weak shared pointer, lock-and-key pointer, and weak lock-and-key pointer)
  - Lock-and-key pointers, and two types of them (primary/owning and secondary/weak)

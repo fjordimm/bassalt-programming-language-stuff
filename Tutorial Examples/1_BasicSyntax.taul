@@ -251,7 +251,7 @@ void Main()
 {
 	int foo = 13;
 	int& fooRef = foo&;
-	fooRef@ = 7; // now foo is 7
+	fooRef` = 7; // now foo is 7
 }
 
 ////////////////////////////////////////////////////////////

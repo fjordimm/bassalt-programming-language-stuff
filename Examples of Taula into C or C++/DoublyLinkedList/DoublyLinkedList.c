@@ -26,7 +26,7 @@ void _BASSALT_ERROR_MallocFailed()
 
 void _BASSALT_ERROR_BadLptr()
 {
-	fprintf(stderr, "Tried to dereference an invalid weak lock-and-key pointer!\n");
+	fprintf(stderr, "Tried to dereference an invalid weak LK pointer!\n");
 	exit(1);
 }
 
@@ -285,6 +285,38 @@ int main(void)
 	Node_removeLast(&b);
 	Node_printFrontToBack(&b);
 	Node_printBackToFront(&b);
+	printf("\n");
+
+	Node_removeLast(&b);
+	Node_printFrontToBack(&b);
+	Node_printBackToFront(&b);
+	printf("\n");
+
+	List c;
+	Node_CONSTRUCTOR(&c);
+	Node_append(&c, 101);
+	Node_append(&c, 102);
+	Node_append(&c, 103);
+	Node_append(&c, 104);
+	Node_append(&c, 105);
+	Node_printFrontToBack(&c);
+	Node_printBackToFront(&c);
+	printf("\n");
+
+	Node_LPTR p = c.tail;
+	printf("p = ");
+	/*Memory Safety Check*/ if (p._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+	/*Memory Safety Check*/ if (p._CKEY != p._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+	PrintNode(&(c.tail._ADDR->_OBJ));
+	printf("\n");
+	printf("\n");
+
+	Node_removeLast(&c);
+	printf("p = ");
+	/*Memory Safety Check*/ if (p._ADDR == NULL) _BASSALT_ERROR_NullPtr();
+	/*Memory Safety Check*/ if (p._CKEY != p._ADDR->_KEY) _BASSALT_ERROR_BadLptr();
+	PrintNode(&(c.tail._ADDR->_OBJ));
+	printf("\n");
 	printf("\n");
 
 	printf("=== Ending Program ===\n");

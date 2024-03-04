@@ -133,5 +133,10 @@ void Main()
 	b.printBackToFront();
 	println$();
 
+	b.removeLast();
+	b.printFrontToBack();
+	b.printBackToFront();
+	println$();
+
 	println$("=== Ending Program ===");
 }

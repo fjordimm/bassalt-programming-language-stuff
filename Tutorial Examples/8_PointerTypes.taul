@@ -32,43 +32,40 @@ void Main()
 	int b = 2;
 	int! c = 3;
 
-
-	print$(a`);
-
-	int& r1 = a&;
+	int& r1 = ref a;
 	println$(r1`); // Prints: 1
 	a = 10;
 	println$(r1`); // Prints: 10
 
-	int& r2 = a&;
+	int& r2 = ref a;
 	r2` = 11; // a is now 11.
-	r2 = b&;
+	r2 = ref b;
 	r2` = 22; // b is now 22.
 
 	r2 = 8; // Illegal, the value of a reference must be either null or a valid memory address.
 	r2++; // Illegal, the value of a reference must be either null or a valid memory address.
 
-	int&! r3 = a&;
+	int&! r3 = ref a;
 	r3` = 111; // a is now 111.
-	r3 = b&; // Illegal, r3 is fixed.
+	r3 = ref b; // Illegal, r3 is fixed.
 
-	int!& r4 = a&!;
+	int!& r4 = ref! a;
 	r4` = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
 	println$(r4`);
 	baboei
-	r4 = b&; // The value of r4 can still be changed.
+	r4 = ref! b; // The value of r4 can still be changed.
 	println$(r4`);
 
 	// Think of fixedness as polymorphism. Unfixed types (e.g. int) are subsets of fixed types (e.g. int!).
-	int!& r5 = a&!;
-	int!& r6 = c&!;
-	int& r6 = a&;
-	int& r7 = c&; // Illegal, r7 can mutate what it points to, so it cannot point to a fixed type.
+	int!& r5 = ref! a;
+	int!& r6 = ref! c;
+	int& r6 = ref a;
+	int& r7 = ref c; // Illegal, r7 can mutate what it points to, so it cannot point to a fixed type.
 
-	int!&! r8 = a&!;
+	int!&! r8 = ref! a;
 	println$(r8`);
 	r8` = 100; // Illegal, r8 points to a fixed type.
-	r8 = b&; // Illegal, r8 is fixed.
+	r8 = ref b; // Illegal, r8 is fixed.
 
 	///////////
 
@@ -87,11 +84,11 @@ void Main()
 	println$(r13`); // Runtime error.
 	r13` = 1000; // Runtime error.
 
-	int& r14 = a&;
-	int& r15 = a&;
-	int& r16 = b&;
+	int& r14 = ref a;
+	int& r15 = ref a;
+	int& r16 = ref b;
 	int& r17 = null;
-	println$(r14 == a&); // Prints: true
+	println$(r14 == ref a); // Prints: true
 	println$(r14 == r15); // Prints: true
 	println$(r14 == r16); // Prints: false
 	println$(r17 == null);

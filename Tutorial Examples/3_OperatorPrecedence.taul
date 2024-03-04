@@ -3,7 +3,7 @@
 
 Operator Precedence:
  1) x.y   f(x)   a[i]   x`   x++   x--
- 2) &x   +x   -x   !x   ~x   [T]x   new  cede   alloc   dealloc
+ 2) +x   -x   !x   ~x   [T]x   ref   rref   new   cede   alloc   newkptr   newsptr   dealloc
  3) x via T   x with {...}
  4) x * y   x / y   x % y
  5) x + y   x - y

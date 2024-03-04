@@ -250,7 +250,7 @@ struct Point
 void Main()
 {
 	int foo = 13;
-	int& fooRef = foo&;
+	int& fooRef = ref foo;
 	fooRef` = 7; // now foo is 7
 }
 

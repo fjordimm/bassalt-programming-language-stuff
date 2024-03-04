@@ -337,9 +337,11 @@ void NLKList_append(NLKList* _THIS, int32_t val)
 
 	NLKNode* newNode = (NLKNode*)malloc(sizeof(NLKNode));
 		/*Memory Safety Check*/ if (newNode == NULL) _BASSALT_ERROR_MallocFailed();
-		newNode->data = val;
-		newNode->prev = NULL;
-		newNode->next = NULL;
+			NLKNode _TEMP0;
+			_TEMP0.data = val;
+			_TEMP0.prev = NULL;
+			_TEMP0.next = NULL;
+		*newNode = _TEMP0;
 	
 	if (_THIS->count == 0)
 	{
@@ -441,8 +443,8 @@ int main(void)
 	_BASSALT_LK_HEADER = (uint64_t)rand() << 48uL;
 	_BASSALT_LK_KEYVAL = _BASSALT_LK_HEADER | ((uint64_t)rand() << 16uL) | (uint64_t)rand();
 
-	const int listSize = 150;
-	const int repeats = 7000;
+	const int listSize = 5000;
+	const int repeats = 10;
 
 	double totalTimeNLK = 0.0;
 	double totalTimeWLK = 0.0;
@@ -464,7 +466,7 @@ int main(void)
 
 			totalTimeNLK += (double)(timeEnd - timeStart);
 		}
-
+		
 		{
 			clock_t timeStart = clock();
 
@@ -484,38 +486,6 @@ int main(void)
 
 	printf("  No LK average time: %f\n", totalTimeNLK / (double)repeats);
 	printf("  With LK average time: %f\n", totalTimeWLK / (double)repeats);
-
-	// {
-	// 	printf("Running program using raw pointers...\n");
-	// 	clock_t timeStart = clock();
-
-	// 	NLKList list;
-	// 	NLKList_CONSTRUCTOR(&list);
-	// 	for (int i = 0; i < listSize; i++)
-	// 	{
-	// 		NLKList_append(&list, i);
-	// 	}
-	// 	NLKList_IMPLDESTRUCTOR(&list);
-
-	// 	clock_t timeEnd = clock();
-	// 	printf("  Time elapsed: %i\n", timeEnd - timeStart);
-	// }
-
-	// {
-	// 	printf("Running program using LK pointers...\n");
-	// 	clock_t timeStart = clock();
-
-	// 	WLKList list;
-	// 	WLKList_CONSTRUCTOR(&list);
-	// 	for (int i = 0; i < listSize; i++)
-	// 	{
-	// 		WLKList_append(&list, i);
-	// 	}
-	// 	WLKList_IMPLDESTRUCTOR(&list);
-
-	// 	clock_t timeEnd = clock();
-	// 	printf("  Time elapsed: %i\n", timeEnd - timeStart);
-	// }
 
 	printf("[[[ Ending  Benchmark ]]]\n");
 	return 0;

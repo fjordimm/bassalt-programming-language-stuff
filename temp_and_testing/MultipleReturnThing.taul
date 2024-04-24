@@ -1,0 +1,27 @@
+	
+void Main()
+{
+	FillArray(3)
+	-> int[15] a;
+
+	FillTwoArrays(5)
+	-> int[15] b;
+	-> int[15] c;
+}
+
+void FillArray(int val) -> (int[] arr)
+{
+	for int i in 0..arr.size - 1
+	{
+		arr[i] = val;
+	}
+}
+
+void FillTwoArrays(int val) -> (int[] arr1, int[] arr2)
+{
+	for int i in 0..arr1.size - 1
+	{
+		arr1[i] = val;
+		arr2[i] = val;
+	}
+}

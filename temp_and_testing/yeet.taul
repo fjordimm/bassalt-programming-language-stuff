@@ -1,5 +1,9 @@
 	
 void Main()
 {
-	int! yoh = 
+	string
+
+	Bruh* b = rnew Bruh();
+	b`.shit = 17;
+	rfree b;
 }

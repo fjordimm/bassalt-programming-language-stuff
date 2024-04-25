@@ -1,0 +1,19 @@
+
+using P5JS::Color;
+
+using Ruleset = func<Grid&, int, int, CellType&, CellType&, CellTypes&, bool>;
+
+class CellType
+{
+	public{get} int id;
+	public{get} string^ name;
+	public{get} Color color;
+	public{get} Ruleset^ ruleset;
+
+	public this(...);
+}
+
+class CellTypes
+{
+	public{get}
+}

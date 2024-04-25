@@ -52,10 +52,13 @@ Features to Cover:
  - abstract classes and abstract methods, virtual classes and virtual methods
  - 'casting' between pointer types
  - vtables, and also maybe the vtable pointer value is used as type identification
+ - syntax for a function that must set one of its parameters (multiple return thing)
+ - copy keyword
+ - equals keyword
 
 Maybe:
  - nullability with '?'
- - extension methods (maybe leave this out; remember simple is better).
+ - extension methods
  - '->' as a shortcut for '`.'
  - a shortcut for 'cede new int[] {1, 2, 3}' would be just {1, 2, 3}.
  - slices

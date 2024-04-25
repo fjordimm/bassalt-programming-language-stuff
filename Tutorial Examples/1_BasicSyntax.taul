@@ -144,7 +144,7 @@ void Main()
 
 	// Labelled 'while' loop (labels also apply to 'do-while' loops and 'for' loops):
 	int m = 0;
-	while[MyLoop]
+	while[MyLoop] (true)
 	{
 		if l >= 30 { break MyLoop; }
 

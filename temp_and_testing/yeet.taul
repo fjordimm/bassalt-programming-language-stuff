@@ -7,3 +7,28 @@ void Main()
 	b`.shit = 17;
 	rfree b;
 }
+
+///////
+
+func Main()
+{
+	int a = Add(5, 7);
+	a = Add2(5, 7);
+
+	Add(5, 7)
+	-> int b;
+	Add(5, 7)
+	-> b;
+
+	
+}
+
+func Add(int a, int b) -> int res
+{
+	res = a + b;
+}
+
+func Add2(int a, int b) -> int
+{
+	return a + b;
+}

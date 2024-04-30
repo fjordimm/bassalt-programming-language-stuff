@@ -1,19 +1,79 @@
 
+using Bassalt::Vec;
+using Html::Document;
 using P5JS::Color;
 
 using Ruleset = func<Grid&, int, int, CellType&, CellType&, CellTypes&, bool>;
 
-class CellType
+class CellType!
 {
-	public{get} int id;
-	public{get} string^ name;
-	public{get} Color color;
-	public{get} Ruleset^ ruleset;
+	public{get} int! id;
+	public{get} string^!! name;
+	public{get} Color! color;
+	public{get} Ruleset^!! ruleset;
 
-	public this(...);
+	public this(int id, string!^ name, Color color, Ruleset!^ ruleset)
+	{
+		this->id = id;
+		this->name = @name;
+		this->color = color;
+		this->ruleset = @ruleset;
+	}
 }
 
 class CellTypes
 {
-	public{get}
+	public{get} int size;
+	public{get} Vec<CellType^> list;
+
+	public this()
+	{
+		this->size = 0;
+		this->list => ();
+	}
+
+	public void addCellType(string!^ name, Color color, Ruleset!^ ruleset)
+	{
+		CellType^ cellType = new CellType(this->size, @name, color, @ruleset);
+		
+		this->addCellTypeToRadio((&!)cellType);
+
+		this->list.append(@cellType);
+		this->size++;
+	}
+
+	private void addCellTypeToRadio(CellType!& cellType)
+	{
+		using Html::Form;
+		using Html::Input;
+		using Html::Label;
+
+		Form& form = Document.getElementById<Form>("form-paint-radio");
+
+		Input& input = Document.createElement<Input>();
+		input->id = f"paint-radio-{cellType->name}";
+		input->type = "radio";
+		input->name = "paint-radio";
+		input->value = cellType->name;
+		form->appendChild(Document.createTextNode(" "));
+		form->appendChild(input);
+
+		Label& label = ...
+		...
+	}
+
+	public CellType!^ getCellType(int id)
+	{
+		return this->list.at(id) via;
+	}
+
+	public int getCellTypeId(string!^ name)
+	{
+		int id = 0;
+		while id < this->list.size && this->list.at(id)
+		{
+
+		}
+		return id;
+	}
 }

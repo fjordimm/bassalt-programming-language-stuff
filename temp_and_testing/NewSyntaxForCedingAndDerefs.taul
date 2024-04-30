@@ -1,0 +1,20 @@
+
+void Main()
+{
+	Thing^ owner1 = new Thing();
+	Thing^ owner2 = @owner1;
+
+	int someInt = 13;
+	int& r = &someInt;
+	r` += 3;
+
+	int! someOtherInt = 8;
+	int!& rr = someOtherInt&!;
+
+	Thing a => ();
+	a`.field += 5;
+	a->field += 5;
+
+	ReferenceReturnThing()
+	-> int[] result;
+}

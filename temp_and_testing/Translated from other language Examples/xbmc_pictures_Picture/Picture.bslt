@@ -1,0 +1,26 @@
+
+class CPicture
+{
+
+},
+module
+{
+	public bool GetThumbnailFromSurface(byte[]!!& buffer, int width, int height, int stride, string!& thumbFile) -> (byte[] result)
+	{
+		IImage^ image = ImageFactory::CreateLoader(thumbFile);
+		if image == null
+		{
+			return false;
+		}
+		else
+		{
+			bool res = image`.createThumbnailFromSurface(buffer, width, height, XFile::XB_FMT_A8R8G8B8, stride, thumbFile)
+			-> byte[] thumb;
+		}
+	}
+
+	public bool CreateThumbnailFromSurface(byte[]!! buffer, int width, int height, int stride, string!& thumbFile)
+	{
+
+	}
+}

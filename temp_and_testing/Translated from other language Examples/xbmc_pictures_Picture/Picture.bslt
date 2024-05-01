@@ -5,7 +5,7 @@ class CPicture
 },
 module
 {
-	public bool GetThumbnailFromSurface(byte[]!!& buffer, int width, int height, int stride, string!& thumbFile) -> (byte[] result)
+	public bool GetThumbnailFromSurface(byte[]!!& buffer, int width, int height, int stride, string!& thumbFile) -> (byte[]^ result)
 	{
 		IImage^ image = ImageFactory::CreateLoader(thumbFile);
 		if image == null
@@ -14,13 +14,37 @@ module
 		}
 		else
 		{
-			bool res = image`.createThumbnailFromSurface(buffer, width, height, XFile::XB_FMT_A8R8G8B8, stride, thumbFile)
-			-> byte[] thumb;
+			bool res = image:createThumbnailFromSurface(buffer, width, height, XFile::XB_FMT_A8R8G8B8, stride, thumbFile)
+			-> byte[]^ thumb;
+
+			if !res
+			{ return false; }
+
+			result = copy thumb;
+
+			return true;
 		}
+
+
 	}
 
-	public bool CreateThumbnailFromSurface(byte[]!! buffer, int width, int height, int stride, string!& thumbFile)
-	{
+	public bool CreateThumbnailFromSurface(byte[]!!& buffer, int width, int height, int stride, string!& thumbFile)
+	{...}
 
+	public CTexture^ CreateTiledThumb(IIterable<string>!!& files)
+	{
+		if files:size == 0
+		{ return new CTexture(); }
+
+		using Math::Ceil();
+		using Math::Sqrt();
+		uint numAcross = (uint)Ceil(Sqrt((float)files:size));
+		uint numDown = (files:size + numAcross - 1) / numAcross;
+
+		uint imageRes = CServiceBroker.getSettingsComponent():getAdvancedSettings():mImageRes;
+
+		...
+
+		
 	}
 }

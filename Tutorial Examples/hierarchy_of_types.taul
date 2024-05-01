@@ -1,0 +1,14 @@
+
+/*
+
+Types:
+ - portable
+    - primitive types
+	   - int
+	   - bool
+	   - float
+	     ...
+ - non-portable
+    - arrays
+
+*/

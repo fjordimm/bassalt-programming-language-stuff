@@ -8,6 +8,7 @@ Notable Features:
  - Explicit immutability; more precise mutability control
  - Built-in pointer types
     - Unique pointers
+ - Better syntax and possibilities for non-dynamic classes and arrays
 
 Minor Notable Features:
  - Labelled loops that can be broken out of by name, and simple infinite loops with keyword 'loop'

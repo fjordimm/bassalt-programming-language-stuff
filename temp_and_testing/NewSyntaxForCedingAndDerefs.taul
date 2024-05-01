@@ -12,8 +12,11 @@ void Main()
 	int!& rr = someOtherInt&!;
 
 	Thing a => ();
-	a`.field += 5;
-	a->field += 5;
+	a.field += 5;
+
+	Thing^ b = new Thing();
+	b`.field += 5;
+	b:field += 5;
 
 	ReferenceReturnThing()
 	-> int[] result;

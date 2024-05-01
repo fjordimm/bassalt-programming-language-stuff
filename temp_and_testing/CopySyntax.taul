@@ -1,0 +1,64 @@
+
+portable class Foo
+{
+	public{get,set} int x;
+	public{get,set} int y;
+
+	public this(int x, int y)
+	{
+		this:x = x;
+		this:y = y;
+	}
+}
+
+class Bar
+{
+	public{get,set} int x;
+	public{get,set} int y;
+
+	public this(int x, int y)
+	{
+		this:x = x;
+		this:y = y;
+	}
+}
+
+class Baz
+{
+	public{get,set} int x;
+	public{get,set} int y;
+
+	public this(int x, int y)
+	{
+		this:x = x;
+		this:y = y;
+	}
+
+	override copy() -> (Baz other)
+	{
+		// TODO
+	}
+}
+
+class Qux
+{
+	public{get,set} Foo f;
+	public{get,set} Bar b;
+
+	public this(Foo f, (int b_x, int b_y))
+	{
+		this:f = f;
+		this:b => (b_x, b_y);
+	}
+}
+
+void Main()
+{
+	Foo foo1 = Foo(2, 3);
+	Foo foo2 = foo1;
+
+	Bar bar1 => (2, 3);
+	Bar bar2 => copy bar1;
+
+	// todo: arrays
+}

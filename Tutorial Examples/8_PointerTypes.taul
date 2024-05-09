@@ -7,20 +7,16 @@
  int*					raw pointer type
  int&					reference pointer type
  int^					unique pointer type
- kptr<int>				key-lock pointer type
- wkptr<int>				weak key-lock pointer type
  sptr<int>				shared pointer type
- wsptr<int>				weak shared pointer type
+ wptr<int>				weak pointer type
 
- ref var				address-of operator, returns a reference pointer
- rref var				raw address-of operator, returns a raw pointer
+ var&					address-of operator, returns a reference pointer
  var`					dereference operator
  new int{1}				new operator, returns a unique pointer
+ snew int{1}			newsptr operator, creates and returns a shared pointer
  rnew int{1}			rnew operator, returns a raw pointer
  rrealloc var			rrealloc operator, returns a raw pointer
  rfree var				rfree operator, frees the referent of 'var'
- newkptr int{1}			newkptr operator, creates and returns a key-lock pointer
- newsptr int{1}			newsptr operator, creates and returns a shared pointer
 */
 
 //////////////////////////////
@@ -33,40 +29,39 @@ void Main()
 	int b = 2;
 	int! c = 3;
 
-	int& r1 = ref a;
+	int& r1 = a&;
 	println$(r1`); // Prints: 1
 	a = 10;
 	println$(r1`); // Prints: 10
 
-	int& r2 = ref a;
+	int& r2 = a&;
 	r2` = 11; // a is now 11.
-	r2 = ref b;
+	r2 = b&;
 	r2` = 22; // b is now 22.
 
 	r2 = 8; // Illegal, the value of a reference must be either null or a valid memory address.
 	r2++; // Illegal, the value of a reference must be either null or a valid memory address.
 
-	int&! r3 = ref a;
+	int&! r3 = a&;
 	r3` = 111; // a is now 111.
 	r3 = ref b; // Illegal, r3 is fixed.
 
-	int!& r4 = ref! a;
+	int!& r4 = a&!;
 	r4` = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
 	println$(r4`);
-	baboei
-	r4 = ref! b; // The value of r4 can still be changed.
+	r4 = b&!; // The value of r4 can still be changed.
 	println$(r4`);
 
 	// Think of fixedness as polymorphism. Unfixed types (e.g. int) are subsets of fixed types (e.g. int!).
-	int!& r5 = ref! a;
-	int!& r6 = ref! c;
-	int& r6 = ref a;
-	int& r7 = ref c; // Illegal, r7 can mutate its referent, so it cannot point to a fixed type.
+	int!& r5 = a&!;
+	int!& r6 = c&!;
+	int& r6 = a&;
+	int& r7 = c&!; // Illegal, r7 can mutate its referent, so it cannot point to a fixed type.
 
-	int!&! r8 = ref! a;
+	int!&! r8 = a&!;
 	println$(r8`);
 	r8` = 100; // Illegal, r8 points to a fixed type.
-	r8 = ref b; // Illegal, r8 is fixed.
+	r8 = b&!; // Illegal, r8 is fixed.
 
 	///////////
 
@@ -85,11 +80,11 @@ void Main()
 	println$(r13`); // Runtime error.
 	r13` = 1000; // Runtime error.
 
-	int& r14 = ref a;
-	int& r15 = ref a;
-	int& r16 = ref b;
+	int& r14 = a&
+	int& r15 = a&;
+	int& r16 = b&;
 	int& r17 = null;
-	println$(r14 == ref a); // Prints: true
+	println$(r14 == a&); // Prints: true
 	println$(r14 == r15); // Prints: true
 	println$(r14 == r16); // Prints: false
 	println$(r17 == null);
@@ -122,7 +117,7 @@ void Main()
 	int^ up4 = new int{9};
 	println$(up4`); // Prints: 9
 	int^ up5 = up4; // Illegal.
-	int^ up5 = cede up4; // up4 has now given ownership of the object to up5.
+	int^ up5 = up4@; // up4 has now given ownership of the object to up5.
 	println$(up5`); // Prints: 9
 	println$(up4`); // Runtime error (null pointer).
 	println$(up4 == null); // Prints: true
@@ -143,58 +138,77 @@ void Main()
 
 ///// Raw Pointers /////
 
-void Main() unsafe
+void Main()
 {
 	/* Raw pointers can point to anything on the stack or heap. */
 	/* They will not automatically free themselves, so you must free them manually when needed using 'rfree'. */
 	/* Therefore, raw pointers must be used in an unsafe context. */
 	/* Mutability/face rules still apply to raw pointers, however. */
 
-	///////////
+	unsafe
+	{
+		int* rp1 = rnew int{7};
+		println$(rp1`); // Prints: 7
+		rp1` = 8;
+		println$(rp1`); // Prints: 8
+		rfree rp1;
 
-	int* rp1 = rnew int{7};
-	println$(rp1`); // Prints: 7
-	rp1` = 8;
-	println$(rp1`); // Prints: 8
-	rfree rp1;
+		int* rp2 = rnew int{3};
+		int* rp3 = rnew int{3};
+		println$(rp2 == rp3); // Prints: false
+		println$(rp2` == rp3`); // Prints: true
+		rfree rp2;
+		rfree rp3;
 
-	int* rp2 = rnew int{3};
-	int* rp3 = rnew int{3};
-	println$(rp2 == rp3); // Prints: false
-	println$(rp2` == rp3`); // Prints: true
-	rfree rp2;
-	rfree rp3;
+		int* rp4 = rnew int{9};
+		println$(rp4`); // Prints: 9
+		int* rp5 = rp4;
+		println$(rp5`); // Prints: 9
+		println$(rp4`); // Prints: 9
+		println$(rp4 == null); // Prints: false
+		rfree rp4;
+		println$(rp5 == null); // Prints: false
+		println$(rp4`); // Undefined behavior, dereferencing a dangling pointer
+		println$(rp5`); // Undefined behavior, dereferencing a dangling pointer
 
-	int* rp4 = rnew int{9};
-	println$(rp4`); // Prints: 9
-	int* rp5 = rp4;
-	println$(rp5`); // Prints: 9
-	println$(rp4`); // Prints: 9
-	println$(rp4 == null); // Prints: false
-	rfree rp4;
-	println$(rp5 == null); // Prints: false
-	println$(rp4`); // Undefined behavior, dereferencing a dangling pointer
-	println$(rp5`); // Undefined behavior, dereferencing a dangling pointer
+		///////////
 
-	///////////
+		/* Raw pointers can also be used like reference pointers */
+
+		int a = 1;
+		int b = 2;
+		int! c = 3;
+
+		int* rp6 = (*)a&;
+		println$(rp6`);
+		rp6` += 9;
+		int!* rp7 = (*)c&!;
+		println$(rp7`);
+
+		///////////
+
+		/* Raw pointers can also be set to any other pointer type */
+
+		int& r1 = a&;
+		int* rp8 = (*)r1;
+
+		int^ up1 = new int{7};
+		int* rp9 = (*)up1;
+	}
 }
 
 //////////////////////////////
 
-///// Lock-and-key Pointers /////
+///// Shared Pointers and Weak Pointers /////
 
 void Main()
 {
-	/* They are like unique pointers because only one thing can have ownership of it, but there can be weak references to it. */
+	sptr<int> = snew
 }
 
 //////////////////////////////
 
-///// Shared Pointers /////
-
-//////////////////////////////
-
-// TODO: explicit casting from one pointer type to another (e.g. 'int* rp = (*)someUniquePtr' and that is actually a shortcut for 'int* rp = (int*)someUniquePtr')
+// TODO: conversions between pointer types; explicit casting from one pointer type to another (e.g. 'int* rp = (*)someUniquePtr' and that is actually a shortcut for 'int* rp = (int*)someUniquePtr')
 // TODO: combining them (e.g. int^*)
 // TODO: equality between them
 // TODO: new Point{Point::Origin} vs new Point(0, 0)

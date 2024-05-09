@@ -12,12 +12,12 @@ namespace SanAndreasUnity::Behaviours::Vehicles
 {
 	enum VehicleLight
 	{
-		#flagvalues
+		#flagvalues#
 		FrontLeft,
 		FrontRight,
 		RearLeft,
 		RearRight
-		#endflagvalues
+		#endflagvalues#
 
 		Front = FrontLeft | FrontRight,
 		Rear = RearLeft | RearRight,

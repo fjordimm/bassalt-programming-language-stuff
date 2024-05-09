@@ -72,7 +72,7 @@ void Main()
 }
 /****************************/
 
-// ...or on the first line of block of code (function body, class constructor, etc.)
+// ...or on the first line of a block of code (function body, class constructor, etc.)
 /******* 'file4.taul' *******/
 void Main()
 {

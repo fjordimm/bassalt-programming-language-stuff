@@ -34,9 +34,10 @@ class Baz
 		this:y = y;
 	}
 
-	override copy() -> (Baz other)
+	override copy() -> (Baz out)
 	{
-		// TODO
+		out => (this:x, this:y);
+		println$("Custom copy function!");
 	}
 }
 
@@ -52,13 +53,79 @@ class Qux
 	}
 }
 
+class Qoz
+{
+	public{get,set} Foo^ f;
+	public{get,set} Bar^ b;
+
+	public this(Foo^ f, Bar^ b)
+	{
+		this:f = @f;
+		this:b = @b;
+	}
+}
+
+class Qam
+{
+	public{get,set} Foo^ f;
+	public{get,set} Bar^ b;
+
+	public this(Foo^ f, Bar^ b)
+	{
+		this:f = @f;
+		this:b = @b;
+	}
+
+	override copy() -> (Qam out)
+	{
+		out => (copy this:f, copy this:b);
+	}
+}
+
 void Main()
 {
+	// Portable types do not use copy
+	
 	Foo foo1 = Foo(2, 3);
 	Foo foo2 = foo1;
+
+	/////////////
+
+	// Special syntax for the '=>' initialization...
+	// Since bar1 is of a non-portable type, the expression 'copy bar1' is not valid, but in this example it is not an expression it is just part of the '=>' syntax
 
 	Bar bar1 => (2, 3);
 	Bar bar2 => copy bar1;
 
-	// todo: arrays
+	/////////////
+
+	// The copy expression, which expects a pointer...
+	// Portable and non-portable types work roughly the same way when accessed through pointers
+
+	Foo^ pfoo1 = new Foo(2, 3);
+	Foo^ pfoo2 = copy pfoo1;
+	Foo& rfoo1 = (&)pfoo1;
+	Foo^ pfoo3 = copy rfoo1;
+
+	Bar^ pbar1 = new Bar(2, 3);
+	Bar^ pbar2 = copy pbar1;
+	Bar& rbar1 = (&)pbar1;
+	Bar^ pbar3 = copy rbar1;
+
+	/////////////
+
+	// Recursive copying...
+
+	Qux qux1 => (Foo(5, 5), (7, 7));
+	Qux qux2 => copy qux1;
+
+	Qux^ pqux1 = new Qux(2, 3);
+	Qux^ pqux2 = copy pqux1;
+	Qux& rqux1 = (&)pqux1;
+	Qux^ pqux3 = copy rqux1;
+
+	// Arrays
+
+	int[13] arr1 => ();
+	int[] arr2 => copy arr1;
 }

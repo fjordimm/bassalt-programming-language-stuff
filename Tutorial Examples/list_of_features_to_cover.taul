@@ -2,7 +2,6 @@
 /*
 
 Features to Cover:
- - if var == 12 or 18 {...}
  - tuples
  - arrays
  - nonstaticness in generics using the '?' symbol in the '<>' (or maybe '*', or maybe just '<>')
@@ -54,16 +53,33 @@ Features to Cover:
  - vtables, and also maybe the vtable pointer value is used as type identification
  - syntax for a function that must set one of its parameters (multiple return thing)
  - copy keyword (only need to be manually implemented for a class if any of its fields are pointers; so static array fields don't need to be)
+	- also should overriding the copy function be allowed?
  - equals keyword (only need to be manually implemented for a class if any of its fields are pointers; so static array fields don't need to be)
  - make sure variable-length arrays are not allowed, unless they are heap-allocated. The length of an array is part of its type, so 'int[9]' could be thought of as 'Array<int, 9>'
  - get rid of kptr
+ - simpler notation for sptr and wptr (maybe)
+ - inline functions / macros
+ - automatically include all C standard libraries. Make up some notation to use them in Bassalt. Maybe...
+    - CStd::printf()	// I guess then C standard libraries would be the one exception to the naming conventions
+	- CStd::Printf()
+	- CStd::_printf()
+	- CStd::Std_printf()
+ - a cool style to code would be like this (think about CSE 130 asgn2, in handle_connection()):
+    - [Label]
+	  {
+		if (something)
+		{ break Label; }
+	  }
+ - preprocessor directives should work without newlines. So like #if# instead of #if
+ - Difference between a 'destructor' for use in a safe context (works like C#'s IDisposable using statements), vs overriding rfree
 
 Maybe:
+ - the 'or' keyword: if var == 12 or 18 {...}
  - nullability with '?'
  - extension methods
- - '->' as a shortcut for '`.'
- - a shortcut for 'cede new int[] {1, 2, 3}' would be just {1, 2, 3}.
+ - a shortcut for 'new int[] {1, 2, 3}' would be just {1, 2, 3}.
  - slices
+ - Brian Will's use statement from https://youtu.be/QM1iUe6IofM?si=r3INgvhcv0bvOQcv&t=2498
 
 */
 

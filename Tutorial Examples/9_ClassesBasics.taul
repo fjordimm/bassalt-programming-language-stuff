@@ -6,8 +6,8 @@
 class Foo
 {
 	// Fields
-	public{get, set} int x;
-	public{get, set} int y;
+	public{get,set} int x;
+	public{get,set} int y;
 
 	// Constructor
 	public this(int x, int y)
@@ -36,8 +36,8 @@ void Main()
 portable class Bar
 {
 	// Fields
-	public{get, set} int x;
-	public{get, set} int y;
+	public{get,set} int x;
+	public{get,set} int y;
 
 	// Constructor
 	public this(int x, int y)

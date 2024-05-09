@@ -134,7 +134,7 @@ void Main()
 
 	// Labelled infinite loop:
 	int l = 0;
-	loop[MyLoop]
+	[MyLoop] loop
 	{
 		if l >= 30 { break MyLoop; }
 
@@ -144,13 +144,31 @@ void Main()
 
 	// Labelled 'while' loop (labels also apply to 'do-while' loops and 'for' loops):
 	int m = 0;
-	while[MyLoop] (true)
+	[MyLoop] while true
 	{
 		if l >= 30 { break MyLoop; }
 
 		println$(l);
 		l++;
 	}
+
+	// Labels also work for any block, including if-statements and standalone curly-brace blocks...
+	[MyBlock] if true
+	{
+		println$("hello");
+	}
+	
+	[MyBlock]
+	{
+		println$("hi");
+	}
+
+	// The position of the label indicator is flexible...
+	while [MyLoop] true
+	{...}
+
+	while true [MyLoop]
+	{...}
 
 	// Switch case:
 	char ch = 'b';

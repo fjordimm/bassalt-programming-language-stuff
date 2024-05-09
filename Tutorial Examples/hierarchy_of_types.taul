@@ -8,6 +8,8 @@ Types:
 	   - bool
 	   - float
 	     ...
+	- tuples where all members are portable
+	- 
  - non-portable
     - arrays
 

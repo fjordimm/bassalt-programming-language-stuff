@@ -1,8 +1,76 @@
 
 //////////////////////////////
 
-///// Using C Libraries /////
+///// Using Standard C Libraries /////
 
+void Main()
+{
+	$size_t num1 = 59;
+	int num2 = 384;
+	$size_t num3 = ($size_t)num2;
 
+	// For C pointers ('*'), you can use Bassalt raw pointers ('*'), meaning you have to use an unsafe context
+	unsafe
+	{
+		$FILE* fp = $fopen("myfile.txt", "w");
+		$fputs("Hello!", fp);
+		$fclose(fp);
+	}
+
+	// Bassalt string literals will be interpreted as C string literals
+	$printf("hello\n");
+
+	// Any kind of Bassalt string will be automatically converted to the appropriate C type
+	string! str => "string one\n";
+	$printf(str);
+	$printf(($const$char$*)str);
+
+	unsafe
+	{
+		char![30] dest => ();
+		char![5] src1 => {'h', 'o', 'l', 'a', '\0'};
+		string! src2 => "hola\n";
+
+		// Both of these do the same thing
+		$strcpy(dest, src1);
+		$strcpy(dest, src2);
+	}
+}
+
+//////////////////////////////
+
+///// Using Other Libraries /////
+
+// stuff.h:
+/*
+	#pragma once
+
+	int func(float a, float b);
+*/
+
+///////////
+
+// Option #1
+
+using native "stuff.h";
+
+void Main()
+{
+	int a = $func(1f, 3.7f);
+}
+
+///////////
+
+// Option #2
+
+using native "stuff.h"
+{
+	$func: int Func(float, float);
+}
+
+void Main()
+{
+	int a = Func(1f, 3.7f);
+}
 
 //////////////////////////////

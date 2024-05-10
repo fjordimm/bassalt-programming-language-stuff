@@ -64,6 +64,9 @@ Features to Cover:
 	- CStd::Printf()
 	- CStd::_printf()
 	- CStd::Std_printf()
+	- C:::printf()
+	- <<printf>>()
+	- $printf()
  - a cool style to code would be like this (think about CSE 130 asgn2, in handle_connection()):
     - [Label]
 	  {

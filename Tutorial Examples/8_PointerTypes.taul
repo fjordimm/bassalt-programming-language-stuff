@@ -203,7 +203,41 @@ void Main()
 
 void Main()
 {
-	sptr<int> = snew
+	/* They work the same as C++'s std::shared_ptr and std::weak_ptr. */
+
+	sptr<int> sp1 = snew int{7};
+	println$(sp1`); // Prints: 7
+	sp1` = 8;
+	println$(sp1`); // Prints: 8
+
+	sptr<int> sp2 = sptr(sp1);
+	sp2` = 9;
+	println$(sp1`); // Prints: 9
+
+	///////////
+
+	wptr<int> wp1;
+
+	{
+		sptr<int> spA;
+
+		{
+			sptr<int> spB = snew int{3};
+			spA = sptr(spB);
+			wp1 = wptr(spB);
+
+			println$(spB); // Prints: 3
+			println$(spA); // Prints: 3
+			println$(wp1); // Prints: 3
+		}
+
+		// spB went out of scope, but spA is still one of the owners
+		println$(spA); // Prints: 3
+		println$(wp1); // Prints: 3
+	}
+
+	// now no one is the owner
+	println$(wp1); // Runtime error
 }
 
 //////////////////////////////

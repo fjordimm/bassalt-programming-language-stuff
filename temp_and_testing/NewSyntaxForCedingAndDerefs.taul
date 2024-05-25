@@ -2,6 +2,30 @@
 void Main()
 {
 	Thing^ owner1 = new Thing();
+	Thing^ owner2 = cede owner1;
+
+	int someInt = 13;
+	int& r = ref someInt;
+	r@ += 3;
+
+	int! someOtherInt = 8;
+	int!& rr = ref! someOtherInt;
+
+	Thing a => ();
+	a.field += 5;
+
+	Thing^ b = new Thing();
+	b@.field += 5;
+
+	ReferenceReturnThing()
+	-> int[] result;
+}
+
+// Old:
+
+void Main()
+{
+	Thing^ owner1 = new Thing();
 	Thing^ owner2 = owner1@;
 
 	int someInt = 13;

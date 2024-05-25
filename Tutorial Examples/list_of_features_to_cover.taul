@@ -74,9 +74,11 @@ Features to Cover:
 		{ break Label; }
 	  }
  - preprocessor directives should work without newlines. So like #if# instead of #if
- - Difference between a 'destructor' for use in a safe context (works like C#'s IDisposable using statements), vs overriding rfree
+ - difference between a 'destructor' for use in a safe context (works like C#'s IDisposable using statements), vs overriding rfree
+ - easy syntax for maps/dictionaries
 
 Maybe:
+ - inline functions
  - the 'or' keyword: if var == 12 or 18 {...}
  - nullability with '?'
  - extension methods

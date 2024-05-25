@@ -20,7 +20,6 @@ void Main()
 	// Bassalt string literals will be interpreted as C string literals
 	$printf("hello\n");
 
-	// Any kind of Bassalt string will be automatically converted to the appropriate C type
 	string! str => "string one\n";
 	$printf(str);
 	$printf(($const$char$*)str);
@@ -52,25 +51,25 @@ void Main()
 
 // Option #1
 
-using native "stuff.h";
+using extern "stuff.h";
 
 void Main()
 {
-	int a = $func(1f, 3.7f);
+	int a = $foo(1f, 3.7f);
 }
 
 ///////////
 
 // Option #2
 
-using native "stuff.h"
+using extern "stuff.h"
 {
-	$func: int Func(float, float);
+	$foo: int Func(float, float);
 }
 
 void Main()
 {
-	int a = Func(1f, 3.7f);
+	int a = Foo(1f, 3.7f);
 }
 
 //////////////////////////////

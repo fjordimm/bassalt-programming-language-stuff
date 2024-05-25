@@ -134,7 +134,7 @@ void Main()
 
 	// Labelled infinite loop:
 	int l = 0;
-	[MyLoop] loop
+	loop:MyLoop
 	{
 		if l >= 30 { break MyLoop; }
 
@@ -144,7 +144,7 @@ void Main()
 
 	// Labelled 'while' loop (labels also apply to 'do-while' loops and 'for' loops):
 	int m = 0;
-	[MyLoop] while true
+	while:MyLoop true
 	{
 		if l >= 30 { break MyLoop; }
 
@@ -153,39 +153,30 @@ void Main()
 	}
 
 	// Labels also work for any block, including if-statements and standalone curly-brace blocks...
-	[MyBlock] if true
+	if:MyBlock true
 	{
 		println$("hello");
 	}
 	
-	[MyBlock]
+	:MyBlock
 	{
 		println$("hi");
 	}
 
-	// The position of the label indicator is flexible...
-	while [MyLoop] true
-	{...}
-
-	while true [MyLoop]
-	{...}
-
 	// Switch case:
 	char ch = 'b';
 	switch ch
+	case 'a'
 	{
-		case 'a'
-		{
-			println$("nice, its A");
-		}
-		case 'b'
-		{
-			println$("nice, its B");
-		}
-		case else
-		{
-			println$("this is the default case");
-		}
+		println$("nice, its A");
+	}
+	case 'b'
+	{
+		println$("nice, its B");
+	}
+	case else
+	{
+		println$("this is the default case");
 	}
 }
 
@@ -269,7 +260,7 @@ void Main()
 {
 	int foo = 13;
 	int& fooRef = ref foo;
-	fooRef` = 7; // now foo is 7
+	fooRef@ = 7; // now foo is 7
 }
 
 ////////////////////////////////////////////////////////////

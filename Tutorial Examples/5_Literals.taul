@@ -94,11 +94,11 @@ void Main()
 	Baz(7.0); // Illegal. Both floats and doubles are compatible with a literal like '7.0'.
 	Baz(7.0f);
 
-	println$(5 + 7); // Illegal. There is no hint as to what type should be used, since printing (stream writing) has overloads for multiple types.
-	println$(5i + 7i_;
-	println$(5i + 7); // '7' is implicitly an int.
-	println$(5 + 7i); // '5' is implicitly an int.
-	println$((int)(3 * (2 + 8))); // Legal. There is no reason for '3', '2', or '8' to be anything other than an int.
+	stdout.println(5 + 7); // Illegal. There is no hint as to what type should be used, since printing (stream writing) has overloads for multiple types.
+	stdout.println(5i + 7i_;
+	stdout.println(5i + 7); // '7' is implicitly an int.
+	stdout.println(5 + 7i); // '5' is implicitly an int.
+	stdout.println((int)(3 * (2 + 8))); // Legal. There is no reason for '3', '2', or '8' to be anything other than an int.
 }
 
 void Foo(int a) {...}

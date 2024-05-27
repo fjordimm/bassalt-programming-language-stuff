@@ -35,12 +35,12 @@ namespace Foo
 
 void Main()
 {
-	println$(Foo::A);
+	stdout.println(Foo::A);
 	
-	println$(Foo::Sum(9, 10));
+	stdout.println(Foo::Sum(9, 10));
 
 	Foo::Point p = Point{x=3, y=8};
-	println$(p.x);
+	stdout.println(p.x);
 }
 /****************************/
 
@@ -58,7 +58,7 @@ namespace Foo
 /******* 'file2.taul' *******/
 void Main()
 {
-	println$(Foo::A);
+	stdout.println(Foo::A);
 }
 /****************************/
 
@@ -68,7 +68,7 @@ using Foo::A;
 
 void Main()
 {
-	println$(A);
+	stdout.println(A);
 }
 /****************************/
 
@@ -78,7 +78,7 @@ void Main()
 {
 	using Foo::A;
 
-	println$(A);
+	stdout.println(A);
 }
 /****************************/
 
@@ -137,16 +137,16 @@ const int DD = 10;
 /******* 'file3.taul' *******/
 void Main()
 {
-	println$(Foo::A);
-	println$(Foo::AA);
-	println$(Foo::AAA);
-	println$(Foo::AAAA);
-	println$(Foo::Bar::B);
-	println$(Foo::Bar::BB);
-	println$(Foo::Bar::Baz::C);
-	println$(Foo::Bar::Baz::CC);
-	println$(Qux::Corge::Grault::D);
-	println$(Qux::Corge::Grault::DD);
+	stdout.println(Foo::A);
+	stdout.println(Foo::AA);
+	stdout.println(Foo::AAA);
+	stdout.println(Foo::AAAA);
+	stdout.println(Foo::Bar::B);
+	stdout.println(Foo::Bar::BB);
+	stdout.println(Foo::Bar::Baz::C);
+	stdout.println(Foo::Bar::Baz::CC);
+	stdout.println(Qux::Corge::Grault::D);
+	stdout.println(Qux::Corge::Grault::DD);
 }
 /****************************/
 
@@ -156,16 +156,16 @@ void Main()
 	using Foo::AA;
 	using Foo::Bar;
 
-	println$(Foo::A);
-	println$(AA);
-	println$(Foo::AAA);
-	println$(Foo::AAAA);
-	println$(Bar::B);
-	println$(Bar::BB);
-	println$(Bar::Baz::C);
-	println$(Bar::Baz::CC);
-	println$(Qux::Corge::Grault::D);
-	println$(Qux::Corge::Grault::DD);
+	stdout.println(Foo::A);
+	stdout.println(AA);
+	stdout.println(Foo::AAA);
+	stdout.println(Foo::AAAA);
+	stdout.println(Bar::B);
+	stdout.println(Bar::BB);
+	stdout.println(Bar::Baz::C);
+	stdout.println(Bar::Baz::CC);
+	stdout.println(Qux::Corge::Grault::D);
+	stdout.println(Qux::Corge::Grault::DD);
 }
 /****************************/
 
@@ -174,16 +174,16 @@ void Main()
 {
 	using Foo::Bar::Baz;
 
-	println$(Foo::A);
-	println$(Foo::AA);
-	println$(Foo::AAA);
-	println$(Foo::AAAA);
-	println$(Foo::Bar::B);
-	println$(Foo::Bar::BB);
-	println$(Baz::C);
-	println$(Baz::CC);
-	println$(Qux::Corge::Grault::D);
-	println$(Qux::Corge::Grault::DD);
+	stdout.println(Foo::A);
+	stdout.println(Foo::AA);
+	stdout.println(Foo::AAA);
+	stdout.println(Foo::AAAA);
+	stdout.println(Foo::Bar::B);
+	stdout.println(Foo::Bar::BB);
+	stdout.println(Baz::C);
+	stdout.println(Baz::CC);
+	stdout.println(Qux::Corge::Grault::D);
+	stdout.println(Qux::Corge::Grault::DD);
 }
 /****************************/
 
@@ -194,8 +194,8 @@ void Main()
 {
 	using Bar::Baz;
 
-	println$(Baz::C);
-	println$(Baz::CC);
+	stdout.println(Baz::C);
+	stdout.println(Baz::CC);
 }
 /****************************/
 
@@ -228,20 +228,20 @@ namespace Foo
 
 void Main()
 {
-	println$(Foo::F());
-	println$(Foo::F(7_i));
-	println$(Foo::F(13_f));
-	println$(Foo::F(3, 5));
+	stdout.println(Foo::F());
+	stdout.println(Foo::F(7_i));
+	stdout.println(Foo::F(13_f));
+	stdout.println(Foo::F(3, 5));
 }
 
 void Main()
 {
 	using Foo::F();
 
-	println$(F());
-	println$(F(7_i));
-	println$(F(13_f));
-	println$(F(3, 5));
+	stdout.println(F());
+	stdout.println(F(7_i));
+	stdout.println(F(13_f));
+	stdout.println(F(3, 5));
 }
 
 void Main()
@@ -249,10 +249,10 @@ void Main()
 	using Foo::F(void);
 	using Foo::F(int);
 
-	println$(F());
-	println$(F(7));
-	println$(Foo::F(13_f));
-	println$(Foo::F(3, 5));
+	stdout.println(F());
+	stdout.println(F(7));
+	stdout.println(Foo::F(13_f));
+	stdout.println(Foo::F(3, 5));
 }
 
 ////////////////////////////////////////////////////////////
@@ -283,12 +283,12 @@ void Main()
 	// This includes everything in the namespace Foo
 	using Foo::*;
 
-	println$(A1);
-	println$(A2);
-	println$(A3);
-	println$(Bar::B1);
-	println$(Bar::B2);
-	println$(Bar::B3);
+	stdout.println(A1);
+	stdout.println(A2);
+	stdout.println(A3);
+	stdout.println(Bar::B1);
+	stdout.println(Bar::B2);
+	stdout.println(Bar::B3);
 }
 
 void Main()
@@ -296,12 +296,12 @@ void Main()
 	// This deeply includes everything in the namespace Foo (especially not recommended)
 	using Foo::**;
 
-	println$(A1);
-	println$(A2);
-	println$(A3);
-	println$(B1);
-	println$(B2);
-	println$(B3);
+	stdout.println(A1);
+	stdout.println(A2);
+	stdout.println(A3);
+	stdout.println(B1);
+	stdout.println(B2);
+	stdout.println(B3);
 }
 
 ////////////////////////////////////////////////////////////
@@ -337,22 +337,22 @@ void Main()
 {
 	using Foo::A = Qux;
 
-	println$(Qux);
-	println$(Foo::B());
-	println$(Foo::B(7_i));
-	println$(Foo::B(13_f));
-	println$(Foo::B(3, 5));
+	stdout.println(Qux);
+	stdout.println(Foo::B());
+	stdout.println(Foo::B(7_i));
+	stdout.println(Foo::B(13_f));
+	stdout.println(Foo::B(3, 5));
 }
 
 void Main()
 {
 	using Foo::B() = Qoz();
 
-	println$(Foo::A);
-	println$(Qoz());
-	println$(Qoz(7_i));
-	println$(Qoz(13_f));
-	println$(Qoz(3, 5));
+	stdout.println(Foo::A);
+	stdout.println(Qoz());
+	stdout.println(Qoz(7_i));
+	stdout.println(Qoz(13_f));
+	stdout.println(Qoz(3, 5));
 }
 
 void Main()
@@ -360,22 +360,22 @@ void Main()
 	using Foo::B(void) = Qoz();
 	using Foo::B(int) = Qoz();
 
-	println$(Foo::A);
-	println$(Qoz());
-	println$(Qoz(7_i));
-	println$(Foo::B(13_f));
-	println$(Foo::B(3, 5));
+	stdout.println(Foo::A);
+	stdout.println(Qoz());
+	stdout.println(Qoz(7_i));
+	stdout.println(Foo::B(13_f));
+	stdout.println(Foo::B(3, 5));
 }
 
 void Main()
 {
 	using Foo = Bar;
 
-	println$(Bar::A);
-	println$(Bar::B());
-	println$(Bar::B(7_i));
-	println$(Bar::B(13_f));
-	println$(Bar::B(3, 5));
+	stdout.println(Bar::A);
+	stdout.println(Bar::B());
+	stdout.println(Bar::B(7_i));
+	stdout.println(Bar::B(13_f));
+	stdout.println(Bar::B(3, 5));
 }
 
 ////////////////////////////////////////////////////////////

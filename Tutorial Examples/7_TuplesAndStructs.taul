@@ -7,15 +7,15 @@
 
 void Main()
 {
-	<float, char> varA = (3.7, 'e');
-	println$(varA.0);
-	println$(varA.1);
+	(float, char) varA = (3.7, 'e');
+	stdout.println(varA.0);
+	stdout.println(varA.1);
 	varA.0 = 2.9;
 	varA.1 = 'r';
-	println$(varA); // Prints: (3.7, e)
+	stdout.println(varA); // Prints: (3.7, e)
 	varA = (7.5, 'p');
 
-	<float!, char> varB = (3.7, 'e'); // Illegal. Mutability cannot be specified for individual elements.
+	(float!, char) varB = (3.7, 'e'); // Illegal. Mutability cannot be specified for individual elements.
 
 	float varCa;
 	char varCb;
@@ -65,22 +65,22 @@ void Main()
 
 void Main()
 {
-	println$(sizeof(int)); // Prints: 4
+	stdout.println(sizeof(int)); // Prints: 4
 	int varA = 0;
-	println$(sizeof(varA)); // Prints: 4
+	stdout.println(sizeof(varA)); // Prints: 4
 
 	sizet varB = sizeof(char);
 	int varC = (int)sizeof(char);
 
-	println$(sizeof(<float, char>)); // Possible output: 8
-	<float, char> varD = (3.7, 'e');
-	println$(sizeof(varD)); // Possible output: 8
-	println$(sizeof(varD.0)); // Prints: 4
+	stdout.println(sizeof((float, char))); // Possible output: 8
+	(float, char) varD = (3.7, 'e');
+	stdout.println(sizeof(varD)); // Possible output: 8
+	stdout.println(sizeof(varD.0)); // Prints: 4
 
-	println$(sizeof(Foo)); // Possible output: 8
+	stdout.println(sizeof(Foo)); // Possible output: 8
 	Foo varE = Foo(a=3.7, b='e');
-	println$(sizeof(varE)); // Possible output: 8
-	println$(sizeof(varE.a)); // Possible output: 8
+	stdout.println(sizeof(varE)); // Possible output: 8
+	stdout.println(sizeof(varE.a)); // Possible output: 8
 }
 
 struct Foo

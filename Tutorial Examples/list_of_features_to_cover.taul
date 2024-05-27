@@ -52,8 +52,9 @@ Features to Cover:
  - 'casting' between pointer types
  - vtables, and also maybe the vtable pointer value is used as type identification
  - syntax for a function that must set one of its parameters (multiple return thing)
- - copy keyword (only need to be manually implemented for a class if any of its fields are pointers; so static array fields don't need to be)
-	- also should overriding the copy function be allowed?
+ - clone keyword (only need to be manually implemented for a class if any of its fields are pointers; so static array fields don't need to be)
+	- also should overriding the clone function even be allowed?
+ - move keyword
  - equals keyword (only need to be manually implemented for a class if any of its fields are pointers; so static array fields don't need to be)
  - make sure variable-length arrays are not allowed, unless they are heap-allocated. The length of an array is part of its type, so 'int[9]' could be thought of as 'Array<int, 9>'
  - get rid of kptr

@@ -22,7 +22,7 @@ void Main()
 	Foo fooA => (3, 7);
 	fooA.x = 9;
 	fooA.y += 2;
-	println$(fooA.x);
+	stdout.println(fooA.x);
 
 	// Since Foo is non-portable, it cannot be passed as a value, nor be reassigned...
 	Foo fooB = foo; // Illegal
@@ -52,7 +52,7 @@ void Main()
 	Bar barA = Bar(3, 7);
 	barA.x = 9;
 	barA.y += 2;
-	println$(barA.x);
+	stdout.println(barA.x);
 
 	Bar barB = barA;
 	barA = Bar(8, 2);
@@ -82,15 +82,15 @@ with module
 	public const int SomeConst = 12345;
 
 	public void SomeFunc()
-	{ println$("hello"); }
+	{ stdout.println("hello"); }
 }
 
 void Main()
 {
 	Foo foo => ('a', 'b');
-	println$(foo.a);
-	println$(foo.b);
-	println$(Foo::SomeConst);
+	stdout.println(foo.a);
+	stdout.println(foo.b);
+	stdout.println(Foo::SomeConst);
 	Foo::SomeFunc();
 }
 

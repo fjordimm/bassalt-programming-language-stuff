@@ -17,5 +17,42 @@ int Main()
 	{
 		
 	}
+
+	Thing! eor;
+	int! eor;
+
+	if a < b || c > (c)
+	{  }
+
+	Thing<const>();
+
+	shid.0;
 }
 
+class DoneDid<type T>
+{
+
+}
+
+class DidDone<portable type T>
+{
+	
+}
+
+class Diddit<primitive type T>
+{
+	
+}
+
+class DoneDid : Howdy, Holy
+{
+
+}
+
+class DoneDid<type T> : Shit<cock>
+{
+
+}
+
+using Dog;
+using Dog<Log>;

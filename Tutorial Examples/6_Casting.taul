@@ -3,23 +3,13 @@
 
 ///// Implicit Casting /////
 
-/*
-Implicit casting is not allowed unless:
- 1. Both types are one of the following: char8, char, char32, sbyte, short, int, long, byte, ushort, uint, ulong
- 2. The input type has a size less than or equal to that of the output type
- 3. If the sizes are equal, both types are signed or both types are unsigned (where char types are unsigned)
-
- Examples of legal implicit casting: from int to long, from ushort to int, from char to uint
-
- In other words, there is only implicit casting if there is no loss of information.
-*/
+/* Implicit casting will not happen in any case, except with the `%` operator. */
 
 void Main()
 {
-	int varA = 5l; // Illegal. Implicit casting not allowed
-	int varB = (int)5l;
-
-	long varC = 5i; // Implicit casting from int to long
+	long varA = 5i; // Illegal
+	long varB = (int)5i; // Explicit cast
+	long varB = %5i; // Implicit cast (follows the same rules as C)
 }
 
 //////////////////////////////
@@ -38,9 +28,6 @@ void Main()
 
 	// Some casts do a special operation, like double to int.
 	int var3 = (int)235.34829d;
-
-	int var4 = 5 + 8l; // Illegal. Here, '5' is a long. You cannot implicitly cast from long to int.
-	long var5 = 5 + 8i; // Here, '5' and '8' (both are ints) are added together and the result is implicitly casted to a long.
 }
 
 //////////////////////////////

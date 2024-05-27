@@ -6,6 +6,13 @@ class Vector<portable type T>
 	private int capacity;
 	private int current;
 
+	public this()
+	{
+		this.arr = new T[1]();
+		this.capacity = 1;
+		this.current = 0;
+	}
+
 	public void push(T data)
 	{
 		if this.current == this.capacity
@@ -59,12 +66,4 @@ class Vector<portable type T>
 
 		return cede sb.getString();
     }
-},
-{
-	public Vector()
-	{
-		this.arr = new [1]TItem();
-		this.capacity = 1;
-		this.current = 0;
-	}
 }

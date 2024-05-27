@@ -5,7 +5,7 @@
 
 void Main()
 {
-	println$("Hello, world!"); // The dollar sign means this is a macro
+	stdout.println("Hello, world!");
 }
 
 ////////////////////////////////////////////////////////////
@@ -14,13 +14,13 @@ void Main()
 
 void Main()
 {
-	print$("something"); // No newline character after
-	println$(); // Just a newline
+	stdout.print("something"); // No newline character after
+	stdout.println(); // Just a newline
 
 	int x = 327;
-	println$(x);
+	stdout.println(x);
 
-	println$(f"x = {x}");
+	stdout.println(f"x = {x}");
 }
 
 ////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ void Main()
 
 void Main()
 {
-	println$(FuncA(3, 4));
+	stdout.println(FuncA(3, 4));
 }
 
 int FuncA(int a, int b)
@@ -48,13 +48,13 @@ void Main()
 	a++;
 	float b = 5;
 	b += 2.7;
-	println$(a);
+	stdout.println(a);
 
 	// Immutable value:
 	char! c = 'e';
 	c = 'f'; // Illegal
 
-	println$(Pi);
+	stdout.println(Pi);
 }
 
 // Top-level variables must be const
@@ -69,47 +69,47 @@ void Main()
 {
 	if 3 > 9
 	{
-		println$("lorem");
+		stdout.println("lorem");
 	}
 	else if 7 > 4
 	{
-		println$("ipsum");
+		stdout.println("ipsum");
 	}
 	else
 	{
-		println$("dolor");
+		stdout.println("dolor");
 	}
 
 	// Traditional 'for' loop:
 	for int i = 0; i < 30; i++
 	{
-		println$(i);
+		stdout.println(i);
 	}
 
 	// Simplified 'for' loop:
 	for int i in 0..30
 	{
-		println$(i);
+		stdout.println(i);
 	}
 
 	// Simplified 'for' loop with custom step:
 	for int i in 0..(2)..30
 	{
-		println$(i);
+		stdout.println(i);
 	}
 
 	// 'for-each' loop:
 	char[] arr => {'a', 'b', 'c'};
 	for char c in arr
 	{
-		println$(c);
+		stdout.println(c);
 	}
 
 	// 'while' loop:
 	int i = 0;
 	while i < 30
 	{
-		println$(i);
+		stdout.println(i);
 		i++;
 	}
 
@@ -117,7 +117,7 @@ void Main()
 	int j = 0;
 	do
 	{
-		println$(i);
+		stdout.println(i);
 		j++;
 	}
 	while j < 30;
@@ -128,7 +128,7 @@ void Main()
 	{
 		if (k >= 30) { break; }
 
-		println$(k);
+		stdout.println(k);
 		k++;
 	}
 
@@ -138,7 +138,7 @@ void Main()
 	{
 		if l >= 30 { break MyLoop; }
 
-		println$(l);
+		stdout.println(l);
 		l++;
 	}
 
@@ -148,19 +148,20 @@ void Main()
 	{
 		if l >= 30 { break MyLoop; }
 
-		println$(l);
+		stdout.println(l);
 		l++;
 	}
 
-	// Labels also work for any block, including if-statements and standalone curly-brace blocks...
+	// Labels also work for any block, including if-statements...
 	if:MyBlock true
 	{
-		println$("hello");
+		stdout.println("hello");
 	}
-	
+
+	// ...and standalone curly-brace blocks
 	:MyBlock
 	{
-		println$("hi");
+		stdout.println("hi");
 	}
 
 	// Switch case:
@@ -168,15 +169,15 @@ void Main()
 	switch ch
 	case 'a'
 	{
-		println$("nice, its A");
+		stdout.println("nice, its A");
 	}
 	case 'b'
 	{
-		println$("nice, its B");
+		stdout.println("nice, its B");
 	}
 	case else
 	{
-		println$("this is the default case");
+		stdout.println("this is the default case");
 	}
 }
 
@@ -211,7 +212,7 @@ void Main()
 {
 	<float, char> thing = (3.7, 'e');
 	thing.0 = 2.9;
-	println$(thing.1);
+	stdout.println(thing.1);
 
 	float a0;
 	char a1;
@@ -242,7 +243,7 @@ void Main()
 {
 	Foo p = Point(x=3, y=9);
 	p.x = 17;
-	println$(p.y);
+	stdout.println(p.y);
 }
 
 // The members of a struct do not need to be declared as mutable. The mutability is up to the instance

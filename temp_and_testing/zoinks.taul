@@ -1,0 +1,38 @@
+
+///// Casting /////
+
+// Option 1: Implicit casting like C-style languages
+
+void Main()
+{
+	int a = 13;
+	float b = 9.2;
+	float c = (a + b) / 2;
+}
+
+// Option 2: All explicit casting (still with C-style syntax)
+
+void Main()
+{
+	int a = 13;
+	float b = 9.2;
+	float c = ((float)a + b) / 2;
+}
+
+// Option 3: An operator to do general implicit casting
+
+void Main()
+{
+	int a = 13;
+	float b = 9.2;
+	float c = (%a + b) / 2;
+}
+
+void Main()
+{
+	// Also can specify the type
+
+	int a = 13;
+	float b = 9.2;
+	float c = (%{float} a + b) / 2;
+}

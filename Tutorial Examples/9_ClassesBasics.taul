@@ -36,7 +36,7 @@ void Main()
 portable class Bar
 {
 	// Fields
-	public{get,set} int x;
+	public{get} int x;
 	public{get,set} int y;
 
 	// Constructor

@@ -1,4 +1,8 @@
 
+////////////////////////////////////////////////////////////
+
+///// List of Built-in Types /////
+
 // Primitive Types
 bool var = false;			// 8 bits	// boolean
 char8 var = 0_c8;			// 8 bits	// integer	// unsigned
@@ -14,12 +18,6 @@ uint var = 0_ui;			// 32 bits	// integer	// unsigned
 ulong var = 0_ul;			// 64 bits	// integer	// unsigned
 float var = 0_f;			// 32 bits	// floating-point
 double var = 0_d;			// 64 bits	// floating-point
-nint var = 0_ni;			// ???		// integer // signed		(Size is system-dependent. Will be the same as a 'signed int' in C)
-nlong var = 0_nl;			// ???		// integer // signed		(Size is system-dependent. Will be the same as a 'signed long long int' in C)
-unint var = 0_uni;			// ???		// integer // unsigned		(Size is system-dependent. Will be the same as a 'unsigned int' in C)
-unlong var = 0_unl;			// ???		// integer // unsigned		(Size is system-dependent. Will be the same as a 'unsigned long long int' in C)
-nbigdouble var = 0_nd;		// ???		// floating-point			(Size is system-dependent. Will be the same as a 'long double' in C)
-sizet var = 0_z;			// ???		// integer // unsigned		(Size is system-dependent. Will be the same as a 'size_t' in C)
 
 // Built-in Portable Classes
 int128 var = 0_ii;			// 128 bits	// integer	// signed
@@ -31,3 +29,23 @@ datetime var = 0_t;			// 64 bits	// integer	// unsigned		(Not meant to be used a
 
 // Built-in Non-portable Classes
 string var => "hello";
+
+////////////////////////////////////////////////////////////
+
+///// C Primitives /////
+
+// To use C primitives, use the `$` syntax
+$int var = 0;
+
+// For types that requires multiple words, just concatenate with a `$` in between
+$unsigned$short var = 0;
+$long$long var = 0;
+$long$double var = 0;
+
+// You can also use any types defined in the standard C libraries
+$size_t var = 0;
+$wchar_t var = 0;
+$uintptr_t var = 0;
+
+
+////////////////////////////////////////////////////////////

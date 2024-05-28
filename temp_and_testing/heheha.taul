@@ -66,6 +66,11 @@ namespace Heee
 	Ihdf<No::FJek> e;
 }
 
+module Buh
+{
+	
+}
+
 using Dog;
 using Dog<Log>;
 using Uh::Dog;

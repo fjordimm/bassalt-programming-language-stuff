@@ -472,7 +472,7 @@ module MyMath
 
 /*--------- 'my_text_adventure/src/MyTextAdventure/Characters/Character.taul' ---------*/
  namespace MyTextAdventure::Characters,
- unsealed class Character
+ virtual class Character
  {
 	/* stuff */
  }

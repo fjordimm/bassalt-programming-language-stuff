@@ -42,6 +42,10 @@ void Main()
 	(void, char varH) = (3.7, 'e');
 	(void, varH) = (7.5, 'p');
 	(void, varH) = varA;
+
+	// The use of void above almost implies that you can do the following (and you can)
+	void = 19; // evaluates expression then does nothing with it
+	// You can use void for any lvalue, and the code will just discard
 }
 
 //////////////////////////////

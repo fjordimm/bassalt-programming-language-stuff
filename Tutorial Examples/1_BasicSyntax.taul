@@ -210,7 +210,7 @@ void Main()
 
 void Main()
 {
-	<float, char> thing = (3.7, 'e');
+	(float, char) thing = (3.7, 'e');
 	thing.0 = 2.9;
 	stdout.println(thing.1);
 
@@ -226,7 +226,7 @@ void Main()
 	(float d0, void) = SomeFunc();
 }
 
-<float, char> SomeFunc()
+(float, char) SomeFunc()
 {
 	return (9.9, 'z');
 }

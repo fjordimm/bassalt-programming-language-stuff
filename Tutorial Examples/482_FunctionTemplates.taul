@@ -1,8 +1,11 @@
 
 //////////////////////////////
 
-///// Arrays /////
+///// Function Templates /////
 
-T Multiply<T>()
+T Multiply<type T>(T a, T b)
+{
+	
+}
 
 //////////////////////////////

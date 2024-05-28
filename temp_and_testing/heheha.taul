@@ -56,10 +56,24 @@ class DoneDid : Howdy, Holy
 
 }
 
-class DoneDid<type T> : Shit<cock>
+class DoneDid<type T> : Shit<Cock>
 {
+	
+}
 
+namespace Heee
+{
+	Ihdf<No::FJek> e;
 }
 
 using Dog;
 using Dog<Log>;
+using Uh::Dog;
+using Bark(Man, Do::int);
+
+using Dog as D;
+using Dog<Done> as D;
+using D = Dog;
+
+using D<>(pi, const li) = D<DogDoneDid>(bu, const luh);
+

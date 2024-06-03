@@ -1,4 +1,9 @@
 
+int& var;
+Bruh& var;
+int[] var;
+Bruh[] var;
+
 Bruh var;
 Bruh<Thing> var;
 

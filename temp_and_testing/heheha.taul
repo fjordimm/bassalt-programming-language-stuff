@@ -22,8 +22,13 @@ int Main()
 	int! eor;
 	int ue;
 
-	if a < b || c > (c)
-	{  }
+	a<bru& eu>()
+
+	if a < b && e > (c)
+	{ }
+
+	if a<b && e>(c)
+	{ }
 
 	Thing<Buh>();
 
@@ -64,9 +69,21 @@ class DoneDid<type T> : Shit<Cock>
 namespace Heee
 {
 	Ihdf<No::FJek> e;
+
+	Boy::Bin& ha;
 }
 
 module Buh
+{
+	
+}
+
+class Shin
+{
+	
+}
+
+face FBunka
 {
 	
 }
@@ -81,4 +98,13 @@ using Dog<Done> as D;
 using D = Dog;
 
 using D<>(pi, const li) = D<DogDoneDid>(bu, const luh);
+using E<Zam>(...) as F<Zam>(...);
+using F<Zam>(...) = E<Zam>(...);
+
+a = ref b;
+a = ref! b;
+a = ref~F b;
+a = ref~private b;
+
+Thingy~private thingy;
 

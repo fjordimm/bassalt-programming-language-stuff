@@ -87,6 +87,7 @@ void Main()
 	}
 
 	// Simplified 'for' loop:
+	/* Note: left bound is inclusive, right bound is exclusive */
 	for int i in 0..30
 	{
 		stdout.println(i);
@@ -158,7 +159,7 @@ void Main()
 		stdout.println("hello");
 	}
 
-	// ...and standalone curly-brace blocks
+	// ...and standalone curly-brace blocks:
 	:MyBlock
 	{
 		stdout.println("hi");

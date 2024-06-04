@@ -15,7 +15,8 @@ void Main()
 	stdout.println(varA); // Prints: (3.7, e)
 	varA = (7.5, 'p');
 
-	(float!, char) varB = (3.7, 'e'); // Illegal. Mutability cannot be specified for individual elements.
+	(float!, char) varB1 = (3.7, 'e'); // Illegal. Mutability cannot be specified for individual elements.
+	(float, char)! varB2 = (3.7, 'e'); //
 
 	float varCa;
 	char varCb;

@@ -39,7 +39,7 @@ void Main()
 	// Bit-casting must be done in an unsafe context.
 	unsafe
 	{
-		int varA = bitcast<int>(7.2f); // varA will have the value 1088841318.
+		int varA = bitcast<int>(7.2f); // varA will have the value 1088841318 (or maybe not depending on the system).
 	}
 }
 

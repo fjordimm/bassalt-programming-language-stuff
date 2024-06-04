@@ -79,6 +79,7 @@ Features to Cover:
  - easy syntax for maps/dictionaries
  - inline block expressions (see https://doc.rust-lang.org/reference/expressions/block-expr.html and https://stackoverflow.com/questions/6305396/whats-this-c-syntax-that-puts-a-brace-surrounded-block-where-an-expression-is)
     - syntax: `int var = inline (int) { 13; };`
+	- you could also drop the type after `inline`
 
 Maybe:
  - the 'or' keyword: if var == 12 or 18 {...}

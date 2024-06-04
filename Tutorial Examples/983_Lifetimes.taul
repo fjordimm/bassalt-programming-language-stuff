@@ -31,7 +31,7 @@ int&{L} Foo(int&{L} x, int&{M} y)
 void Main()
 {
 	int x = 12;
-	int& z = inline (int&)
+	int& z = inline
 	{
 		int y = 42;
 		Foo(ref x, ref y);

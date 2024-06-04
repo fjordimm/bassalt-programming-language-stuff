@@ -1,7 +1,7 @@
 
 //////////////////////////////
 
-///// Simple Non-Portable Class /////
+///// Simple Non-Passable Class /////
 
 class Foo
 {
@@ -24,16 +24,16 @@ void Main()
 	fooA.y += 2;
 	stdout.println(fooA.x);
 
-	// Since Foo is non-portable, it cannot be passed as a value, nor be reassigned...
+	// Since Foo is non-passable, it cannot be passed as a value, nor be reassigned...
 	Foo fooB = foo; // Illegal
 	fooA => (8, 2); // Illegal
 }
 
 //////////////////////////////
 
-///// Simple Portable Class /////
+///// Simple Passable Class /////
 
-portable class Bar
+passable class Bar
 {
 	// Fields
 	public{get} int x;
@@ -96,4 +96,4 @@ void Main()
 
 //////////////////////////////
 
-// TODO: non-portable classes as members of a class
+// TODO: non-passable classes as members of a class

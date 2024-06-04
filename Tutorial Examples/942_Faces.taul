@@ -3,6 +3,14 @@
 
 ///// Faces /////
 
+/*
 
+Two kinds of type expression
+ - ltype: type for an lvalue, allows for `!` at the end
+    - Contexts include: type for a variable, type for a class member, the referent type for a pointer
+ - rtype: type for an rvalue, doesn't allow for `!` at the end
+    - Contexts include: type for a function, type for a struct member
+
+*/
 
 //////////////////////////////

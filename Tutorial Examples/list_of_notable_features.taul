@@ -3,7 +3,7 @@
 
 Notable Features:
  - Tries not to force any programming paradigms
- - The concept of passability (portable and non-portable classes)
+ - The concept of passability (passable and non-passable classes)
  - The concept of faces (including the mutable face and immutable face for primitive types, and the mutable private face, immutable private face, mutable public face, and immutable public face for classes)
  - Explicit immutability; more precise mutability control
  - Built-in pointer types

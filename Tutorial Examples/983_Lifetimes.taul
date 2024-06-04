@@ -21,9 +21,9 @@ fn main() {
 */
 
 // Equivalent Bassalt code:
-/* (except everything that was immutable is now mutable for conciser syntax) */
+/* (except everything that was immutable is now mutable for more concise syntax) */
 
-int& Foo(int& x, int& y)
+int&{L} Foo(int&{L} x, int&{M} y)
 {
 	return x;
 }

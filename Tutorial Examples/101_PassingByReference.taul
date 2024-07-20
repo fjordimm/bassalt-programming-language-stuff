@@ -1,0 +1,39 @@
+
+//////////////////////////////
+
+///// Passing By Reference /////
+
+// ACTUALLY NO: 'iref' = input ref
+// 'oref' = output ref
+
+void Main()
+{
+	int a = 9;
+	PrintMe(ref! a);
+
+	int b;
+	InitializeMe(oref b);
+
+	int c = 5;
+	DoubleMe(ref c);
+}
+
+void PrintMe(ref int! v)
+{
+	stdout.println(v);
+}
+
+// Whatever you pass into `v` does not need to be initialized
+void InitializeMe(oref int v)
+{
+	// Cannot read the value of `v` before assigning it
+	v = 13;
+	// By the end of the function, `v` must be assigned to something
+}
+
+void DoubleMe(ref int v)
+{
+	v *= 2;
+}
+
+//////////////////////////////

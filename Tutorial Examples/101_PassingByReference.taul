@@ -3,13 +3,13 @@
 
 ///// Passing By Reference /////
 
-// ACTUALLY NO: 'iref' = input ref
+// 'iref' = input ref
 // 'oref' = output ref
 
 void Main()
 {
 	int a = 9;
-	PrintMe(ref! a);
+	PrintMe(iref a);
 
 	int b;
 	InitializeMe(oref b);
@@ -18,8 +18,10 @@ void Main()
 	DoubleMe(ref c);
 }
 
-void PrintMe(ref int! v)
+// `v` can be an lvalue or rvalue
+void PrintMe(iref int v)
 {
+	// Cannot write to `v`
 	stdout.println(v);
 }
 
@@ -34,6 +36,13 @@ void InitializeMe(oref int v)
 void DoubleMe(ref int v)
 {
 	v *= 2;
+}
+
+void DoubleMeWrapper(ref int v)
+{
+	// `ref int` is not a type, it is just saying that the parameter is given by reference...
+	// ...so, you still have to be explicit when passing it by reference to something else
+	DoubleMe(ref v);
 }
 
 //////////////////////////////

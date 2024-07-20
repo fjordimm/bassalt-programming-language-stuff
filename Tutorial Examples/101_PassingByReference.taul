@@ -13,6 +13,7 @@ void Main()
 
 	int b;
 	InitializeMe(oref b);
+	InitializeMe(oref int b2); // MAYBE: or you can declare variables in the function call
 
 	int c = 5;
 	DoubleMe(ref c);

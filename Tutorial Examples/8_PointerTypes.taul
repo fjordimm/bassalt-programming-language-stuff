@@ -11,7 +11,7 @@
  wsptr<int>				weak shared pointer type
  gptr<int>				garbage-collected pointer type
  jptr<int, 1>			joint pointer type
- wjptr<int, 1>			weak joint pointer type
+ wjptr<0, int>			weak joint pointer type
 
  var&					address-of operator, returns a reference pointer
  var@					dereference operator
@@ -183,14 +183,14 @@ void Main()
 	int^ up4 = new int{9};
 	stdout.println(up4@); // Prints: 9
 	int^ up5 = up4; // Illegal.
-	int^ up5 = up4@; // up4 has now given ownership of the object to up5.
+	int^ up5 = cede up4; // up4 has now given ownership of the object to up5.
 	stdout.println(up5@); // Prints: 9
 	stdout.println(up4@); // Runtime error (null pointer).
 	stdout.println(up4 == null); // Prints: true
 
 	///////////
 
-	// The same thing applies about '!!' as for shared references.
+	// The same thing applies about '!!' as for reference pointers.
 	int!^! up6;
 	// ...can be rewritten as...
 	int^!! up7;
@@ -252,15 +252,33 @@ void Main()
 	/* A joint pointer works the same way as a unique pointer, but it allows additional non-owning (weak) pointers. */
 	/* Behind the scenes, each object contains pointers to all of the weak pointers that point to it, so that on destruction, they will be invalidated. */
 	/* Instead of objects having a dynamic list of weak pointers, they have a fixed number of links, which corresponds to the 2nd template argument of jptr. */
+	/* If no 2nd template argument is given, the default is 1. */
 
-	jptr<int> jp1 = snew int{7};
+	jptr<int> jp1 = jnew int{7};
 	stdout.println(jp1@); // Prints: 7
 	jp1@ = 8;
 	stdout.println(jp1@); // Prints: 8
 
-	sptr<int> sp2 = sptr(sp1);
-	sp2@ = 9;
-	stdout.println(sp1@); // Prints: 9
+	jptr<int> jp2 = jnew int{9};
+	stdout.println(jp2@); // Prints: 9
+	jptr<int> jp3 = jp2; // Illegal.
+	jptr<int> jp3 = cede jp2; // jp2 has now given ownership of the object to jp3.
+	stdout.println(jp3@); // Prints: 9
+	stdout.println(jp2@); // Runtime error (null pointer).
+	stdout.println(jp2 == null); // Prints: true
+
+	jptr<int> jp4 = jnew int{11};
+	stdout.println(jp4@); // Prints: 11
+	wjptr<int> wp1 = wjptr(jp4);
+	wp1@ = 13;
+	stdout.println(jp4@); // Prints: 13
+	stdout.println(wp1@); // Prints: 13
+
+	// With the fixed number of links, each weak pointer must be indexed.
+	jptr<int, 3> jp5 = jnew<3> int{15};
+	wjptr<0, int> wp2 = wjptr<0>(jp5);
+	wjptr<1, int> wp3 = wjptr<1>(jp5);
+	wjptr<2, int> wp4 = wjptr<2>(jp5);
 }
 
 //////////////////////////////

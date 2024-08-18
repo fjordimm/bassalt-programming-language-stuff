@@ -3,36 +3,102 @@
 #include <chrono>
 #include <random>
 #include <cstdlib>
+#include <memory>
 
 // Forward declarations
 std::chrono::steady_clock::time_point makeClock();
 float clockTime(const std::chrono::steady_clock::time_point& clock);
 std::size_t randNum(std::size_t lowerBound, std::size_t upperBound);
-void benchmarkRawPtr(const std::size_t n);
+void benchmarkRawPtr(const std::size_t numObjs, const std::size_t numActions);
 
 int main(void)
 {
-	std::printf("yoooo what up world\n");
+	const std::size_t numObjs = 150;
+	const std::size_t numActions = 9000000;
 
-	for (int i = 0; i < 15; i++)
-	{
-		std::printf("random number = %zu\n", randNum(1, 3));
-	}
-
-	// auto clock = makeClock();
-	// for (int i = 0; i < 100000; i++)
-	// {
-	// 	float z = ((float)i + 392.4) / 1.0000000012434;
-	// }
-	// float timeElapsed = clockTime(clock);
-	// std::printf("time elapsed: %f\n", timeElapsed);
+	benchmarkRawPtr(numObjs, numActions);
 
 	return 0;
 }
 
-void benchmarkRawPtr(const std::size_t n)
+struct Object_r
 {
+	float a;
+	float b;
+	float c;
+};
+
+void benchmarkRawPtr(const std::size_t numObjs, const std::size_t numActions)
+{
+	using Object = Object_r;
+
 	std::printf("Benchmarking raw pointers...\n");
+
+	auto clock = makeClock();
+	float tCreationOfArray;
+	float tObjInitialization;
+	float tActions;
+	float tDeletion;
+
+	{
+		Object** objects = new Object*[numObjs];
+		Object** depobjects = new Object*[numObjs];
+		for (std::size_t i = 0; i < numObjs; i++)
+		{
+			objects[i] = nullptr;
+			depobjects[i] = nullptr;
+		}
+
+		tCreationOfArray = clockTime(clock);
+
+		for (std::size_t i = 0; i < numObjs; i++)
+		{
+			objects[i] = new Object();
+			objects[i]->a = (float)randNum(0, 100) / 100.0f;
+			objects[i]->b = (float)randNum(0, 100) / 100.0f;
+			objects[i]->c = (float)randNum(0, 100) / 100.0f;
+		}
+
+		tObjInitialization = clockTime(clock);
+
+		for (std::size_t r = 0; r < numActions; r++)
+		{
+			int actn = randNum(0, 1);
+
+			if (actn == 0) // set a random item of depobjects to point to a random item of objects
+			{
+				std::size_t indexDepobj = randNum(0, numObjs - 1);
+				std::size_t indexObj = randNum(0, numObjs - 1);
+
+				depobjects[indexDepobj] = objects[indexObj];
+			}
+			else if (actn == 1) // read the value from a random item of depobjects
+			{
+				std::size_t indexDepobj = randNum(0, numObjs - 1);
+
+				Object* depobj = depobjects[indexDepobj];
+				if (depobj != nullptr)
+				{ float a = depobj->a; }
+			}
+		}
+
+		tActions = clockTime(clock);
+
+		delete[] objects;
+		delete[] depobjects;
+
+		tDeletion = clockTime(clock);
+	}
+
+	std::printf("...Done\n");
+	std::printf("  Times:\n");
+	std::printf("    creation of array:     %f\n", tCreationOfArray);
+	std::printf("    object initialization: %f\n", tObjInitialization - tCreationOfArray);
+	std::printf("    actions:               %f\n", tActions - tObjInitialization);
+	std::printf("    deletion:              %f\n", tDeletion - tActions);
+	std::printf("  Memory:\n");
+	std::printf("    Object: %zub\n", sizeof(Object));
+	std::printf("    pointer: %zub\n", sizeof(Object*));
 }
 
 std::chrono::steady_clock::time_point makeClock()

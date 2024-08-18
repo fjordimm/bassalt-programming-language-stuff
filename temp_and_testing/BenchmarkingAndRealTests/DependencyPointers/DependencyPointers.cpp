@@ -1,4 +1,6 @@
 
+////////// calling them 'joint pointers' now
+
 #include <cstdio>
 #include <chrono>
 #include <random>
@@ -259,6 +261,8 @@ void benchmarkDependencyPtr(const std::size_t numObjs, const std::size_t numActi
 				std::size_t indexDepobj = randNum(0, numObjs - 1);
 				std::size_t indexObj = randNum(0, numObjs - 1);
 
+				if (depobjects[indexDepobj] != nullptr)
+				{ depobjects[indexDepobj]->dep = nullptr; }
 				depobjects[indexDepobj] = objects[indexObj];
 				depobjects[indexDepobj]->dep = &(depobjects[indexObj]);
 			}
@@ -354,8 +358,17 @@ void benchmarkDynamicDependencyPtr(const std::size_t numObjs, const std::size_t 
 				std::size_t indexDepobj = randNum(0, numObjs - 1);
 				std::size_t indexObj = randNum(0, numObjs - 1);
 
+				if (depobjects[indexDepobj] != nullptr)
+				{
+					for (std::size_t i = 0; i < depobjects[indexDepobj]->deps.size(); i++)
+					{
+						if (depobjects[indexDepobj]->deps[i] == depobjects[indexDepobj])
+						{ depobjects[indexDepobj]->deps.remo }
+					}
+				}
 				depobjects[indexDepobj] = objects[indexObj];
-				depobjects[indexDepobj]->deps.
+				
+				// depobjects[indexDepobj]->deps.
 				// depobjects[indexDepobj]->dep = &(depobjects[indexObj]);
 			}
 			else if (actn == 1) // read the value from a random item of depobjects

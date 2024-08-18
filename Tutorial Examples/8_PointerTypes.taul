@@ -9,12 +9,12 @@
  int^					unique pointer type
  sptr<int>				shared pointer type
  wsptr<int>				weak shared pointer type
- optr<int>				observable pointer type
- woptr<int>				weak observable (observer) pointer type
  gptr<int>				garbage-collected pointer type
+ jptr<int, 1>			joint pointer type
+ wjptr<int, 1>			weak joint pointer type
 
  var&					address-of operator, returns a reference pointer
- var`					dereference operator
+ var@					dereference operator
  new int{1}				new operator, returns a unique pointer
  snew int{1}			newsptr operator, creates and returns a shared pointer
  rnew int{1}			rnew operator, returns a raw pointer
@@ -36,28 +36,28 @@ void Main()
 	unsafe
 	{
 		int* rp1 = rnew int{7};
-		stdout.println(rp1`); // Prints: 7
-		rp1` = 8;
-		stdout.println(rp1`); // Prints: 8
+		stdout.println(rp1@); // Prints: 7
+		rp1@ = 8;
+		stdout.println(rp1@); // Prints: 8
 		rfree rp1;
 
 		int* rp2 = rnew int{3};
 		int* rp3 = rnew int{3};
 		stdout.println(rp2 == rp3); // Prints: false
-		stdout.println(rp2` == rp3`); // Prints: true
+		stdout.println(rp2@ == rp3@); // Prints: true
 		rfree rp2;
 		rfree rp3;
 
 		int* rp4 = rnew int{9};
-		stdout.println(rp4`); // Prints: 9
+		stdout.println(rp4@); // Prints: 9
 		int* rp5 = rp4;
-		stdout.println(rp5`); // Prints: 9
-		stdout.println(rp4`); // Prints: 9
+		stdout.println(rp5@); // Prints: 9
+		stdout.println(rp4@); // Prints: 9
 		stdout.println(rp4 == null); // Prints: false
 		rfree rp4;
 		stdout.println(rp5 == null); // Prints: false
-		stdout.println(rp4`); // Undefined behavior, dereferencing a dangling pointer
-		stdout.println(rp5`); // Undefined behavior, dereferencing a dangling pointer
+		stdout.println(rp4@); // Undefined behavior, dereferencing a dangling pointer
+		stdout.println(rp5@); // Undefined behavior, dereferencing a dangling pointer
 
 		///////////
 
@@ -68,10 +68,10 @@ void Main()
 		int! c = 3;
 
 		int* rp6 = (*)a&;
-		stdout.println(rp6`);
-		rp6` += 9;
+		stdout.println(rp6@);
+		rp6@ += 9;
 		int!* rp7 = (*)c&!;
-		stdout.println(rp7`);
+		stdout.println(rp7@);
 
 		///////////
 
@@ -96,27 +96,27 @@ void Main()
 	int! c = 3;
 
 	int& r1 = a&;
-	stdout.println(r1`); // Prints: 1
+	stdout.println(r1@); // Prints: 1
 	a = 10;
-	stdout.println(r1`); // Prints: 10
+	stdout.println(r1@); // Prints: 10
 
 	int& r2 = a&;
-	r2` = 11; // a is now 11.
+	r2@ = 11; // a is now 11.
 	r2 = b&;
-	r2` = 22; // b is now 22.
+	r2@ = 22; // b is now 22.
 
 	r2 = 8; // Illegal, the value of a reference must be either null or a valid memory address.
 	r2++; // Illegal, the value of a reference must be either null or a valid memory address.
 
 	int&! r3 = a&;
-	r3` = 111; // a is now 111.
+	r3@ = 111; // a is now 111.
 	r3 = ref b; // Illegal, r3 is fixed.
 
 	int!& r4 = a&!;
-	r4` = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
-	stdout.println(r4`);
+	r4@ = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
+	stdout.println(r4@);
 	r4 = b&!; // The value of r4 can still be changed.
-	stdout.println(r4`);
+	stdout.println(r4@);
 
 	// Think of fixedness as polymorphism. Unfixed types (e.g. int) are subsets of fixed types (e.g. int!).
 	int!& r5 = a&!;
@@ -125,8 +125,8 @@ void Main()
 	int& r7 = c&!; // Illegal, r7 can mutate its referent, so it cannot point to a fixed type.
 
 	int!&! r8 = a&!;
-	stdout.println(r8`);
-	r8` = 100; // Illegal, r8 points to a fixed type.
+	stdout.println(r8@);
+	r8@ = 100; // Illegal, r8 points to a fixed type.
 	r8 = b&!; // Illegal, r8 is fixed.
 
 	///////////
@@ -143,8 +143,8 @@ void Main()
 	///////////
 
 	int& r13 = null;
-	stdout.println(r13`); // Runtime error.
-	r13` = 1000; // Runtime error.
+	stdout.println(r13@); // Runtime error.
+	r13@ = 1000; // Runtime error.
 
 	int& r14 = a&
 	int& r15 = a&;
@@ -171,21 +171,21 @@ void Main()
 	///////////
 
 	int^ up1 = new int{7};
-	stdout.println(up1`); // Prints: 7
-	up1` = 8;
-	stdout.println(up1`); // Prints: 8
+	stdout.println(up1@); // Prints: 7
+	up1@ = 8;
+	stdout.println(up1@); // Prints: 8
 
 	int^ up2 = new int{3};
 	int^ up3 = new int{3};
 	stdout.println(up2 == up3); // Prints: false
-	stdout.println(up2` == up3`); // Prints: true
+	stdout.println(up2@ == up3@); // Prints: true
 
 	int^ up4 = new int{9};
-	stdout.println(up4`); // Prints: 9
+	stdout.println(up4@); // Prints: 9
 	int^ up5 = up4; // Illegal.
-	int^ up5 = up4`; // up4 has now given ownership of the object to up5.
-	stdout.println(up5`); // Prints: 9
-	stdout.println(up4`); // Runtime error (null pointer).
+	int^ up5 = up4@; // up4 has now given ownership of the object to up5.
+	stdout.println(up5@); // Prints: 9
+	stdout.println(up4@); // Runtime error (null pointer).
 	stdout.println(up4 == null); // Prints: true
 
 	///////////
@@ -209,13 +209,13 @@ void Main()
 	/* They work the same as C++'s std::shared_ptr and std::weak_ptr. */
 
 	sptr<int> sp1 = snew int{7};
-	stdout.println(sp1`); // Prints: 7
-	sp1` = 8;
-	stdout.println(sp1`); // Prints: 8
+	stdout.println(sp1@); // Prints: 7
+	sp1@ = 8;
+	stdout.println(sp1@); // Prints: 8
 
 	sptr<int> sp2 = sptr(sp1);
-	sp2` = 9;
-	stdout.println(sp1`); // Prints: 9
+	sp2@ = 9;
+	stdout.println(sp1@); // Prints: 9
 
 	///////////
 
@@ -245,11 +245,22 @@ void Main()
 
 //////////////////////////////
 
-///// Observable Pointers /////
+///// Joint Pointers /////
 
 void Main()
 {
-	
+	/* A joint pointer works the same way as a unique pointer, but it allows additional non-owning (weak) pointers. */
+	/* Behind the scenes, each object contains pointers to all of the weak pointers that point to it, so that on destruction, they will be invalidated. */
+	/* Instead of objects having a dynamic list of weak pointers, they have a fixed number of links, which corresponds to the 2nd template argument of jptr. */
+
+	jptr<int> jp1 = snew int{7};
+	stdout.println(jp1@); // Prints: 7
+	jp1@ = 8;
+	stdout.println(jp1@); // Prints: 8
+
+	sptr<int> sp2 = sptr(sp1);
+	sp2@ = 9;
+	stdout.println(sp1@); // Prints: 9
 }
 
 //////////////////////////////

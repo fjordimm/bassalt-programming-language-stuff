@@ -8,7 +8,10 @@
  int&					reference pointer type
  int^					unique pointer type
  sptr<int>				shared pointer type
- wptr<int>				weak pointer type
+ wsptr<int>				weak shared pointer type
+ optr<int>				observable pointer type
+ woptr<int>				weak observable (observer) pointer type
+ gptr<int>				garbage-collected pointer type
 
  var&					address-of operator, returns a reference pointer
  var`					dereference operator
@@ -18,6 +21,69 @@
  rrealloc var			rrealloc operator, returns a raw pointer
  rfree var				rfree operator, frees the referent of 'var'
 */
+
+//////////////////////////////
+
+///// Raw Pointers /////
+
+void Main()
+{
+	/* Raw pointers can point to anything on the stack or heap. */
+	/* They will not automatically free themselves, so you must free them manually when needed using 'rfree'. */
+	/* Therefore, raw pointers must be used in an unsafe context. */
+	/* Mutability/face rules still apply to raw pointers, however. */
+
+	unsafe
+	{
+		int* rp1 = rnew int{7};
+		stdout.println(rp1`); // Prints: 7
+		rp1` = 8;
+		stdout.println(rp1`); // Prints: 8
+		rfree rp1;
+
+		int* rp2 = rnew int{3};
+		int* rp3 = rnew int{3};
+		stdout.println(rp2 == rp3); // Prints: false
+		stdout.println(rp2` == rp3`); // Prints: true
+		rfree rp2;
+		rfree rp3;
+
+		int* rp4 = rnew int{9};
+		stdout.println(rp4`); // Prints: 9
+		int* rp5 = rp4;
+		stdout.println(rp5`); // Prints: 9
+		stdout.println(rp4`); // Prints: 9
+		stdout.println(rp4 == null); // Prints: false
+		rfree rp4;
+		stdout.println(rp5 == null); // Prints: false
+		stdout.println(rp4`); // Undefined behavior, dereferencing a dangling pointer
+		stdout.println(rp5`); // Undefined behavior, dereferencing a dangling pointer
+
+		///////////
+
+		/* Raw pointers can also be used like reference pointers */
+
+		int a = 1;
+		int b = 2;
+		int! c = 3;
+
+		int* rp6 = (*)a&;
+		stdout.println(rp6`);
+		rp6` += 9;
+		int!* rp7 = (*)c&!;
+		stdout.println(rp7`);
+
+		///////////
+
+		/* Raw pointers can also be set to any other pointer type */
+
+		int& r1 = a&;
+		int* rp8 = (*)r1;
+
+		int^ up1 = new int{7};
+		int* rp9 = (*)up1;
+	}
+}
 
 //////////////////////////////
 
@@ -117,7 +183,7 @@ void Main()
 	int^ up4 = new int{9};
 	stdout.println(up4`); // Prints: 9
 	int^ up5 = up4; // Illegal.
-	int^ up5 = up4@; // up4 has now given ownership of the object to up5.
+	int^ up5 = up4`; // up4 has now given ownership of the object to up5.
 	stdout.println(up5`); // Prints: 9
 	stdout.println(up4`); // Runtime error (null pointer).
 	stdout.println(up4 == null); // Prints: true
@@ -136,70 +202,7 @@ void Main()
 
 //////////////////////////////
 
-///// Raw Pointers /////
-
-void Main()
-{
-	/* Raw pointers can point to anything on the stack or heap. */
-	/* They will not automatically free themselves, so you must free them manually when needed using 'rfree'. */
-	/* Therefore, raw pointers must be used in an unsafe context. */
-	/* Mutability/face rules still apply to raw pointers, however. */
-
-	unsafe
-	{
-		int* rp1 = rnew int{7};
-		stdout.println(rp1`); // Prints: 7
-		rp1` = 8;
-		stdout.println(rp1`); // Prints: 8
-		rfree rp1;
-
-		int* rp2 = rnew int{3};
-		int* rp3 = rnew int{3};
-		stdout.println(rp2 == rp3); // Prints: false
-		stdout.println(rp2` == rp3`); // Prints: true
-		rfree rp2;
-		rfree rp3;
-
-		int* rp4 = rnew int{9};
-		stdout.println(rp4`); // Prints: 9
-		int* rp5 = rp4;
-		stdout.println(rp5`); // Prints: 9
-		stdout.println(rp4`); // Prints: 9
-		stdout.println(rp4 == null); // Prints: false
-		rfree rp4;
-		stdout.println(rp5 == null); // Prints: false
-		stdout.println(rp4`); // Undefined behavior, dereferencing a dangling pointer
-		stdout.println(rp5`); // Undefined behavior, dereferencing a dangling pointer
-
-		///////////
-
-		/* Raw pointers can also be used like reference pointers */
-
-		int a = 1;
-		int b = 2;
-		int! c = 3;
-
-		int* rp6 = (*)a&;
-		stdout.println(rp6`);
-		rp6` += 9;
-		int!* rp7 = (*)c&!;
-		stdout.println(rp7`);
-
-		///////////
-
-		/* Raw pointers can also be set to any other pointer type */
-
-		int& r1 = a&;
-		int* rp8 = (*)r1;
-
-		int^ up1 = new int{7};
-		int* rp9 = (*)up1;
-	}
-}
-
-//////////////////////////////
-
-///// Shared Pointers and Weak Pointers /////
+///// Shared Pointers /////
 
 void Main()
 {
@@ -216,7 +219,7 @@ void Main()
 
 	///////////
 
-	wptr<int> wp1;
+	wsptr<int> wp1;
 
 	{
 		sptr<int> spA;
@@ -224,7 +227,7 @@ void Main()
 		{
 			sptr<int> spB = snew int{3};
 			spA = sptr(spB);
-			wp1 = wptr(spB);
+			wp1 = wsptr(spB);
 
 			stdout.println(spB); // Prints: 3
 			stdout.println(spA); // Prints: 3
@@ -241,6 +244,18 @@ void Main()
 }
 
 //////////////////////////////
+
+///// Observable Pointers /////
+
+void Main()
+{
+	
+}
+
+//////////////////////////////
+
+// TODO: gptr (garbage-collected pointer)
+// TODO: optr (observable pointer)
 
 // TODO: conversions between pointer types; explicit casting from one pointer type to another (e.g. 'int* rp = (*)someUniquePtr' and that is actually a shortcut for 'int* rp = (int*)someUniquePtr')
 // TODO: combining them (e.g. int^*)

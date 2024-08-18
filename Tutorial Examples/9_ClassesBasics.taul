@@ -74,15 +74,16 @@ class Foo
 		this.a = a;
 		this.b = b;
 	}
-},
-with module
-{
-	/* Everything in this block will be treated as static. In other words, this is like a module named 'Foo'. */
 
-	public const int SomeConst = 12345;
+	module
+	{
+		/* Everything in this block will be treated as static. In other words, this is like a module named 'Foo'. */
 
-	public void SomeFunc()
-	{ stdout.println("hello"); }
+		public const int SomeConst = 12345;
+
+		public void SomeFunc()
+		{ stdout.println("hello"); }
+	}
 }
 
 void Main()

@@ -34,9 +34,9 @@ void Main()
 	int& z = inline
 	{
 		int y = 42;
-		Foo(ref x, ref y);
+		Foo(x&, y&);
 	};
-	stdout.println(f"{z@}");
+	stdout.println(f"{z`}");
 }
 
 //////////////////////////////

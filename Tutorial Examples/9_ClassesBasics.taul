@@ -24,9 +24,11 @@ void Main()
 	fooA.y += 2;
 	stdout.println(fooA.x);
 
-	// Since Foo is non-passable, it cannot be passed as a value, nor be reassigned...
+	// Since Foo is non-passable, it cannot be passed as a value
 	Foo fooB = foo; // Illegal
-	fooA => (8, 2); // Illegal
+
+	// However, it can be reassigned by calling the constructor again (unless the class is declared fixed)
+	fooA => (8, 2);
 }
 
 //////////////////////////////

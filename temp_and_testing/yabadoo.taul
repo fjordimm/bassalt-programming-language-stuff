@@ -1,5 +1,9 @@
 
-int Main()
-{
-	
-}
+/*
+
+Node:
+- val: {this}int
+- next: {this}ptr<{this.next}Node>
+- prev: {this}ptr<{this:owner}Node>
+
+*/

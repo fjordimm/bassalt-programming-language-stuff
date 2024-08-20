@@ -80,6 +80,8 @@ Features to Cover:
  - inline block expressions (see https://doc.rust-lang.org/reference/expressions/block-expr.html and https://stackoverflow.com/questions/6305396/whats-this-c-syntax-that-puts-a-brace-surrounded-block-where-an-expression-is)
     - syntax: `int var = inline (int) { 13; };`
 	- you could also drop the type after `inline`
+ - https://www.codeproject.com/Articles/5316026/ptr-to-unique-T-extending-std-unique-ptr-to-suppor
+ - rename 'interface' to 'trait'
 
 Maybe:
  - the 'or' keyword: if var == 12 or 18 {...}

@@ -7,11 +7,13 @@
  int*					raw pointer type
  int&					reference pointer type
  int^					unique pointer type
+ optr<int>				observable pointer type
+ woptr<int>				weak observable (observer) pointer type
  sptr<int>				shared pointer type
  wsptr<int>				weak shared pointer type
- gptr<int>				garbage-collected pointer type
  jptr<int, 1>			joint pointer type
  wjptr<0, int>			weak joint pointer type
+ gptr<int>				garbage-collected pointer type
 
  var&					address-of operator, returns a reference pointer
  var@					dereference operator
@@ -202,11 +204,43 @@ void Main()
 
 //////////////////////////////
 
+///// Observable Pointers /////
+
+void Main()
+{
+	/* Observable pointers work like C++'s std::shared_ptr and std::weak_ptr, but only allow one owner. */
+	/* See https://www.codeproject.com/Articles/5316026/ptr-to-unique-T-extending-std-unique-ptr-to-suppor. */
+	/* This means there is comparable runtime and memory overhead to shared pointers, but cycles are not possible since it enforces ownership semantics. */
+
+	optr<int> op1 = onew int{7};
+	stdout.println(op1@); // Prints: 7
+	op1@ = 8;
+	stdout.println(op1@); // Prints: 8
+
+	optr<int> op2 = onew int{9};
+	stdout.println(op2@); // Prints: 9
+	optr<int> op3 = op2; // Illegal.
+	optr<int> op3 = cede op2; // op2 has now given ownership of the object to op3.
+	stdout.println(op3@); // Prints: 9
+	stdout.println(op2@); // Runtime error (null pointer).
+	stdout.println(op2 == null); // Prints: true
+
+	optr<int> op4 = onew int{11};
+	stdout.println(op4@); // Prints: 11
+	woptr<int> wp1 = woptr(op4);
+	wp1@ = 13;
+	stdout.println(op4@); // Prints: 13
+	stdout.println(wp1@); // Prints: 13
+}
+
+//////////////////////////////
+
 ///// Shared Pointers /////
 
 void Main()
 {
 	/* They work the same as C++'s std::shared_ptr and std::weak_ptr. */
+	/* This means there is some runtime and memory overhead. Also, cycles are possible leading to memory leaks. */
 
 	sptr<int> sp1 = snew int{7};
 	stdout.println(sp1@); // Prints: 7

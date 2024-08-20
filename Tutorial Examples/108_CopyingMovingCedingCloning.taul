@@ -1,0 +1,39 @@
+
+//////////////////////////////
+
+///// in short /////
+
+// copying:
+passable class Foo {...}
+Foo a = Foo();
+Foo b = a;
+
+// moving:
+class Foo {...}
+Foo a => ();
+Foo b => move a;
+// or
+passable class Bar {...}
+Bar a = Bar();
+Bar b = move a;
+
+// ceding:
+int^ a = new int{7};
+int^ b = cede a;
+
+// cloning:
+class Foo {...}
+Foo a => ();
+Foo b => (a);
+
+//////////////////////////////
+
+///// Copying /////
+
+//////////////////////////////
+
+///// Moving /////
+
+/* makes the variable that got moved in a similar state to an uninitialized variable */
+
+//////////////////////////////

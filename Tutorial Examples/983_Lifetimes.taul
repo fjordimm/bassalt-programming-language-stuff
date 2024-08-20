@@ -1,7 +1,7 @@
 
 //////////////////////////////
 
-///// Lifetimes /////
+///// Basics of Lifetimes /////
 
 // Rust code:
 
@@ -36,7 +36,33 @@ void Main()
 		int y = 42;
 		Foo(x&, y&);
 	};
-	stdout.println(f"{z`}");
+	stdout.println(f"{z@}");
+}
+
+//////////////////////////////
+
+///// The 'owner' Keyword /////
+/* and how to make a memory-safe doubly linked list with no overhead */
+
+int&{L : owner} var;
+
+struct Thing
+{
+	float a;
+}
+
+void Main()
+{
+
+}
+
+///////////
+
+struct Node
+{
+	float data;
+	Node^ next;
+	Node&{owner} prev;
 }
 
 //////////////////////////////

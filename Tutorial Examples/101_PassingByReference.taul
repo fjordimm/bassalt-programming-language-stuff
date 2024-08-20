@@ -35,7 +35,7 @@ void Main()
 	/* 1) Declare the function with all the outref parameters at the end. */
 	/* 2) Format the function call like so... */
 	MakeFibonacciSequence(0, 30, // regular parameters go on one line like normal
-		outref int[] result; // 
+		int[] result outref; // outrefs go on separate lines
 	);
 }
 

@@ -29,10 +29,14 @@ void Main()
 
 	int d;
 	InitializeMe(outref d);
-	InitializeMe(outref int d2); // (MAYBE) you can also declare variables in the function call
+	InitializeMe(int d2 outref); // You can also declare variables in the function call (but see below)
 
-	// For outrefs, here is a good convention
-	// TODO
+	/* For outrefs, here is a good convention: */
+	/* 1) Declare the function with all the outref parameters at the end. */
+	/* 2) Format the function call like so... */
+	MakeFibonacciSequence(0, 30, // regular parameters go on one line like normal
+		outref int[] result; // 
+	);
 }
 
 void DoubleMe(ref int v)

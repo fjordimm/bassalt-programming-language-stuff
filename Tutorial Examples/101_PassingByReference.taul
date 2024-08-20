@@ -37,6 +37,9 @@ void Main()
 	MakeFibonacciSequence(0, 30, // regular parameters go on one line like normal
 		int[] result outref; // declaration outrefs go on separate lines
 	);
+
+	int e;
+	Func6(ref e); // Since `e` is uninitialized, it is passing by uninitialized reference rather than by normal reference
 }
 
 void DoubleMe(ref int v)
@@ -54,6 +57,7 @@ void DoubleMeWrapper(ref int v)
 void PrintMe1(ref int! v)
 {
 	// Cannot write to `v`
+
 	stdout.println(v);
 }
 
@@ -61,6 +65,7 @@ void PrintMe1(ref int! v)
 void PrintMe2(inref int v)
 {
 	// Cannot write to `v`
+
 	stdout.println(v);
 }
 
@@ -68,11 +73,41 @@ void PrintMe2(inref int v)
 void InitializeMe(outref int v)
 {
 	// Cannot read the value of `v` before assigning it
+
 	v = 13;
+
 	// By the end of the function, `v` must be assigned to something
 }
 
-//////////////////////////////
+void Func6(ref{uninitialized} int v)
+{
+	// Cannot read the value of `v` before assigning it.
 
-// TODO: outrefs that can assume the referand has been initialized
-// TODO: refs that can't assume the referand has been initialized
+	// When passing it by reference again, it can only be passed to uninitialized references (at least before `v` is assigned anything).
+	ref{uninitialized} int temp1 = ref v;
+
+	v = 11;
+
+	// Now it can be read (`v` is now effectively `ref int` instead of `ref{uninitialized} int`).
+	stdout.println(v);
+
+	// And, now it can be passed to uninitialized or initialized references.
+	ref{uninitialized} int temp2 = ref v;
+	ref int temp3 = ref v;
+}
+
+// TODO: Func7 with initialized outrefs
+
+/*
+// TODO
+In summary:
+ - `ref` OR `ref{initialized}`
+    - references: lvalue
+	- readable: yes
+	- 
+ - `ref{uninitialized}`
+ - `outref`
+ - `inref`
+*/
+
+//////////////////////////////

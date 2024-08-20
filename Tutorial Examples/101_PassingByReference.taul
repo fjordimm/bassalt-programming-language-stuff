@@ -3,6 +3,17 @@
 
 ///// Passing By Reference /////
 
+/*
+Note: passing by reference is not to be confused with reference pointers (represented by `&`).
+
+`int& var`    --> "The declaration of a variable 'var' with type 'reference pointer to int'."
+`var&`        --> "The address of a variable 'var'."
+`ref int var` --> "The declaration of a variable 'var' with type 'int' that is passed by reference."
+`ref var`     --> "Passing a variable 'var' by reference."
+
+While something like `int&& var` is legal, something like `ref ref int var` is illegal and wouldn't make sense.
+*/
+
 void Main()
 {
 	int a = 5;
@@ -10,11 +21,18 @@ void Main()
 	DoubleMeWrapper(ref a);
 
 	int b = 9;
-	PrintMe(ref b!);
+	PrintMe1(ref b!);
 
-	int c;
-	InitializeMe(outref c);
-	InitializeMe(outref int c2); // (MAYBE) you can also declare variables in the function call
+	int c = 7;
+	PrintMe2(inref c);
+	PrintMe2(inref 3);
+
+	int d;
+	InitializeMe(outref d);
+	InitializeMe(outref int d2); // (MAYBE) you can also declare variables in the function call
+
+	// For outrefs, here is a good convention
+	// TODO
 }
 
 void DoubleMe(ref int v)
@@ -29,8 +47,14 @@ void DoubleMeWrapper(ref int v)
 	DoubleMe(ref v);
 }
 
+void PrintMe1(ref int! v)
+{
+	// Cannot write to `v`
+	stdout.println(v);
+}
+
 // `v` can be an lvalue or rvalue
-void PrintMe(ref int! v)
+void PrintMe2(inref int v)
 {
 	// Cannot write to `v`
 	stdout.println(v);

@@ -100,27 +100,32 @@ void Func6(ref{uninitialized} int v)
 
 /*
 In summary:
- - `ref` OR `ref{initialized}`
+
+ `ref` OR `ref{initialized}`
     - references:          lvalue
 	- readable:            yes
 	- writable:            yes
 	- must be written to:  no
- - `ref{uninitialized}`
+
+ `ref{uninitialized}`
     - references:          lvalue
 	- readable:            no (until written to)
 	- writable:            yes
 	- must be written to:  no
- - `outref` OR `outref{uninitialized}`
+
+ `outref` OR `outref{uninitialized}`
     - references:          lvalue
 	- readable:            no (until written to)
 	- writable:            yes
 	- must be written to:  yes
- - `outref{initialized}`
+
+ `outref{initialized}`
     - references:          lvalue
 	- readable:            yes
 	- writable:            yes
 	- must be written to:  yes
- - `inref`
+
+ `inref`
     - references:          lvalue or rvalue
 	- readable:            yes
 	- writable:            no

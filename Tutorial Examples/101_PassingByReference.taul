@@ -99,15 +99,32 @@ void Func6(ref{uninitialized} int v)
 // TODO: Func7 with initialized outrefs
 
 /*
-// TODO
 In summary:
  - `ref` OR `ref{initialized}`
-    - references: lvalue
-	- readable: yes
-	- 
+    - references:          lvalue
+	- readable:            yes
+	- writable:            yes
+	- must be written to:  no
  - `ref{uninitialized}`
- - `outref`
+    - references:          lvalue
+	- readable:            no (until written to)
+	- writable:            yes
+	- must be written to:  no
+ - `outref` OR `outref{uninitialized}`
+    - references:          lvalue
+	- readable:            no (until written to)
+	- writable:            yes
+	- must be written to:  yes
+ - `outref{initialized}`
+    - references:          lvalue
+	- readable:            yes
+	- writable:            yes
+	- must be written to:  yes
  - `inref`
+    - references:          lvalue or rvalue
+	- readable:            yes
+	- writable:            no
+	- must be written to:  no
 */
 
 //////////////////////////////

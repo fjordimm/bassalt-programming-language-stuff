@@ -1,6 +1,9 @@
 
 ///// "Null-checked raw pointer" /////
 
+#include <cstdio>
+#include <cstdlib>
+
 template <typename T>
 class nptr
 {
@@ -17,15 +20,15 @@ class nptr
 		ptr(nullptr)
 	{}
 
-	nptr(nptr const& other) :
-		ptr(other.ptr)
+	nptr(nptr const& that) :
+		ptr(that.ptr)
 	{}
 
-	nptr& operator=(nptr const& other)
+	nptr& operator=(nptr const& that)
 	{
-		if (this != &other)
+		if (this != &that)
 		{
-			this->ptr = other.ptr;
+			this->ptr = that.ptr;
 		}
 
 		return *this;
@@ -76,7 +79,7 @@ class nptr
 		}
 		else
 		{
-			return this->ptr->data;
+			return *(this->ptr);
 		}
 	}
 };

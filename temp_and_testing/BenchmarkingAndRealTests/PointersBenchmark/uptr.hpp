@@ -78,8 +78,11 @@ class uptr
 
 	void freeOld()
 	{
-		delete this->ptr;
-		this->ptr = nullptr;
+		if (this->ptr != nullptr)
+		{
+			delete this->ptr;
+			this->ptr = nullptr;
+		}
 	}
 
    public:

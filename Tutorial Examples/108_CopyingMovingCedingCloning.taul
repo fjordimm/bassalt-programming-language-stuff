@@ -1,30 +1,83 @@
 
 //////////////////////////////
 
-///// in short /////
+///// In Short /////
 
-// copying:
+/* Copying */
+
+int a = 7;
+int b = a;
+// or
+struct Foo {int m1, int m2}
+Foo a = Foo(m1=7, m2=7);
+Foo b = a;
+// or
+<int, int> a = (7, 7);
+<int, int> b = a;
+// or
 passable class Foo {...}
 Foo a = Foo();
 Foo b = a;
 
-// moving:
+/* Cloning */
+// Note: you need to make these constructors explicitly
+
 class Foo {...}
-Foo a => ();
-Foo b => move a;
+Foo a =: ();
+Foo b =: (a);
+// or
+passable class Foo {...}
+Foo a = Foo();
+Foo b = Foo(a);
+
+/* Ceding */
+
+// TODO
+
+//////////////////////////////
+
+//////// IGNORE BELOW ////////
+
+//////////////////////////////
+
+///// In Short /////
+
+// copying:
+int a = 7;
+int b = a;
+// or
+passable class Bar {...}
+Bar a = Foo();
+Bar b = a;
+
+// moving:
+int a = 7;
+int b =: move a;
 // or
 passable class Bar {...}
 Bar a = Bar();
-Bar b = move a;
+Bar b =: move a;
+// or
+class Foo {...}
+Foo a =: ();
+Foo b =: move a;
 
 // ceding:
 int^ a = new int{7};
 int^ b = cede a;
+// or
+struct Foo { int^ f; }
+Foo a = Foo{f=new int{7}};
+Foo b = cede a;
 
 // cloning:
 class Foo {...}
-Foo a => ();
-Foo b => (a);
+Foo a =: ();
+Foo b =: (a);
+// or
+passable class Bar {...}
+Bar a = Bar();
+Bar b = Bar(a);
 
 //////////////////////////////
 
@@ -34,6 +87,11 @@ Foo b => (a);
 
 ///// Moving /////
 
-/* makes the variable that got moved in a similar state to an uninitialized variable */
+/* Unlike std::move() in C++, `move` will not disable NRVO. */
+/* In fact, `move` will not only enable RVO and NRVO, but will force them, meaning it has some extra restrictions. */
+
+move int[30] makeCoolArray
+
+// TODO: maybe don't do move semantics actually
 
 //////////////////////////////

@@ -100,7 +100,7 @@ void Main()
 	}
 
 	// 'for-each' loop:
-	char[] arr => {'a', 'b', 'c'};
+	char[] arr =: {'a', 'b', 'c'};
 	for char c in arr
 	{
 		stdout.println(c);
@@ -188,19 +188,19 @@ void Main()
 
 void Main()
 {
-	// See how classes work for a better understanding of the '=>' notation
+	// See how classes work for a better understanding of the '=:' notation
 	// For now, just know that the variables below cannot be passed as values or be reassigned new arrays
 
-	int[30] arrA => ();
+	int[30] arrA =: ();
 	for int i in 0..arrA.len
 	{
 		arrA[i] = i * i;
 	}
 
-	int[15] arrB => (5); // All elements initialized to 5
-	int[15] arrC => (); // All elements initialized to 0
-	int[3] arrD => {1, 2, 3};
-	int[] arrE => {1, 2, 3}; // Still a fixed size of 3
+	int[15] arrB =: (5); // All elements initialized to 5
+	int[15] arrC =: (); // All elements initialized to 0
+	int[3] arrD =: {1, 2, 3};
+	int[] arrE =: {1, 2, 3}; // Still a fixed size of 3
 }
 
 ////////////////////////////////////////////////////////////
@@ -262,7 +262,7 @@ void Main()
 {
 	int foo = 13;
 	int& fooRef = ref foo;
-	fooRef` = 7; // now foo is 7
+	fooRef@ = 7; // now foo is 7
 }
 
 ////////////////////////////////////////////////////////////

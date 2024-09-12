@@ -16,7 +16,7 @@ Operator Precedence:
  12) x && y
  13) x || y
  14) x ? y : z
- 15) x = y   x => y   x += y   x -= y   x *= y   x /= y   x %= y   x &= y   x |= y   x ^= y   x <<= y   x >>= y   x >>>= y
+ 15) x = y   x =: y   x += y   x -= y   x *= y   x /= y   x %= y   x &= y   x |= y   x ^= y   x <<= y   x >>= y   x >>>= y
  16) (...) -> {...}
  17) assert   throw
 

@@ -20,15 +20,15 @@ void Main()
 	// Bassalt string literals will be interpreted as C string literals
 	$printf("hello\n");
 
-	string! str => "string one\n";
+	string! str =: "string one\n";
 	$printf(str);
 	$printf(($const$char$*)str);
 
 	unsafe
 	{
-		char![30] dest => ();
-		char![5] src1 => {'h', 'o', 'l', 'a', '\0'};
-		string! src2 => "hola\n";
+		char![30] dest =: ();
+		char![5] src1 =: {'h', 'o', 'l', 'a', '\0'};
+		string! src2 =: "hola\n";
 
 		// Both of these do the same thing
 		$strcpy(dest, src1);

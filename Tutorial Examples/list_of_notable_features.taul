@@ -2,6 +2,7 @@
 /*
 
 Notable Features:
+ - RAII
  - Tries not to force any programming paradigms
  - The concept of passability (passable and non-passable classes)
  - The concept of faces (including the mutable face and immutable face for primitive types, and the mutable private face, immutable private face, mutable public face, and immutable public face for classes)
@@ -22,4 +23,3 @@ Minor Notable Features:
  - Tuple syntax
 
 */
-

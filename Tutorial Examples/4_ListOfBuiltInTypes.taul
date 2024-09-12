@@ -28,7 +28,7 @@ rgba var = 0_r;				// 32 bits	// integer	// unsigned		(Not meant to be used as a
 datetime var = 0_t;			// 64 bits	// integer	// unsigned		(Not meant to be used as an integer. See '42_BuiltInStructs')
 
 // Built-in Non-portable Classes
-string var => "hello";
+string var =: "hello";
 
 ////////////////////////////////////////////////////////////
 

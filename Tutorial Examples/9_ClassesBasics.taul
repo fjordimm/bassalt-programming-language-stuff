@@ -19,7 +19,7 @@ class Foo
 
 void Main()
 {
-	Foo fooA => (3, 7);
+	Foo fooA =: (3, 7);
 	fooA.x = 9;
 	fooA.y += 2;
 	stdout.println(fooA.x);
@@ -28,7 +28,7 @@ void Main()
 	Foo fooB = foo; // Illegal
 
 	// However, it can be reassigned by calling the constructor again (unless the class is declared fixed)
-	fooA => (8, 2);
+	fooA =: (8, 2);
 }
 
 //////////////////////////////
@@ -90,7 +90,7 @@ class Foo
 
 void Main()
 {
-	Foo foo => ('a', 'b');
+	Foo foo =: ('a', 'b');
 	stdout.println(foo.a);
 	stdout.println(foo.b);
 	stdout.println(Foo::SomeConst);

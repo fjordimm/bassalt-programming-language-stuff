@@ -29,20 +29,11 @@ int main(void)
 
 	// benchmarkRawPtr(numObjs, numActions);
 	// benchmarkRptr(numObjs, numActions);
-	benchmarkUptr(numObjs, numActions);
+	// benchmarkUptr(numObjs, numActions);
 	// benchmarkHptr(numObjs, numActions);
-	// benchmarkDptr(numObjs, numActions);
+	benchmarkDptr(numObjs, numActions);
 	// benchmarkUniquePtr(numObjs, numActions);
 	// benchmarkSharedPtr(numObjs, numActions);
-
-	// std::printf("howdy\n");
-
-	// dptr<int> yuh = dptr<int>::make();
-	// std::printf("A\n");
-	// int* dep1;
-	// yuh.getDependent(&dep1);
-
-	// std::printf("hoidy\n");
 
 	return 0;
 }
@@ -339,6 +330,8 @@ void benchmarkDptr(const std::size_t numObjs, const std::size_t numActions)
 	float tDeletion;
 	float tDeletionOfArray;
 
+	SomeStruct* throwawayPointer;
+
 	{
 		dptr<SomeStruct>* objects = new dptr<SomeStruct>[numObjs];
 		for (std::size_t i = 0; i < numObjs; i++)
@@ -354,6 +347,11 @@ void benchmarkDptr(const std::size_t numObjs, const std::size_t numActions)
 			(*objects[i]).a = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).b = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).c = (float)randNum(0, 100) / 100.0f;
+
+			for (int j = 0; j < 0; j++) // set to 0 for now
+			{
+				objects[i].getDependent(&throwawayPointer);
+			}
 		}
 
 		tObjInitialization = clockTime(clock);
@@ -394,6 +392,7 @@ void benchmarkDptr(const std::size_t numObjs, const std::size_t numActions)
 	std::printf("    deletion of array:     %f\n", tDeletionOfArray - tDeletion);
 	std::printf("  Memory:\n");
 	std::printf("    size of pointer: %zub\n", sizeof(dptr<SomeStruct>));
+	std::printf("    size of object is: %zub instead of %zub (plus the vector of deps).\n", dptr<SomeStruct>::_SizeOfObj(), sizeof(SomeStruct));
 }
 
 void benchmarkUniquePtr(const std::size_t numObjs, const std::size_t numActions)
@@ -461,7 +460,7 @@ void benchmarkUniquePtr(const std::size_t numObjs, const std::size_t numActions)
 	std::printf("    object deletion:       %f\n", tDeletion - tActions);
 	std::printf("    deletion of array:     %f\n", tDeletionOfArray - tDeletion);
 	std::printf("  Memory:\n");
-	std::printf("    raw pointer: %zub\n", sizeof(std::unique_ptr<SomeStruct>));
+	std::printf("    size of pointer: %zub\n", sizeof(std::unique_ptr<SomeStruct>));
 }
 
 void benchmarkSharedPtr(const std::size_t numObjs, const std::size_t numActions)
@@ -529,7 +528,7 @@ void benchmarkSharedPtr(const std::size_t numObjs, const std::size_t numActions)
 	std::printf("    object deletion:       %f\n", tDeletion - tActions);
 	std::printf("    deletion of array:     %f\n", tDeletionOfArray - tDeletion);
 	std::printf("  Memory:\n");
-	std::printf("    raw pointer: %zub\n", sizeof(std::shared_ptr<SomeStruct>));
+	std::printf("    size of pointer: %zub\n", sizeof(std::shared_ptr<SomeStruct>));
 }
 
 std::chrono::steady_clock::time_point makeClock()

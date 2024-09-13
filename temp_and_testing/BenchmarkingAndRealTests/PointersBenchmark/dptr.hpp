@@ -118,7 +118,7 @@ class dptr
 	{
 		if (this->ptr == nullptr)
 		{
-			std::fprintf(stderr, "Null pointer.\n");
+			std::fprintf(stderr, "Null pointer (while trying to do getDependent()).\n");
 			exit(EXIT_FAILURE);
 		}
 		else
@@ -139,5 +139,10 @@ class dptr
 		{
 			return this->ptr->data;
 		}
+	}
+
+	static std::size_t _SizeOfObj()
+	{
+		return sizeof(T_);
 	}
 };

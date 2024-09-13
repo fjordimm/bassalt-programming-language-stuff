@@ -3,7 +3,7 @@
 #include <memory>
 #include <chrono>
 #include <random>
-#include "nptr.hpp"
+#include "rptr.hpp"
 #include "uptr.hpp"
 #include "hptr.hpp"
 
@@ -12,7 +12,7 @@ std::chrono::steady_clock::time_point makeClock();
 float clockTime(std::chrono::steady_clock::time_point const& clock);
 std::size_t randNum(std::size_t lowerBound, std::size_t upperBound);
 void benchmarkRawPtr(const std::size_t numObjs, const std::size_t numActions);
-void benchmarkNptr(const std::size_t numObjs, const std::size_t numActions);
+void benchmarkRptr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkUptr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkHptr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkUniquePtr(const std::size_t numObjs, const std::size_t numActions);
@@ -26,9 +26,9 @@ int main(void)
 	const std::size_t numActions = 10000000;
 
 	// benchmarkRawPtr(numObjs, numActions);
-	// benchmarkNptr(numObjs, numActions);
+	benchmarkRptr(numObjs, numActions);
 	// benchmarkUptr(numObjs, numActions);
-	benchmarkHptr(numObjs, numActions);
+	// benchmarkHptr(numObjs, numActions);
 	// benchmarkUniquePtr(numObjs, numActions);
 	// benchmarkSharedPtr(numObjs, numActions);
 
@@ -111,9 +111,9 @@ void benchmarkRawPtr(const std::size_t numObjs, const std::size_t numActions)
 	std::printf("    size of pointer: %zub\n", sizeof(SomeStruct*));
 }
 
-void benchmarkNptr(const std::size_t numObjs, const std::size_t numActions)
+void benchmarkRptr(const std::size_t numObjs, const std::size_t numActions)
 {
-	std::printf("Benchmarking nptr...\n");
+	std::printf("Benchmarking rptr...\n");
 
 	auto clock = makeClock();
 	float tCreationOfArray;
@@ -123,7 +123,7 @@ void benchmarkNptr(const std::size_t numObjs, const std::size_t numActions)
 	float tDeletionOfArray;
 
 	{
-		nptr<SomeStruct>* objects = new nptr<SomeStruct>[numObjs];
+		rptr<SomeStruct>* objects = new rptr<SomeStruct>[numObjs];
 		for (std::size_t i = 0; i < numObjs; i++)
 		{
 			objects[i] = nullptr;
@@ -133,7 +133,7 @@ void benchmarkNptr(const std::size_t numObjs, const std::size_t numActions)
 
 		for (std::size_t i = 0; i < numObjs; i++)
 		{
-			objects[i] = nptr<SomeStruct>::make(new SomeStruct());
+			objects[i] = rptr<SomeStruct>::make(new SomeStruct());
 			(*objects[i]).a = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).b = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).c = (float)randNum(0, 100) / 100.0f;
@@ -177,7 +177,7 @@ void benchmarkNptr(const std::size_t numObjs, const std::size_t numActions)
 	std::printf("    object deletion:       %f\n", tDeletion - tActions);
 	std::printf("    deletion of array:     %f\n", tDeletionOfArray - tDeletion);
 	std::printf("  Memory:\n");
-	std::printf("    size of pointer: %zub\n", sizeof(nptr<SomeStruct>));
+	std::printf("    size of pointer: %zub\n", sizeof(rptr<SomeStruct>));
 }
 
 void benchmarkUptr(const std::size_t numObjs, const std::size_t numActions)

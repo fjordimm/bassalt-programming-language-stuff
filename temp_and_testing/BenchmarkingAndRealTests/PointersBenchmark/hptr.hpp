@@ -91,7 +91,7 @@ class hptr
 	{
 		if (this->id != 0)
 		{
-			delete _map[this->id];
+			delete static_cast<T*>(_map[this->id]);
 			_map.erase(this->id);
 
 			this->id = 0;
@@ -100,7 +100,7 @@ class hptr
 
    public:
 
-	T* get()
+	T* getRaw()
 	{
 		return _map[this->id];
 	}

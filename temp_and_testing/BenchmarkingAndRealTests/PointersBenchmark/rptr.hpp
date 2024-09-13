@@ -1,11 +1,11 @@
 
-///// "Null-checked raw pointer" /////
+///// "Raw pointer (but with container (and null-checked))" /////
 
 #include <cstdio>
 #include <cstdlib>
 
 template <typename T>
-class nptr
+class rptr
 {
 	/* Fields */
 
@@ -16,15 +16,15 @@ class nptr
 
    public:
 
-	nptr() :
+	rptr() :
 		ptr(nullptr)
 	{}
 
-	nptr(nptr const& that) :
+	rptr(rptr const& that) :
 		ptr(that.ptr)
 	{}
 
-	nptr& operator=(nptr const& that)
+	rptr& operator=(rptr const& that)
 	{
 		if (this != &that)
 		{
@@ -34,24 +34,24 @@ class nptr
 		return *this;
 	}
 
-	nptr& operator=(std::nullptr_t)
+	rptr& operator=(std::nullptr_t)
 	{
 		this->ptr = nullptr;
 
 		return *this;
 	}
 
-	~nptr()
+	~rptr()
 	{}
 
-	static nptr make(T* t)
+	static rptr make(T* t)
 	{
-		return nptr(t);
+		return rptr(t);
 	}
 
    private:
 
-	nptr(T* t) :
+	rptr(T* t) :
 		ptr(t)
 	{}
 
@@ -59,7 +59,7 @@ class nptr
 
    public:
 
-	T* get()
+	T* getRaw()
 	{
 		return this->ptr;
 	}

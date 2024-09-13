@@ -1,29 +1,41 @@
 
-///// "Unique pointer" /////
+///// "Dependency pointer" /////
 
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
+#include "rptr.hpp"
 
 template <typename T>
-class uptr
+class dptr
 {
+	/* Structs */
+
+   private:
+
+	struct T_
+	{
+		T data;
+		std::vector<rptr<T>> deps;
+	};
+
 	/* Fields */
 
    private:
-	T* ptr;
+	T_* ptr;
 
 	/* Constructors */
 
    public:
 
-	uptr(const uptr&) = delete;
-	uptr& operator=(const uptr&) = delete;
+	dptr(const dptr&) = delete;
+	dptr& operator=(const dptr&) = delete;
 
-	uptr() :
+	dptr() :
 		ptr(nullptr)
 	{}
 
-	uptr& operator=(std::nullptr_t)
+	dptr& operator=(std::nullptr_t)
 	{
 		this->freeOld();
 
@@ -32,7 +44,7 @@ class uptr
 		return *this;
 	}
 
-	uptr(uptr&& that) :
+	dptr(dptr&& that) :
 		ptr(nullptr)
 	{
 		this->freeOld();
@@ -42,7 +54,7 @@ class uptr
 		that.ptr = nullptr;
 	}
 
-	uptr& operator=(uptr&& that)
+	dptr& operator=(dptr&& that)
 	{
 		if (this != &that)
 		{
@@ -56,19 +68,19 @@ class uptr
 		return *this;
 	}
 
-	~uptr()
+	~dptr()
 	{
 		this->freeOld();
 	}
 
-	static uptr make(T* t)
+	static dptr make(T* t)
 	{
-		return uptr(t);
+		return dptr(t);
 	}
 
    private:
 
-	uptr(T* t) :
+	dptr(T* t) :
 		ptr(t)
 	{}
 
@@ -87,7 +99,7 @@ class uptr
 
    public:
 
-	T* getRaw()
+	T* get()
 	{
 		return this->ptr;
 	}

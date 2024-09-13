@@ -1,6 +1,8 @@
 
 ///// "Unique pointer" /////
 
+#pragma once
+
 #include <cstdio>
 #include <cstdlib>
 
@@ -61,9 +63,9 @@ class uptr
 		this->freeOld();
 	}
 
-	static uptr make(T* t)
+	static uptr make()
 	{
-		return uptr(t);
+		return uptr(new T());
 	}
 
    private:

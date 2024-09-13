@@ -6,6 +6,7 @@
 #include "rptr.hpp"
 #include "uptr.hpp"
 #include "hptr.hpp"
+#include "dptr.hpp"
 
 // Forward declarations
 std::chrono::steady_clock::time_point makeClock();
@@ -15,6 +16,7 @@ void benchmarkRawPtr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkRptr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkUptr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkHptr(const std::size_t numObjs, const std::size_t numActions);
+void benchmarkDptr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkUniquePtr(const std::size_t numObjs, const std::size_t numActions);
 void benchmarkSharedPtr(const std::size_t numObjs, const std::size_t numActions);
 
@@ -26,11 +28,21 @@ int main(void)
 	const std::size_t numActions = 10000000;
 
 	// benchmarkRawPtr(numObjs, numActions);
-	benchmarkRptr(numObjs, numActions);
-	// benchmarkUptr(numObjs, numActions);
+	// benchmarkRptr(numObjs, numActions);
+	benchmarkUptr(numObjs, numActions);
 	// benchmarkHptr(numObjs, numActions);
+	// benchmarkDptr(numObjs, numActions);
 	// benchmarkUniquePtr(numObjs, numActions);
 	// benchmarkSharedPtr(numObjs, numActions);
+
+	// std::printf("howdy\n");
+
+	// dptr<int> yuh = dptr<int>::make();
+	// std::printf("A\n");
+	// int* dep1;
+	// yuh.getDependent(&dep1);
+
+	// std::printf("hoidy\n");
 
 	return 0;
 }
@@ -133,7 +145,7 @@ void benchmarkRptr(const std::size_t numObjs, const std::size_t numActions)
 
 		for (std::size_t i = 0; i < numObjs; i++)
 		{
-			objects[i] = rptr<SomeStruct>::make(new SomeStruct());
+			objects[i] = rptr<SomeStruct>::make();
 			(*objects[i]).a = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).b = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).c = (float)randNum(0, 100) / 100.0f;
@@ -202,7 +214,7 @@ void benchmarkUptr(const std::size_t numObjs, const std::size_t numActions)
 
 		for (std::size_t i = 0; i < numObjs; i++)
 		{
-			objects[i] = uptr<SomeStruct>::make(new SomeStruct());
+			objects[i] = uptr<SomeStruct>::make();
 			(*objects[i]).a = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).b = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).c = (float)randNum(0, 100) / 100.0f;
@@ -270,7 +282,7 @@ void benchmarkHptr(const std::size_t numObjs, const std::size_t numActions)
 
 		for (std::size_t i = 0; i < numObjs; i++)
 		{
-			objects[i] = hptr<SomeStruct>::make(new SomeStruct());
+			objects[i] = hptr<SomeStruct>::make();
 			(*objects[i]).a = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).b = (float)randNum(0, 100) / 100.0f;
 			(*objects[i]).c = (float)randNum(0, 100) / 100.0f;
@@ -314,6 +326,74 @@ void benchmarkHptr(const std::size_t numObjs, const std::size_t numActions)
 	std::printf("    deletion of array:     %f\n", tDeletionOfArray - tDeletion);
 	std::printf("  Memory:\n");
 	std::printf("    size of pointer: %zub\n", sizeof(hptr<SomeStruct>));
+}
+
+void benchmarkDptr(const std::size_t numObjs, const std::size_t numActions)
+{
+	std::printf("Benchmarking dptr...\n");
+
+	auto clock = makeClock();
+	float tCreationOfArray;
+	float tObjInitialization;
+	float tActions;
+	float tDeletion;
+	float tDeletionOfArray;
+
+	{
+		dptr<SomeStruct>* objects = new dptr<SomeStruct>[numObjs];
+		for (std::size_t i = 0; i < numObjs; i++)
+		{
+			objects[i] = nullptr;
+		}
+
+		tCreationOfArray = clockTime(clock);
+
+		for (std::size_t i = 0; i < numObjs; i++)
+		{
+			objects[i] = dptr<SomeStruct>::make();
+			(*objects[i]).a = (float)randNum(0, 100) / 100.0f;
+			(*objects[i]).b = (float)randNum(0, 100) / 100.0f;
+			(*objects[i]).c = (float)randNum(0, 100) / 100.0f;
+		}
+
+		tObjInitialization = clockTime(clock);
+
+		for (std::size_t r = 0; r < numActions; r++)
+		{
+			std::size_t index1 = randNum(0, numObjs - 1);
+			std::size_t index2 = randNum(0, numObjs - 1);
+
+			float aAvg = 0.5f * ((*objects[index1]).a + (*objects[index2]).a);
+			float bAvg = 0.5f * ((*objects[index1]).b + (*objects[index2]).b);
+			float cAvg = 0.5f * ((*objects[index1]).c + (*objects[index2]).c);
+			(*objects[index1]).a = aAvg;
+			(*objects[index1]).b = bAvg;
+			(*objects[index1]).c = cAvg;
+		}
+
+		tActions = clockTime(clock);
+
+		for (std::size_t i = 0; i < numObjs; i++)
+		{
+			objects[i] = nullptr;
+		}
+
+		tDeletion = clockTime(clock);
+
+		delete[] objects;
+
+		tDeletionOfArray = clockTime(clock);
+	}
+
+	std::printf("...Done\n");
+	std::printf("  Times:\n");
+	std::printf("    creation of array:     %f\n", tCreationOfArray);
+	std::printf("    object initialization: %f\n", tObjInitialization - tCreationOfArray);
+	std::printf("    actions:               %f\n", tActions - tObjInitialization);
+	std::printf("    object deletion:       %f\n", tDeletion - tActions);
+	std::printf("    deletion of array:     %f\n", tDeletionOfArray - tDeletion);
+	std::printf("  Memory:\n");
+	std::printf("    size of pointer: %zub\n", sizeof(dptr<SomeStruct>));
 }
 
 void benchmarkUniquePtr(const std::size_t numObjs, const std::size_t numActions)

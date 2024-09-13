@@ -1,6 +1,8 @@
 
 ///// "Raw pointer (but with container (and null-checked))" /////
 
+#pragma once
+
 #include <cstdio>
 #include <cstdlib>
 
@@ -44,9 +46,9 @@ class rptr
 	~rptr()
 	{}
 
-	static rptr make(T* t)
+	static rptr make()
 	{
-		return rptr(t);
+		return rptr(new T());
 	}
 
    private:

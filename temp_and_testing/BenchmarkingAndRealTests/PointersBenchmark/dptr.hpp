@@ -1,10 +1,11 @@
 
 ///// "Dependency pointer" /////
 
+#pragma once
+
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
-#include "rptr.hpp"
 
 template <typename T>
 class dptr
@@ -16,7 +17,7 @@ class dptr
 	struct T_
 	{
 		T data;
-		std::vector<rptr<T>> deps;
+		std::vector<T**> deps;
 	};
 
 	/* Fields */
@@ -73,14 +74,14 @@ class dptr
 		this->freeOld();
 	}
 
-	static dptr make(T* t)
+	static dptr make()
 	{
-		return dptr(t);
+		return dptr(new T_());
 	}
 
    private:
 
-	dptr(T* t) :
+	dptr(T_* t) :
 		ptr(t)
 	{}
 
@@ -92,6 +93,14 @@ class dptr
 	{
 		if (this->ptr != nullptr)
 		{
+			for (T**& t : this->ptr->deps)
+			{
+				if (t != nullptr)
+				{
+					*t = nullptr;
+				}
+			}
+
 			delete this->ptr;
 			this->ptr = nullptr;
 		}
@@ -99,9 +108,24 @@ class dptr
 
    public:
 
-	T* get()
+	T* getRaw()
 	{
 		return this->ptr;
+	}
+
+	// WARNING: this will completely break if the rptr ever changes location, which it very well may
+	void getDependent(T** r)
+	{
+		if (this->ptr == nullptr)
+		{
+			std::fprintf(stderr, "Null pointer.\n");
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			this->ptr->deps.push_back(r);
+			*r = &(this->ptr->data);
+		}
 	}
 
 	T& operator*()
@@ -113,7 +137,7 @@ class dptr
 		}
 		else
 		{
-			return *(this->ptr);
+			return this->ptr->data;
 		}
 	}
 };

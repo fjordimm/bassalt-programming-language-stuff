@@ -1,6 +1,8 @@
 
 ///// "Hashmap pointer" /////
 
+#pragma once
+
 #include <cstdio>
 #include <cstdlib>
 #include <unordered_map>
@@ -70,9 +72,9 @@ class hptr
 		this->freeOld();
 	}
 
-	static hptr make(T* t)
+	static hptr make()
 	{
-		_map[_ids] = t;
+		_map[_ids] = new T();
 		_ids++;
 		return hptr(_ids - 1);
 	}

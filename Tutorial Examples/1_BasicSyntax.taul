@@ -29,12 +29,27 @@ void Main()
 
 void Main()
 {
-	stdout.println(FuncA(3, 4));
+	stdout.println(FuncA(1, 2));
+
+	stdout.println(FuncB(1, 2, c=3));
+
+	stdout.println(FuncC(1, 2, c=3));
+	stdout.println(FuncC(1, 2));
 }
 
 int FuncA(int a, int b)
 {
 	return a + b;
+}
+
+int FuncB(int a, int b, named int c) // `c` is a required named parameter
+{
+	return a + b + c;
+}
+
+int FuncC(int a, int b, named int c = 0) // `c` is an optional named parameter
+{
+	return a + b + c;
 }
 
 ////////////////////////////////////////////////////////////

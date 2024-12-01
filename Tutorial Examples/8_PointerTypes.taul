@@ -112,31 +112,31 @@ void Main()
 
 	int&! r3 = a&;
 	r3@ = 111; // a is now 111.
-	r3 = ref b; // Illegal, r3 is fixed.
+	r3 = b&; // Illegal, r3 is fixed.
 
-	int!& r4 = a&!;
+	int!& r4 = a!&;
 	r4@ = 1111; // Illegal, r4 is a reference to a fixed int, so r4 can only read from what its pointing to.
 	stdout.println(r4@);
-	r4 = b&!; // The value of r4 can still be changed.
+	r4 = b!&; // The value of r4 can still be changed.
 	stdout.println(r4@);
 
-	// Think of fixedness as polymorphism. Unfixed types (e.g. int) are subsets of fixed types (e.g. int!).
-	int!& r5 = a&!;
-	int!& r6 = c&!;
+	// Think of mutability as polymorphism. Mutable types (e.g. int) are subsets of immutable types (e.g. int!).
+	int!& r5 = a!&;
+	int!& r6 = c&;
 	int& r6 = a&;
-	int& r7 = c&!; // Illegal, r7 can mutate its referent, so it cannot point to a fixed type.
+	int& r7 = c&; // Illegal, r7 is able to mutate its referent, so it cannot point to a fixed type.
 
-	int!&! r8 = a&!;
+	int!&! r8 = a!&;
 	stdout.println(r8@);
 	r8@ = 100; // Illegal, r8 points to a fixed type.
-	r8 = b&!; // Illegal, r8 is fixed.
+	r8 = b!&; // Illegal, r8 is fixed.
 
 	///////////
 
 	int!&! r9;
 	// ...can be rewritten as...
 	int&!! r10;
-	// You can call this variable immutable, since the '!!' guarantees fixedness recursively, as shown below...
+	// You can call this variable deeply immutable, since the '!!' guarantees immutability recursively, as shown below...
 	
 	int!&!&!&!&!&! r11;
 	// ...can be rewritten as...
@@ -155,7 +155,7 @@ void Main()
 	stdout.println(r14 == a&); // Prints: true
 	stdout.println(r14 == r15); // Prints: true
 	stdout.println(r14 == r16); // Prints: false
-	stdout.println(r17 == null);
+	stdout.println(r17 == null); // Prints: true
 	r14 = null;
 	stdout.println(r14 == r17); // Prints: true
 }

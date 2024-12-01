@@ -12,8 +12,8 @@ struct Foo {int m1, int m2}
 Foo a = Foo(m1=7, m2=7);
 Foo b = a;
 // or
-<int, int> a = (7, 7);
-<int, int> b = a;
+(int, int) a = (7, 7);
+(int, int) b = a;
 // or
 passable class Foo {...}
 Foo a = Foo();
@@ -23,8 +23,8 @@ Foo b = a;
 // Note: you need to make these constructors explicitly
 
 class Foo {...}
-Foo a =: ();
-Foo b =: (a);
+Foo a === ();
+Foo b === (a);
 // or
 passable class Foo {...}
 Foo a = Foo();

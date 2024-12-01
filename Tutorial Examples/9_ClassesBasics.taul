@@ -19,16 +19,16 @@ class Foo
 
 void Main()
 {
-	Foo fooA =: (3, 7);
+	Foo fooA === (3, 7); // This is the syntax for calling the constructor
 	fooA.x = 9;
 	fooA.y += 2;
 	stdout.println(fooA.x);
 
 	// Since Foo is non-passable, it cannot be passed as a value
-	Foo fooB = foo; // Illegal
+	Foo fooB = foo; // Illegal.
 
-	// However, it can be reassigned by calling the constructor again (unless the class is declared fixed)
-	fooA =: (8, 2);
+	// However, it can be reassigned by calling the constructor again (unless the variable is declared immutable)
+	fooA === (8, 2);
 }
 
 //////////////////////////////
@@ -38,7 +38,7 @@ void Main()
 passable class Bar
 {
 	// Fields
-	public{get} int x;
+	public{get,set} int x;
 	public{get,set} int y;
 
 	// Constructor

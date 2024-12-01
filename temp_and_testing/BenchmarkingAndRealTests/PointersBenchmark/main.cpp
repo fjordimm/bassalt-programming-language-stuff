@@ -22,18 +22,20 @@ void benchmarkSharedPtr(const std::size_t numObjs, const std::size_t numActions)
 
 int main(void)
 {
-	InitializeHptrs();
+	// InitializeHptrs();
 
-	const std::size_t numObjs = 1500000;
-	const std::size_t numActions = 10000000;
+	// const std::size_t numObjs = 1500000;
+	// const std::size_t numActions = 10000000;
 
 	// benchmarkRawPtr(numObjs, numActions);
 	// benchmarkRptr(numObjs, numActions);
 	// benchmarkUptr(numObjs, numActions);
 	// benchmarkHptr(numObjs, numActions);
-	benchmarkDptr(numObjs, numActions);
+	// benchmarkDptr(numObjs, numActions);
 	// benchmarkUniquePtr(numObjs, numActions);
 	// benchmarkSharedPtr(numObjs, numActions);
+
+	
 
 	return 0;
 }

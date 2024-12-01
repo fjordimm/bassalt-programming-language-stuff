@@ -277,10 +277,11 @@ void Main()
 	ulong someULong = 3943;
 	float someFloat = -0.7;
 
-	ulong a = (ulong)someInt;
-	ulong b = (ulong)(someInt + (int)someULong);
-	int c = (int)someFloat;
-	double d = (double)someInt;
+	ulong a = <ulong>someInt;
+	ulong b = <>someInt;
+	ulong c = <ulong>(someInt + <int>someULong);
+	int d = <int>someFloat;
+	double e = <double>someInt;
 }
 
 ////////////////////////////////////////////////////////////

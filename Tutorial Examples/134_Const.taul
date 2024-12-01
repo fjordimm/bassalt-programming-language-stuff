@@ -1,0 +1,11 @@
+
+//////////////////////////////
+
+///// Const /////
+
+/*
+ - All variables declared const must be fully immutable.
+ - Const variables can be in a local scope. This does not make them part of the stack; they are still static. Also, they should still use pascal case.
+*/
+
+//////////////////////////////

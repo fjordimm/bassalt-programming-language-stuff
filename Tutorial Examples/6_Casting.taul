@@ -28,6 +28,14 @@ void Main()
 
 	// Some casts do a special operation, like double to int.
 	int var3 = %<int> 235.34829d;
+
+	///////
+
+	// This will cut off the 32-most-significant bits of the number:
+	long a = %<long> %<int> 342835738527388538343l;
+
+	// Same for this:
+	long b = % %<int> 342835738527388538343l;
 }
 
 //////////////////////////////
@@ -36,7 +44,7 @@ void Main()
 
 void Main()
 {
-	// Bit-casting must be done in an unsafe{bitcasting} context.
+	// Bit-casting must be done in an unsafe context.
 	unsafe{bitcasting}
 	{
 		int varA = bitcast<int>(7.2f); // varA will have the value 1088841318 (or maybe not depending on the system).

@@ -19,7 +19,7 @@ ulong var = 0_ul;			// 64 bits	// integer	// unsigned
 float var = 0_f;			// 32 bits	// floating-point
 double var = 0_d;			// 64 bits	// floating-point
 
-// Built-in Portable Classes
+// Built-in Passable Classes
 int128 var = 0_ii;			// 128 bits	// integer	// signed
 uint128 var = 0_uii;		// 128 bits	// integer	// unsigned
 int256 var = 0_iii;			// 256 bits	// integer	// signed
@@ -27,8 +27,8 @@ uint256 var = 0_uiii;		// 256 bits	// integer	// unsigned
 rgba var = 0_r;				// 32 bits	// integer	// unsigned		(Not meant to be used as an integer. See '42_BuiltInStructs')
 datetime var = 0_t;			// 64 bits	// integer	// unsigned		(Not meant to be used as an integer. See '42_BuiltInStructs')
 
-// Built-in Non-portable Classes
-string var =: "hello";
+// Built-in Non-passable Classes
+string var === "hello";
 
 ////////////////////////////////////////////////////////////
 

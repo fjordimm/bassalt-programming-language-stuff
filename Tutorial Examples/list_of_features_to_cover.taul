@@ -78,8 +78,8 @@ Features to Cover:
  - difference between a 'destructor' for use in a safe context (works like C#'s IDisposable using statements), vs overriding rfree
  - easy syntax for maps/dictionaries
  - inline block expressions (see https://doc.rust-lang.org/reference/expressions/block-expr.html and https://stackoverflow.com/questions/6305396/whats-this-c-syntax-that-puts-a-brace-surrounded-block-where-an-expression-is)
-    - syntax: `int var = inline (int) { 13; };`
-	- you could also drop the type after `inline`
+    - syntax: `int var = inline<int> { 13; };`
+	- you could also drop the type after `inline` if it can be inferred
  - https://www.codeproject.com/Articles/5316026/ptr-to-unique-T-extending-std-unique-ptr-to-suppor
  - rename 'interface' to 'trait'
 

@@ -23,7 +23,7 @@ fn main() {
 // Equivalent Bassalt code:
 /* (except everything that was immutable is now mutable for more concise syntax) */
 
-int&{L} Foo(int&{L} x, int&{M} y)
+int&{L1} Foo(int&{L1} x, int&{L2} y)
 {
 	return x;
 }
@@ -36,7 +36,7 @@ void Main()
 		int y = 42;
 		Foo(x&, y&);
 	};
-	stdout.println(f"{z@}");
+	stdout.println(z@);
 }
 
 //////////////////////////////
@@ -53,7 +53,7 @@ struct Thing
 
 void Main()
 {
-
+	
 }
 
 ///////////

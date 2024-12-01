@@ -10,7 +10,7 @@ void Main()
 	stdout.println(varA.1);
 	varA.0 = 2.9;
 	varA.1 = 'r';
-	stdout.println(varA); // Prints: (3.7, e)
+	stdout.println(varA); // Prints: (2.9, r)
 	varA = (7.5, 'p');
 
 	float varCa;
@@ -40,7 +40,7 @@ void Main()
 	(void, varH) = varA;
 
 	// The use of void above almost implies that you can do the following (and you can)
-	void = 19; // evaluates expression then does nothing with it
+	void = 19i; // evaluates expression then does nothing with it
 	// You can use void for any lvalue, and the code will just do nothing with it
 
 	(float!, char) varI = (3.7, 'e'); // Illegal. Mutability cannot be specified for individual elements (as in structs).
@@ -52,13 +52,13 @@ void Main()
 
 ///// Struct & Tuple Memory Size /////
 
-/* Just to clarify, none of this affects the Taula programmer (unless you count the runtime value given by 'sizeof'). */
+/* Just to clarify, none of this affects the Bassalt programmer (unless you count the actual value given by 'sizeof'). */
 
 /*
  No guarantee can be made about the size of a struct or tuple because structs and tuples are compiled into C structs.
 
  The order of elements you choose will not matter when compiled...
- To minimize struct padding, the Taula compiler will put elements in decreasing order by size (there are special cases for 'nint', 'nlong', 'unint', 'unlong', 'nbigdouble').
+ To minimize struct padding, the Bassalt compiler will put elements in decreasing order by size (there are special cases for 'nint', 'nlong', 'unint', 'unlong', 'nbigdouble').
 
  To check the size in memory of a tuple or struct, use the 'sizeof' operator.
 */
@@ -73,8 +73,8 @@ void Main()
 	int varA = 0;
 	stdout.println(sizeof(varA)); // Prints: 4
 
-	sizet varB = sizeof(char);
-	int varC = (int)sizeof(char);
+	long varB = sizeof(char);
+	int varC = %sizeof(char);
 
 	stdout.println(sizeof((float, char))); // Possible output: 8
 	(float, char) varD = (3.7, 'e');
@@ -96,8 +96,8 @@ struct Foo
 //////////////////////////////
 
 // TODO: sizeof for ARRAYS
-// TODO: ingle element tuples
-// TODO: tuples of arrays or other non-portable types
+// TODO: single element tuples
+// TODO: tuples of arrays or other non-passable types
 // TODO: tuples of tuples, structs of structs
 
 // TODO: the 'with' keyword

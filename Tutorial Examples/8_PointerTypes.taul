@@ -18,7 +18,7 @@
  var&					address-of operator, returns a reference pointer
  var@					dereference operator
  new int{1}				new operator, returns a unique pointer
- snew int{1}			newsptr operator, creates and returns a shared pointer
+ snew int{1}			snew operator, creates and returns a shared pointer
  rnew int{1}			rnew operator, returns a raw pointer
  rrealloc var			rrealloc operator, returns a raw pointer
  rfree var				rfree operator, frees the referent of 'var'
@@ -35,7 +35,7 @@ void Main()
 	/* Therefore, raw pointers must be used in an unsafe context. */
 	/* Mutability/face rules still apply to raw pointers, however. */
 
-	unsafe
+	unsafe{rawPointers}
 	{
 		int* rp1 = rnew int{7};
 		stdout.println(rp1@); // Prints: 7
@@ -55,7 +55,7 @@ void Main()
 		int* rp5 = rp4;
 		stdout.println(rp5@); // Prints: 9
 		stdout.println(rp4@); // Prints: 9
-		stdout.println(rp4 == null); // Prints: false
+		stdout.println(rp5 == null); // Prints: false
 		rfree rp4;
 		stdout.println(rp5 == null); // Prints: false
 		stdout.println(rp4@); // Undefined behavior, dereferencing a dangling pointer
@@ -69,21 +69,21 @@ void Main()
 		int b = 2;
 		int! c = 3;
 
-		int* rp6 = (*)a&;
+		int* rp6 = %a&; // `% a&` is a shortcut for `%<*> a&` which is a shortcut for `%<int*> a&`
 		stdout.println(rp6@);
 		rp6@ += 9;
-		int!* rp7 = (*)c&!;
+		int!* rp7 = %c!&;
 		stdout.println(rp7@);
 
 		///////////
 
-		/* Raw pointers can also be set to any other pointer type */
+		/* Raw pointers can also be set to any other pointer type, and vice versa. */
 
 		int& r1 = a&;
-		int* rp8 = (*)r1;
+		int* rp8 = %r1;
 
 		int^ up1 = new int{7};
-		int* rp9 = (*)up1;
+		int* rp9 = %up1;
 	}
 }
 

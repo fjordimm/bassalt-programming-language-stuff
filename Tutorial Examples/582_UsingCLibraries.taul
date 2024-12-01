@@ -9,8 +9,8 @@ void Main()
 	int num2 = 384;
 	$size_t num3 = ($size_t)num2;
 
-	// For C pointers ('*'), you can use Bassalt raw pointers ('*'), meaning you have to use an unsafe context
-	unsafe
+	// For C pointers ('*'), you can use Bassalt raw pointers ('*'), meaning you have to use an unsafe{rawPointers} context
+	unsafe{rawPointers}
 	{
 		$FILE* fp = $fopen("myfile.txt", "w");
 		$fputs("Hello!", fp);
@@ -24,7 +24,7 @@ void Main()
 	$printf(str);
 	$printf(($const$char$*)str);
 
-	unsafe
+	unsafe{rawPointers}
 	{
 		char![30] dest =: ();
 		char![5] src1 =: {'h', 'o', 'l', 'a', '\0'};

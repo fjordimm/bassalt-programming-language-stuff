@@ -17,14 +17,54 @@ Although reference pointers hold the address of something, they are still being 
 While something like `int&& var` is legal, something like `ref ref int var` is illegal and wouldn't make sense.
 */
 
+/*
+Summary of all types of references:
+
+ `ref` OR `ref{initialized}`
+    - references:          lvalue
+	- readable:            yes
+	- writable:            yes
+	- must be written to:  no
+
+ `ref{uninitialized}`
+    - references:          lvalue
+	- readable:            no (until written to)
+	- writable:            yes
+	- must be written to:  no
+
+ `outref` OR `outref{uninitialized}`
+    - references:          lvalue
+	- readable:            no (until written to)
+	- writable:            yes
+	- must be written to:  yes
+
+ `outref{initialized}`
+    - references:          lvalue
+	- readable:            yes
+	- writable:            yes
+	- must be written to:  yes
+
+ `inref`
+    - references:          lvalue or rvalue
+	- readable:            yes
+	- writable:            no
+	- must be written to:  no
+*/
+
 void Main()
 {
 	int a = 5;
 	DoubleMe(ref a);
 	DoubleMeWrapper(ref a);
+	
+	DoubleMe(63); // Illegal. The input	must be an lvalue passed by reference.
+	DoubleMe(a); // Illegal. The input	must be an lvalue passed by reference.
+	DoubleMe(ref 63); // Illegal. You cannot pass literals by reference (unless with `inref`).
 
-	int b = 9;
-	PrintMe1(ref b!);
+	int bM = 9;
+	int! bI = 9;
+	PrintMe1(ref bM!);
+	PrintMe1(ref bI);
 
 	int c = 7;
 	PrintMe2(inref c);
@@ -42,11 +82,22 @@ void Main()
 	);
 
 	int e;
-	Func6(ref e); // Since `e` is uninitialized, it is passing by uninitialized reference rather than by initialized reference.
+	Func6(ref e);
+	// Since Func6 has no obligation to assign a value through reference, `e` is still treated as uninitialized in this scope and cannot be read from yet.
 
-	int f = 21;
-	Func7(outref f); // Since `f` is initialized, it is passing by initialized reference rather than by uninitialized reference.
-	InitializeMe(outref f); // Even though `f` is being passed by initialized reference, uninitialized reference parameters can still accept it.
+	int f = 1;
+	Func6(ref f); // Since `f` is initialized, the expression `ref f` is an initialized referral. It will be treated as an uninitialized referral in the function, however.
+
+	int g;
+	PrintMe1(ref g); // Illegal. Since `g` is uninitialized, the expression `reg g` is an uninitialized referral, which cannot be treated as an initialized referral.
+
+	int h = 21;
+	Func7(outref h);
+	InitializeMe(outref h);
+
+	int i = 21;
+	Func7(outref i); // Illegal
+	InitializeMe(outref i);
 }
 
 void DoubleMe(ref int v)
@@ -56,7 +107,7 @@ void DoubleMe(ref int v)
 
 void DoubleMeWrapper(ref int v)
 {
-	// `ref int` is not a type, it is just saying that the parameter is given by reference...
+	// `ref int` is not a type like `int&` is; it is just saying that the parameter is given by reference...
 	// ...so, you still have to be explicit when passing it by reference to something else
 	DoubleMe(ref v);
 }
@@ -68,7 +119,7 @@ void PrintMe1(ref int! v)
 	stdout.println(v);
 }
 
-// `v` can be an lvalue or rvalue
+// `v` can be an lvalue or an rvalue
 void PrintMe2(inref int v)
 {
 	// Cannot write to `v`
@@ -101,8 +152,6 @@ void Func6(ref{uninitialized} int v)
 	// And, now it can be passed to uninitialized or initialized references.
 	ref{uninitialized} int temp2 = ref v;
 	ref int temp3 = ref v;
-
-	// It still holds that by the end of the function, `v` must be assigned to something
 }
 
 void Func7(outref{initialized} int v)
@@ -117,39 +166,5 @@ void Func7(outref{initialized} int v)
 
 	// It still holds that by the end of the function, `v` must be assigned to something
 }
-
-/*
-In summary:
-
- `ref` OR `ref{initialized}`
-    - references:          lvalue
-	- readable:            yes
-	- writable:            yes
-	- must be written to:  no
-
- `ref{uninitialized}`
-    - references:          lvalue
-	- readable:            no (until written to)
-	- writable:            yes
-	- must be written to:  no
-
- `outref` OR `outref{uninitialized}`
-    - references:          lvalue
-	- readable:            no (until written to)
-	- writable:            yes
-	- must be written to:  yes
-
- `outref{initialized}`
-    - references:          lvalue
-	- readable:            yes
-	- writable:            yes
-	- must be written to:  yes
-
- `inref`
-    - references:          lvalue or rvalue
-	- readable:            yes
-	- writable:            no
-	- must be written to:  no
-*/
 
 //////////////////////////////

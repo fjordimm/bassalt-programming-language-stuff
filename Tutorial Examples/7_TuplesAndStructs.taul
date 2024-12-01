@@ -1,8 +1,6 @@
 
 //////////////////////////////
 
-
-
 ///// Tuples /////
 
 void Main()
@@ -47,7 +45,7 @@ void Main()
 
 	(float!, char) varI = (3.7, 'e'); // Illegal. Mutability cannot be specified for individual elements (as in structs).
 	(float, char)! varJ = (3.7, 'e'); // This is fine
-	(float! varKa, char! varKb) = (3.7, 'e'); // This is fine
+	(float! varKa, char varKb) = (3.7, 'e'); // This is fine
 }
 
 //////////////////////////////

@@ -100,7 +100,7 @@ void Main()
 	}
 
 	// 'for-each' loop:
-	char[] arr =: {'a', 'b', 'c'};
+	char[] arr === {'a', 'b', 'c'};
 	for char c in arr
 	{
 		stdout.println(c);
@@ -184,23 +184,23 @@ void Main()
 
 ////////////////////////////////////////////////////////////
 
-///// Non-Dynamic Arrays /////
+///// Arrays (Non-Dynamic) /////
 
 void Main()
 {
-	// See how classes work for a better understanding of the '=:' notation
+	// See how classes work for a better understanding of the '===' notation
 	// For now, just know that the variables below cannot be passed as values or be reassigned new arrays
 
-	int[30] arrA =: ();
+	int[30] arrA === ();
 	for int i in 0..arrA.len
 	{
 		arrA[i] = i * i;
 	}
 
-	int[15] arrB =: (5); // All elements initialized to 5
-	int[15] arrC =: (); // All elements initialized to 0
-	int[3] arrD =: {1, 2, 3};
-	int[] arrE =: {1, 2, 3}; // Still a fixed size of 3
+	int[15] arrB === (5); // All elements initialized to 5
+	int[15] arrC === (); // All elements initialized to 0
+	int[3] arrD === {1, 2, 3};
+	int[] arrE === {1, 2, 3}; // Still a fixed size of 3
 }
 
 ////////////////////////////////////////////////////////////
@@ -225,6 +225,8 @@ void Main()
 	(c0, char c1) = SomeFunc();
 
 	(float d0, void) = SomeFunc();
+
+	float e0 = SomeFunc().0;
 }
 
 (float, char) SomeFunc()
@@ -237,39 +239,36 @@ void Main()
 ///// Structs /////
 
 // Structs are simple data structures...
-// If you want public/private members, methods, etc, use a class
+// If you want public/private members, methods, etc, use a class instead
 // Think of structs as tuples with named members
 
-void Main()
-{
-	Foo p = Point(x=3, y=9);
-	p.x = 17;
-	stdout.println(p.y);
-}
-
-// The members of a struct do not need to be declared as mutable. The mutability is up to the instance
 struct Point
 {
 	int x;
 	int y;
 }
 
+void Main()
+{
+	Point p = Point(x=3, y=9);
+	p.x = 17;
+	stdout.println(p.y);
+}
+
 ////////////////////////////////////////////////////////////
 
-///// References /////
+///// Passing by Reference /////
 
 void Main()
 {
 	int foo = 13;
-	int& fooRef = ref foo;
-	fooRef@ = 7; // now foo is 7
+	ref int fooRef = ref foo;
+	fooRef = 7; // now foo is 7
 }
 
 ////////////////////////////////////////////////////////////
 
 ///// Casting /////
-
-/* Note: there is no implicit casting (with a few exceptions (see '6_Casting')) */
 
 void Main()
 {
@@ -277,11 +276,11 @@ void Main()
 	ulong someULong = 3943;
 	float someFloat = -0.7;
 
-	ulong a = <ulong>someInt;
-	ulong b = <>someInt;
-	ulong c = <ulong>(someInt + <int>someULong);
-	int d = <int>someFloat;
-	double e = <double>someInt;
+	ulong a = %<ulong>someInt;
+	ulong b = %someInt;
+	ulong c = %(someInt + %someULong);
+	int d = %someFloat;
+	double e = %someInt;
 }
 
 ////////////////////////////////////////////////////////////

@@ -4,7 +4,7 @@
 /*
  Note that which file a piece of code lies in does not matter.
  Think of it as every file gets concatenated together.
- The exception to this is that everything defined on a file's top level (so not in any namespace) is private to that file.
+ The exception to this is that anything defined on a file's top level (so not in any namespace) is private to that file.
 */
 
 ////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ void Main()
 	
 	stdout.println(Foo::Sum(9, 10));
 
-	Foo::Point p = Point{x=3, y=8};
+	Foo::Point p = Point(x=3, y=8);
 	stdout.println(p.x);
 }
 /****************************/
@@ -324,7 +324,7 @@ namespace Foo
 
 	int B(float a)
 	{
-		return (int)a + 1;
+		return %a + 1;
 	}
 
 	int B(int a, int b)
